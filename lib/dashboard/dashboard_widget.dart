@@ -64,7 +64,7 @@ final appTheme = ThemeData(
 class _DashboardWidgetState extends State<DashboardWidget>
     with TickerProviderStateMixin {
   late DashboardModel _model;
-
+  bool _isLoading = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
   String date = new DateFormat.yMMMMd('en_US').format(new DateTime.now());
@@ -1401,6 +1401,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   children: [
                                     ElevatedButton(
                                       onPressed: () async {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
                                         _model.output =
                                             await actions.newCustomAction(
                                           (currentUserDocument?.keyList
@@ -1419,7 +1422,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           }.withoutNulls,
                                         );
 
-                                        setState(() {});
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
                                       },
                                       child: Text(
                                         'Show All Devices',
@@ -2152,6 +2157,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                               children: [
                                 ElevatedButton(
                                   onPressed: () async {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
                                     _model.outputPravah =
                                         await newCustomActionPravah(
                                       (currentUserDocument?.meterKeyList
@@ -2170,7 +2178,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       }.withoutNulls,
                                     );
 
-                                    setState(() {});
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
                                   },
                                   child: Text(
                                     'Show All Devices',
@@ -2219,7 +2229,25 @@ class _DashboardWidgetState extends State<DashboardWidget>
         ),
       ),
       //It will select the Starr or Pravah dashboard based of selectedindex value
-      body: pages.elementAt(selectedindex),
+      // body: pages.elementAt(selectedindex),
+      body: Stack(
+        children: [
+          pages.elementAt(selectedindex),
+          if (_isLoading)
+            const Opacity(
+              opacity: 0.5,
+              child: ModalBarrier(
+                color: Colors.black,
+                dismissible: false,
+              ),
+            ),
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+        
+      ),
       //Bottom navigation bar of Starr and Pravah
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF112025),
