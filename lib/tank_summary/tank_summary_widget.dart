@@ -150,7 +150,7 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(//row1 subrow1
+                                            Row(//row1 subrow1, NA
                                                 children: [
                                               Text(
                                                 isActive == "true"?
@@ -180,8 +180,8 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                             SizedBox(
                                               height: 7,
                                             ),
-                                            Row(//row1 subrow2
-                                                children: [
+                                            Row(//row1 subrow2 ,Tank filled
+                                                children: [ 
                                               Text(
                                                 'Tank Filled',
                                                 style:
@@ -214,7 +214,7 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(//row2 subrow1
+                                            Row(//row2 subrow1 ,NA
                                                 children: [
                                               Text(
                                                 isActive == "true"?
@@ -249,7 +249,7 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                             SizedBox(
                                               height: 7,
                                             ),
-                                            Row(//row2 subrow2
+                                            Row(//row2 subrow2 , Available for use
                                                 children: [
                                               Text(
                                                 'Available for use',

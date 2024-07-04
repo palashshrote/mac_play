@@ -141,152 +141,170 @@ class _EditDeviceWidgetState extends State<EditDeviceWidget>
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  listViewTankRecord.tankName!,
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    color: Color(0xFFFFFFFF),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        listViewTankRecord.tankName!,
+                                        style: GF.GoogleFonts.leagueSpartan(
+                                          color: Color(0xFFFFFFFF),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    FlutterFlowIconButton(
-                                      borderRadius: 30.0,
-                                      borderWidth: 1.0,
-                                      buttonSize: 60.0,
-                                      icon: Icon(
-                                        Icons.edit_rounded,
-                                        color: Color(0xFF91D9E9),
-                                        size: 30.0,
+                                Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    // crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      FlutterFlowIconButton(
+                                        borderRadius: 30.0,
+                                        borderWidth: 1.0,
+                                        buttonSize: 60.0,
+                                        icon: Icon(
+                                          Icons.edit_rounded,
+                                          color: Color(0xFF91D9E9),
+                                          size: 30.0,
+                                        ),
+                                        onPressed: () async {
+                                          context.pushNamed(
+                                            'CuboidalTankEdit',
+                                            queryParams: {
+                                              'tankReference': serializeParam(
+                                                listViewTankRecord,
+                                                ParamType.Document,
+                                              ),
+                                            }.withoutNulls,
+                                            extra: <String, dynamic>{
+                                              'tankReference': listViewTankRecord,
+                                            },
+                                          );
+                                        },
                                       ),
-                                      onPressed: () async {
-                                        context.pushNamed(
-                                          'CuboidalTankEdit',
-                                          queryParams: {
-                                            'tankReference': serializeParam(
-                                              listViewTankRecord,
-                                              ParamType.Document,
-                                            ),
-                                          }.withoutNulls,
-                                          extra: <String, dynamic>{
-                                            'tankReference': listViewTankRecord,
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    Text(
-                                      'Edit',
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        color: Color(0xFF91D9E9),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
+                                      Text(
+                                        'Edit',
+                                        style: GF.GoogleFonts.leagueSpartan(
+                                          color: Color(0xFF91D9E9),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    FlutterFlowIconButton(
-                                      borderRadius: 30.0,
-                                      borderWidth: 1.0,
-                                      buttonSize: 60.0,
-                                      icon: Icon(
-                                        Icons.delete_rounded,
-                                        color: Color(0xFFFF7171),
-                                        size: 30.0,
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: Column(
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    // crossAxisAlignment: CrossAxisAlignment.end,
+                                    // mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      FlutterFlowIconButton(
+                                        borderRadius: 30.0,
+                                        borderWidth: 1.0,
+                                        buttonSize: 60.0,
+                                        icon: Icon(
+                                          Icons.delete_rounded,
+                                          color: Color(0xFFFF7171),
+                                          size: 30.0,
+                                        ),
+                                        onPressed: () async {
+                                          var confirmDialogResponse =
+                                              await showDialog<bool>(
+                                                    context: context,
+                                                    builder:
+                                                        (alertDialogContext) {
+                                                      return AlertDialog(
+                                                        title: Text('Delete'),
+                                                        content: Text(
+                                                            'Are you sure you want to delete this item? The action cannot be undone.'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    false),
+                                                            child: Text('Cancel'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext,
+                                                                    true),
+                                                            child:
+                                                                Text('Confirm'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ) ??
+                                                  false;
+                                          if (confirmDialogResponse) {
+                                            await listViewTankRecord.reference
+                                                .delete();
+                                  
+                                            final usersUpdateData = {
+                                              'keyList': FieldValue.arrayRemove(
+                                                  [listViewTankRecord.tankKey]),
+                                            };
+                                            await currentUserReference!
+                                                .update(usersUpdateData);
+                                            await showDialog(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  title: Text('Success'),
+                                                  content: Text(
+                                                      'Device deleted successfully'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext),
+                                                      child: Text('Ok'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            await showDialog(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  content: Text(
+                                                      'The entry was not deleted'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext),
+                                                      child: Text('Ok'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
                                       ),
-                                      onPressed: () async {
-                                        var confirmDialogResponse =
-                                            await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title: Text('Delete'),
-                                                      content: Text(
-                                                          'Are you sure you want to delete this item? The action cannot be undone.'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  false),
-                                                          child: Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  true),
-                                                          child:
-                                                              Text('Confirm'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ) ??
-                                                false;
-                                        if (confirmDialogResponse) {
-                                          await listViewTankRecord.reference
-                                              .delete();
-
-                                          final usersUpdateData = {
-                                            'keyList': FieldValue.arrayRemove(
-                                                [listViewTankRecord.tankKey]),
-                                          };
-                                          await currentUserReference!
-                                              .update(usersUpdateData);
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Success'),
-                                                content: Text(
-                                                    'Device deleted successfully'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                content: Text(
-                                                    'The entry was not deleted'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        }
-                                      },
-                                    ),
-                                    Text(
-                                      'Delete',
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        color: Color(0xFFFF7171),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
+                                      Text(
+                                        'Delete',
+                                        style: GF.GoogleFonts.leagueSpartan(
+                                          color: Color(0xFFFF7171),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
