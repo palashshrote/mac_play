@@ -29,7 +29,12 @@ class LogInSignUpWidget extends StatefulWidget {
 class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
     with TickerProviderStateMixin {
   late LogInSignUpModel _model;
-
+  bool _isPasswordVisible = false;
+  void _tooglePassowrdVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
@@ -158,8 +163,14 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                 children: [
                   TextFormField(
                     controller: _model.logInPasswordController,
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.white,
+                        ), onPressed: _tooglePassowrdVisibility,
+                      ),
                       filled: true,
                       fillColor: Colors.black,
                       hintText: 'Password',
@@ -320,7 +331,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                   color: Colors.white,
                   fontFamily: 'Spartan',
                   fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
+                  // decoration: TextDecoration.underline,
                 ),
               ),
             ),
