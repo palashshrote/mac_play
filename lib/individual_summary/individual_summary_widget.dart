@@ -154,25 +154,27 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  isActive?
-                                    functions
-                                            .convertToInt(functions.tankAPI(
-                                                functions
-                                                    .calculateWaterAvailable(
-                                                        widget.docReference!
-                                                            .length!,
-                                                        widget.docReference!
-                                                            .breadth!,
-                                                        widget.docReference!
-                                                            .height!,
-                                                        widget.docReference!
-                                                            .radius!,
-                                                        widget.waterLevel,
-                                                        widget.docReference!
-                                                            .isCuboid!),
-                                                widget.docReference!.capacity))
-                                            .toString() +
-                                        ' %' : 'N/A',
+                                    isActive
+                                        ? functions
+                                                .convertToInt(functions.tankAPI(
+                                                    functions
+                                                        .calculateWaterAvailable(
+                                                            widget.docReference!
+                                                                .length!,
+                                                            widget.docReference!
+                                                                .breadth!,
+                                                            widget.docReference!
+                                                                .height!,
+                                                            widget.docReference!
+                                                                .radius!,
+                                                            widget.waterLevel,
+                                                            widget.docReference!
+                                                                .isCuboid!),
+                                                    widget.docReference!
+                                                        .capacity))
+                                                .toString() +
+                                            ' %'
+                                        : 'N/A',
                                     textAlign: TextAlign.center,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       fontSize: 24,
@@ -216,17 +218,22 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  isActive ?
-                                    functions.shortenNumber(
-                                            functions.calculateWaterAvailable(
-                                                widget.docReference!.length!,
-                                                widget.docReference!.breadth!,
-                                                widget.docReference!.height!,
-                                                widget.docReference!.radius!,
-                                                widget.waterLevel,
-                                                widget
-                                                    .docReference!.isCuboid!)) +
-                                        'L' : 'N/A',
+                                    isActive
+                                        ? functions.shortenNumber(functions
+                                                .calculateWaterAvailable(
+                                                    widget
+                                                        .docReference!.length!,
+                                                    widget
+                                                        .docReference!.breadth!,
+                                                    widget
+                                                        .docReference!.height!,
+                                                    widget
+                                                        .docReference!.radius!,
+                                                    widget.waterLevel,
+                                                    widget.docReference!
+                                                        .isCuboid!)) +
+                                            'L'
+                                        : 'N/A',
                                     textAlign: TextAlign.center,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       fontSize: 24,
@@ -278,15 +285,21 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  isActive ?
-                                    functions.shortenNumber(
-                                            functions.calculateVolume(
-                                                widget.docReference!.isCuboid!,
-                                                widget.docReference!.length!,
-                                                widget.docReference!.breadth!,
-                                                widget.docReference!.height!,
-                                                widget.docReference!.radius!)) +
-                                        'L' : 'N/A',
+                                    isActive
+                                        ? functions.shortenNumber(
+                                                functions.calculateVolume(
+                                                    widget.docReference!
+                                                        .isCuboid!,
+                                                    widget
+                                                        .docReference!.length!,
+                                                    widget
+                                                        .docReference!.breadth!,
+                                                    widget
+                                                        .docReference!.height!,
+                                                    widget.docReference!
+                                                        .radius!)) +
+                                            'L'
+                                        : 'N/A',
                                     textAlign: TextAlign.center,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       fontSize: 24,
@@ -307,6 +320,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                           border: Border.all(color: Color(0xFF686868)),
                         ),
                         child: Column(
+                          //temperature
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Row(
@@ -330,9 +344,10 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  isActive ?
-                                    widget.temperature.toString() +
-                                        ' \u00B0C' : 'N/A', //replace with oririginal data
+                                    isActive
+                                        ? widget.temperature.toString() +
+                                            ' \u00B0C'
+                                        : 'N/A', //replace with oririginal data
                                     textAlign: TextAlign.center,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       fontSize: 24,
@@ -363,6 +378,114 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            //device status
+                            Row(
+                              //container1 //row1
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Top Height',
+                                    textAlign: TextAlign.center,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 16,
+                                      color: Color(0xFFFFFFFF),
+                                      fontWeight: FontWeight.normal,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 9,
+                            ),
+                            Row(
+                              //container1 row2
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    isActive
+                                        ? (double.tryParse(widget.docReference!
+                                                        .height!)! -
+                                                    widget.waterLevel!)
+                                                .toString() +
+                                            ' m'
+                                        : 'N/A', //replace with oririginal data
+                                    textAlign: TextAlign.center,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 24,
+                                      color: Color(0xFF91D9E9),
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 140,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Color(0xFF686868)),
+                        ),
+                        child: Column(
+                          //temperature
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //height from bottom
+                            Row(
+                              //container1 //row1
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Water Level',
+                                    textAlign: TextAlign.center,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 16,
+                                      color: Color(0xFFFFFFFF),
+                                      fontWeight: FontWeight.normal,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 9,
+                            ),
+                            Row(
+                              //container1 row2
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                    isActive
+                                        ? widget.waterLevel.toString() + ' m'
+                                        : 'N/A', //replace with oririginal data
+                                    textAlign: TextAlign.center,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 24,
+                                      color: Color(0xFF91D9E9),
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(30, 12.5, 30, 12.5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 140,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Color(0xFF686868)),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //device status
                             Row(
                               //container1 //row1
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -383,12 +506,13 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                               //container1 row2
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                    isActive ? 'Active' : 'Inactive',
+                                Text(isActive ? 'Active' : 'Inactive',
                                     textAlign: TextAlign.center,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       fontSize: 24,
-                                      color: isActive? Color(0xFF91E995) : Color(0xFFFB7070),
+                                      color: isActive
+                                          ? Color(0xFF91E995)
+                                          : Color(0xFFFB7070),
                                       fontWeight: FontWeight.w600,
                                     )),
                               ],
@@ -404,9 +528,10 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton.icon(
-                      onPressed: () async{
-                        isActive = await functions.checkActivity(widget.docReference!.tankKey!);
-                        setState((){});
+                      onPressed: () async {
+                        isActive = await functions
+                            .checkActivity(widget.docReference!.tankKey!);
+                        setState(() {});
                       },
                       icon: Icon(
                         CupertinoIcons.arrow_2_squarepath,
