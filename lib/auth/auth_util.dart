@@ -30,41 +30,49 @@ Future<User?> signInOrCreateAccount(
     }
     return userCredential?.user;
   } on FirebaseAuthException catch (e) {
-    print(e);
-    if(e.message == "There is no user record corresponding to this identifier. The user may have been deleted."){
+    print("Error is ${e}");
+    if (e.message ==
+        "There is no user record corresponding to this identifier. The user may have been deleted.") {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text('User does not exists'),),
+          content: Text('User does not exists'),
+        ),
       );
-    }
-    else if(e.message == "The password is invalid or the user does not have a password."){
+    } else if (e.message ==
+        "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text('Incorrect password'),),
+          content: Text(
+              'Please check you internet connectivity to proceed further.'),
+        ),
       );
-    }
-    else if(e.message == "Given String is empty or null"){
+    } else if (e.message ==
+        "The password is invalid or the user does not have a password.") {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text('Enter correct details'),),
+          content: Text('Incorrect password'),
+        ),
       );
-    }
-    else {
-        
+    } else if (e.message == "Given String is empty or null") {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text('Error in function signInOrCreateAccount: ${e.message!}'),),
+          content: Text('Enter correct details'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('Error in function signInOrCreateAccount: ${e.message!}'),
+        ),
       );
     }
-    
+
     return null;
   }
 }
