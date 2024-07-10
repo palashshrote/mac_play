@@ -125,10 +125,10 @@ class _AddDeviceQRScanPravahWidgetState
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     10.0, 20.0, 10.0, 30.0),
                                             child: Text(
-                                                'Scan the QR to proceed further',
+                                                'Scan Pravah QR to proceed further',
                                                 textAlign: TextAlign.center,
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   color: Color(0xFFFFFFFF),
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 24,
@@ -196,7 +196,8 @@ class _AddDeviceQRScanPravahWidgetState
                                             ),
                                             label: Text(
                                               'Scan QR',
-                                              style: GF.GoogleFonts.leagueSpartan(
+                                              style:
+                                                  GF.GoogleFonts.leagueSpartan(
                                                 fontSize: 18,
                                                 color: Color(0xFF0C0C0C),
                                                 fontWeight: FontWeight.w600,

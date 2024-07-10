@@ -121,7 +121,7 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     10.0, 20.0, 10.0, 30.0),
-                                child: Text('Scan the QR to proceed further',
+                                child: Text('Scan Starr QR to proceed further',
                                     textAlign: TextAlign.center,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       color: Color(0xFFFFFFFF),
@@ -135,13 +135,29 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                   0.0, 0.0, 0.0, 25.0),
                               child: ElevatedButton.icon(
                                 onPressed: () async {
-                                  _model.qROutput =
-                                      await FlutterBarcodeScanner.scanBarcode(
-                                    '#C62828', // scanning line color
-                                    'Cancel', // cancel button text
-                                    true, // whether to show the flash icon
-                                    ScanMode.QR,
-                                  );
+                                  try {
+                                    // print("No ErRor till now");
+                                    _model.qROutput =
+                                        await FlutterBarcodeScanner.scanBarcode(
+                                      '#C62828', // scanning line color
+                                      'Cancel', // cancel button text
+                                      true, // whether to show the flash icon
+                                      ScanMode.QR,
+                                    );
+                                    print("No ErRorRR till now");
+                                    print("Model output: ${_model.qROutput}");
+                                    print(
+                                        "Answer is ${functions.qrStarr(_model.qROutput)}");
+                                  } catch (e) {
+                                    print("Error: $e");
+                                  }
+                                  // _model.qROutput =
+                                  //     await FlutterBarcodeScanner.scanBarcode(
+                                  //   '#C62828', // scanning line color
+                                  //   'Cancel', // cancel button text
+                                  //   true, // whether to show the flash icon
+                                  //   ScanMode.QR,
+                                  // );
 
                                   // if(_model.qROutput=="-1"){
                                   //   print("Cancel Button Pressed");
