@@ -161,14 +161,14 @@ class _AddDeviceQRScanPravahWidgetState
                                                 } catch (e) {
                                                   print(e);
                                                 }
-                                                _model.qROutput =
-                                                    await FlutterBarcodeScanner
-                                                        .scanBarcode(
-                                                  '#C62828', // scanning line color
-                                                  'Cancel', // cancel button text
-                                                  true, // whether to show the flash icon
-                                                  ScanMode.QR,
-                                                );
+                                                // _model.qROutput =
+                                                //     await FlutterBarcodeScanner
+                                                //         .scanBarcode(
+                                                //   '#C62828', // scanning line color
+                                                //   'Cancel', // cancel button text
+                                                //   true, // whether to show the flash icon
+                                                //   ScanMode.QR,
+                                                // );
 
                                                 if (functions.qrPravah(
                                                     _model.qROutput)) {

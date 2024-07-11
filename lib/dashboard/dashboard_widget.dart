@@ -2191,13 +2191,33 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                     setState(() {
                                       _isLoading = true;
                                     });
-                                    _model.outputPravah =
-                                        await newCustomActionPravah(
-                                      (currentUserDocument?.meterKeyList
-                                                  ?.toList() ??
-                                              [])
-                                          .toList(),
-                                    );
+
+                                    try {
+                                      _model.outputPravah =
+                                          await newCustomActionPravah(
+                                        (currentUserDocument?.meterKeyList
+                                                    ?.toList() ??
+                                                [])
+                                            .toList(),
+                                      );
+
+                                      // Check if _model.output is null or any other failure condition
+                                      if (_model.outputPravah == null) {
+                                        // Handle the case where the output is null
+                                        print('Action failed: output is null');
+                                      } else {
+                                        // Handle the successful case
+                                        print(
+                                            'Action succeeded: output is ${_model.outputPravah}');
+                                      }
+                                    } catch (e) {
+                                      // Handle any exceptions that occur
+                                      print('An error occurred: $e');
+                                    }
+                                    setState(() {
+                                      _isLoading = false;
+                                      print("State is set to false");
+                                    });
 
                                     context.pushNamed(
                                       'MeterSummary',
@@ -2208,10 +2228,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         ),
                                       }.withoutNulls,
                                     );
-
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
                                   },
                                   child: Text(
                                     'Show All Devices',

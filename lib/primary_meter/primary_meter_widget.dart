@@ -108,52 +108,68 @@ class _PrimaryMeterWidgetState extends State<PrimaryMeterWidget>
                 );
               }
               List<MeterRecord> listViewMeterRecordList = snapshot.data!;
-              return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  itemCount: listViewMeterRecordList.length,
-                  itemBuilder: (context, listViewIndex) {
-                    final listViewMeterRecord =
-                        listViewMeterRecordList[listViewIndex];
-                    return Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(20.0, 30.0, 20.0, 0.0),
-                      child: Container(
-                        width: 100.0,
-                        decoration: BoxDecoration(
-                          color: Color(0x33536765),
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: InkWell(
-                          onTap: () async {
-                            FFAppState().update(() {
-                              FFAppState().meterKey =
-                                  listViewMeterRecord.meterKey!;
-                            });
-                            context.pushNamed('Dashboard');
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 20.0, 20.0, 20.0),
-                                child: Text(
-                                  listViewMeterRecord.meterName!,
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    color: Color(0xFFFFFFFF),
-                                    fontSize: 20, //edited
-                                    fontWeight: FontWeight.normal,
+              if (listViewMeterRecordList.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Text(
+                      "No device found, Please add devices to select a primary tank.",
+                      style: GF.GoogleFonts.leagueSpartan(
+                        color: Color(0xFF91D9E9),
+                        fontSize: 23,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.vertical,
+                    itemCount: listViewMeterRecordList.length,
+                    itemBuilder: (context, listViewIndex) {
+                      final listViewMeterRecord =
+                          listViewMeterRecordList[listViewIndex];
+                      return Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            20.0, 30.0, 20.0, 0.0),
+                        child: Container(
+                          width: 100.0,
+                          decoration: BoxDecoration(
+                            color: Color(0x33536765),
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: InkWell(
+                            onTap: () async {
+                              FFAppState().update(() {
+                                FFAppState().meterKey =
+                                    listViewMeterRecord.meterKey!;
+                              });
+                              context.pushNamed('Dashboard');
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20.0, 20.0, 20.0, 20.0),
+                                  child: Text(
+                                    listViewMeterRecord.meterName!,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      color: Color(0xFFFFFFFF),
+                                      fontSize: 20, //edited
+                                      fontWeight: FontWeight.normal,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ).animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation']!),
-                    );
-                  });
+                        ).animateOnPageLoad(
+                            animationsMap['containerOnPageLoadAnimation']!),
+                      );
+                    });
+              }
             },
           ),
         ),
