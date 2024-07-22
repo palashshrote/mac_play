@@ -30,13 +30,62 @@ Future<User?> signInOrCreateAccount(
     }
     return userCredential?.user;
   } on FirebaseAuthException catch (e) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+    print("Error is ${e}");
+    if (e.message ==
+        "There is no user record corresponding to this identifier. The user may have been deleted.") {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User does not exists'),
+        ),
+      );
+    } else if (e.message ==
+        "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Please check you internet connectivity to proceed further.'),
+        ),
+      );
+    } else if (e.message ==
+        "The password is invalid or the user does not have a password.") {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Incorrect password'),
+        ),
+      );
+    } else if (e.message == "Given String is empty or null") {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Enter correct details'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content:
-              Text('Error in function signInOrCreateAccount: ${e.message!}')),
-    );
+              Text('Error in function signInOrCreateAccount: ${e.message!}'),
+        ),
+      );
+    }
+
     return null;
+  }
+}
+
+Future<UserCredential> signInWithEmailAndPassword(
+    String email, password) async {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  try {
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    return userCredential;
+  } on FirebaseAuthException catch (e) {
+    throw Exception(e.code);
   }
 }
 

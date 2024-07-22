@@ -92,50 +92,66 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-          child: SingleChildScrollView(
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
-              StreamBuilder<List<MeterRecord>>(
-                stream: queryMeterRecord(
-                  parent: currentUserReference,
-                ),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(
-                      child: SizedBox(
-                        width: 75.0,
-                        height: 75.0,
-                        child: SpinKitRipple(
-                          color: Color(0xFF7E8083),
-                          size: 75.0,
-                        ),
-                      ),
-                    );
-                  }
+          child: StreamBuilder<List<MeterRecord>>(
+            stream: queryMeterRecord(
+              parent: currentUserReference,
+            ),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: SizedBox(
+                    width: 75.0,
+                    height: 75.0,
+                    child: SpinKitRipple(
+                      color: Color(0xFF7E8083),
+                      size: 75.0,
+                    ),
+                  ),
+                );
+              }
 
-                  List<MeterRecord> listViewMeterRecordList = snapshot.data!;
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: listViewMeterRecordList.length,
-                    itemBuilder: (context, listViewIndex) {
-                      final listViewMeterRecord =
-                          listViewMeterRecordList[listViewIndex];
-                      return Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            15.0, 20.0, 15.0, 0.0),
-                        child: Container(
-                          height: 100.0,
-                          decoration: BoxDecoration(
-                            color: Color(0x33536765),
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
+              List<MeterRecord> listViewMeterRecordList = snapshot.data!;
+              print("Length : ${listViewMeterRecordList.length}");
+              if (listViewMeterRecordList.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Center(
+                    child: Text(
+                      "No Pravah devices has been added.",
+                      style: GF.GoogleFonts.leagueSpartan(
+                        color: Color(0xFF91D9E9),
+                        fontSize: 23,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: listViewMeterRecordList.length,
+                  itemBuilder: (context, listViewIndex) {
+                    final listViewMeterRecord =
+                        listViewMeterRecordList[listViewIndex];
+                    return Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
+                      child: Container(
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                          color: Color(0x33536765),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Text(
                                   listViewMeterRecord.meterName!,
                                   style: GF.GoogleFonts.leagueSpartan(
                                     color: Color(0xFFFFFFFF),
@@ -143,7 +159,11 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                Column(
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       FlutterFlowIconButton(
@@ -180,7 +200,10 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                         ),
                                       ),
                                     ]),
-                                Column(
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       FlutterFlowIconButton(
@@ -284,15 +307,15 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                         ),
                                       ),
                                     ]),
-                              ]),
-                        ).animateOnPageLoad(
-                            animationsMap['containerOnPageLoadAnimation']!),
-                      );
-                    },
-                  );
-                },
-              )
-            ]),
+                              ),
+                            ]),
+                      ).animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation']!),
+                    );
+                  },
+                );
+              }
+            },
           ),
         ),
       ),

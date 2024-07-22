@@ -109,54 +109,77 @@ class _PrimaryTankWidgetState extends State<PrimaryTankWidget>
                 );
               } //Fetching the tank record list
               List<TankRecord> listViewTankRecordList = snapshot.data!;
-              return ListView.builder(
-                padding: EdgeInsets.zero,
-                scrollDirection: Axis.vertical,
-                itemCount: listViewTankRecordList.length,
-                itemBuilder: (context, listViewIndex) {
-                  final listViewTankRecord =
-                      listViewTankRecordList[listViewIndex];
-                  return Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(20.0, 30.0, 20.0, 0.0),
-                    child: Container(
-                      width: 100.0,
-                      decoration: BoxDecoration(
-                        color: Color(0x33536765),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: InkWell(
-                        onTap: () async {
-                          //Upon clicking on the tank it changes the default tankkey saved in FFAppState() to the selected tankKey
-                          FFAppState().update(() {
-                            FFAppState().tankKey = listViewTankRecord.tankKey!;
-                          });
-
-                          context.pushNamed('Dashboard');
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  20.0, 20.0, 20.0, 20.0),
-                              child: Text(
-                                listViewTankRecord.tankName!,
-                                style: GF.GoogleFonts.leagueSpartan(
-                                  color: Color(0xFFFFFFFF),
-                                  fontSize: 20, //edited
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                          ],
+              if (listViewTankRecordList.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Center(
+                      child: Text(
+                        "No device found, Please add devices to select a primary tank.",
+                        style: GF.GoogleFonts.leagueSpartan(
+                          color: Color(0xFF91D9E9),
+                          fontSize: 23,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
-                    ).animateOnPageLoad(
-                        animationsMap['containerOnPageLoadAnimation']!),
-                  );
-                },
-              );
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.vertical,
+                  itemCount: listViewTankRecordList.length,
+                  itemBuilder: (context, listViewIndex) {
+                    final listViewTankRecord =
+                        listViewTankRecordList[listViewIndex];
+                    return Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(20.0, 30.0, 20.0, 0.0),
+                      child: Container(
+                        width: 100.0,
+                        decoration: BoxDecoration(
+                          color: Color(0x33536765),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: InkWell(
+                          onTap: () async {
+                            //Upon clicking on the tank it changes the default tankkey saved in FFAppState() to the selected tankKey
+                            FFAppState().update(() {
+                              FFAppState().tankKey =
+                                  listViewTankRecord.tankKey!;
+                            });
+
+                            // context.pushNamed('Dashboard');
+                            //TWO TIMES to reach back to the hompage
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 20.0, 20.0, 20.0),
+                                child: Text(
+                                  listViewTankRecord.tankName!,
+                                  style: GF.GoogleFonts.leagueSpartan(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 20, //edited
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ).animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation']!),
+                    );
+                  },
+                );
+              }
             },
           ),
         ),

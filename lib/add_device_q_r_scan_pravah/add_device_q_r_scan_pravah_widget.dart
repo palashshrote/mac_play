@@ -15,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:provider/provider.dart';
 import 'add_device_q_r_scan_pravah_model.dart';
 export 'add_device_q_r_scan_pravah_model.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class AddDeviceQRScanPravahWidget extends StatefulWidget {
   const AddDeviceQRScanPravahWidget({Key? key}) : super(key: key);
@@ -125,10 +126,10 @@ class _AddDeviceQRScanPravahWidgetState
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     10.0, 20.0, 10.0, 30.0),
                                             child: Text(
-                                                'Scan the QR to proceed further',
+                                                'Scan Pravah QR to proceed further',
                                                 textAlign: TextAlign.center,
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   color: Color(0xFFFFFFFF),
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 24,
@@ -141,53 +142,82 @@ class _AddDeviceQRScanPravahWidgetState
                                                   0.0, 0.0, 0.0, 25.0),
                                           child: ElevatedButton.icon(
                                             onPressed: () async {
-                                              _model.qROutput =
-                                                  await FlutterBarcodeScanner
-                                                      .scanBarcode(
-                                                '#C62828', // scanning line color
-                                                'Cancel', // cancel button text
-                                                true, // whether to show the flash icon
-                                                ScanMode.QR,
-                                              );
+                                              if (await InternetConnectionCheckerPlus()
+                                                  .hasConnection) {
+                                                try {
+                                                  _model.qROutput =
+                                                      await FlutterBarcodeScanner
+                                                          .scanBarcode(
+                                                    '#C62828', // scanning line color
+                                                    'Cancel', // cancel button text
+                                                    true, // whether to show the flash icon
+                                                    ScanMode.QR,
+                                                  );
+                                                  print("No ErRorRR till now");
+                                                  print(
+                                                      "Model output: ${_model.qROutput}");
+                                                  print(
+                                                      "Answer is ${functions.qrPravah(_model.qROutput)}");
+                                                } catch (e) {
+                                                  print(e);
+                                                }
+                                                // _model.qROutput =
+                                                //     await FlutterBarcodeScanner
+                                                //         .scanBarcode(
+                                                //   '#C62828', // scanning line color
+                                                //   'Cancel', // cancel button text
+                                                //   true, // whether to show the flash icon
+                                                //   ScanMode.QR,
+                                                // );
 
-                                              if (functions
-                                                  .qrPravah(_model.qROutput)) {
-                                                context.pushNamed(
-                                                  'AddDevicePravah',
-                                                  queryParams: {
-                                                    'meterKey': serializeParam(
-                                                      _model.qROutput,
-                                                      ParamType.String,
-                                                    ),
-                                                  }.withoutNulls,
-                                                );
+                                                if (functions.qrPravah(
+                                                    _model.qROutput)) {
+                                                  context.pushNamed(
+                                                    'AddDevicePravah',
+                                                    queryParams: {
+                                                      'meterKey':
+                                                          serializeParam(
+                                                        _model.qROutput,
+                                                        ParamType.String,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                } else {
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (alertDialogContext) {
+                                                      return AlertDialog(
+                                                        title: Text('Error'),
+                                                        content: Text(
+                                                            'QR wasn\'t scanned successfully. Try again and please check that you are scanning the right QR.'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext),
+                                                            child: Text('Ok'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+
+                                                  context.pop();
+                                                  context.pushNamed(
+                                                      'AddDeviceQRScan');
+                                                }
+
+                                                setState(() {});
                                               } else {
-                                                await showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title: Text('Error'),
-                                                      content: Text(
-                                                          'QR wasn\'t scanned successfully. Try again and please check that you are scanning the right QR.'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext),
-                                                          child: Text('Ok'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                        'Please check you internet connectivity to proceed further.'),
+                                                  ),
                                                 );
-
-                                                context.pop();
-                                                context.pushNamed(
-                                                    'AddDeviceQRScan');
                                               }
-
-                                              setState(() {});
                                             },
                                             icon: Icon(
                                               CupertinoIcons.qrcode_viewfinder,
@@ -196,7 +226,8 @@ class _AddDeviceQRScanPravahWidgetState
                                             ),
                                             label: Text(
                                               'Scan QR',
-                                              style: GF.GoogleFonts.leagueSpartan(
+                                              style:
+                                                  GF.GoogleFonts.leagueSpartan(
                                                 fontSize: 18,
                                                 color: Color(0xFF0C0C0C),
                                                 fontWeight: FontWeight.w600,

@@ -78,7 +78,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'Edit Device',
+          'Edit Profile',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -98,154 +98,144 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                 Padding(
                   padding:
                       EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+                  // padding:EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Color(0x33536765),
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20.0, 20.0, 20.0, 20.0),
-                                  child: Text(
-                                    'Email ID:',
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 22, //edited
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                // Will show the current user email.
-                                Text(
-                                  currentUserEmail,
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    color: Color(0xFFD9D9D9),
-                                    fontSize: 18, //edited
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
+                        Padding(
+                          // padding: EdgeInsetsDirectional.fromSTEB(2.0, 20.0, 2.0, 20.0),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(0, 30.0, 0, 0.0),
+                          child: Text(
+                            'Email ID',
+                            style: GF.GoogleFonts.leagueSpartan(
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 15, //edited
+                              fontWeight: FontWeight.w500,
                             ),
-                            // Fetching, displaying and editing of the name of the user.
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  30.0, 20.0, 30.0, 20.0),
-                              child: AuthUserStreamWidget(
-                                builder: (context) => TextFormField(
-                                  controller: _model.textController1,
-                                  autofocus: true,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Color(0xFF0c0c0c),
-                                    hintText: 'Name',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 13,
-                                      fontFamily: 'Spartan',
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        width: 0.5,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        width: 0.5,
-                                      ),
-                                    ),
-                                    labelStyle: TextStyle(
-                                      color: Colors.white,
-                                    ),
+                          ),
+                        ),
+                        // Will show the current user email.
+                        Text(
+                          currentUserEmail,
+                          style: GF.GoogleFonts.leagueSpartan(
+                            color: Color(0xFFD9D9D9),
+                            fontSize: 18, //edited
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        // Fetching, displaying and editing of the name of the user.
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              30.0, 20.0, 30.0, 20.0),
+                          child: AuthUserStreamWidget(
+                            builder: (context) => TextFormField(
+                              controller: _model.textController1,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color(0xFF0c0c0c),
+                                hintText: 'Name',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 13,
+                                  fontFamily: 'Spartan',
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 2,
                                   ),
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    color: Color(0xFFFFFFFF),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.5,
                                   ),
-                                  validator: _model.textController1Validator
-                                      .asValidator(context),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                labelStyle: TextStyle(
+                                  color: Colors.white,
                                 ),
                               ),
-                            ),
-
-                            // Fetching, displaying and editing of the phone number.
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  30.0, 20.0, 30.0, 20.0),
-                              child: AuthUserStreamWidget(
-                                builder: (context) => TextFormField(
-                                  controller: _model.textController2,
-                                  autofocus: true,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Color(0xFF0c0c0c),
-                                    hintText: 'Phone Number',
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 13,
-                                      fontFamily: 'Spartan',
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        width: 0.5,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        width: 0.5,
-                                      ),
-                                    ),
-                                    labelStyle: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    color: Color(0xFFFFFFFF),
-                                  ),
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: true, decimal: true),
-                                  validator: _model.textController2Validator
-                                      .asValidator(context),
-                                ),
+                              style: GF.GoogleFonts.leagueSpartan(
+                                color: Color(0xFFFFFFFF),
                               ),
+                              validator: _model.textController1Validator
+                                  .asValidator(context),
                             ),
-                          ],
+                          ),
                         ),
 
-                        // BUTTON for saving the changes.
+                        // Fetching, displaying and editing of the phone number.
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              30.0, 20.0, 30.0, 20.0),
+                          child: AuthUserStreamWidget(
+                            builder: (context) => TextFormField(
+                              controller: _model.textController2,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color(0xFF0c0c0c),
+                                hintText: 'Phone Number',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 13,
+                                  fontFamily: 'Spartan',
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 2,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                labelStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              style: GF.GoogleFonts.leagueSpartan(
+                                color: Color(0xFFFFFFFF),
+                              ),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      signed: true, decimal: true),
+                              validator: _model.textController2Validator
+                                  .asValidator(context),
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 20.0, 0.0, 30.0),
@@ -274,7 +264,11 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                   );
                                 },
                               );
-                              context.pushNamed('Dashboard');
+                              // context.pushNamed('Dashboard');
+                              //THREE TIMES to reach back to the hompage
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              // Navigator.pop(context);
                             },
                             child: Text(
                               'Save Changes',
@@ -293,6 +287,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                     20, 17, 20, 17)),
                           ),
                         ),
+
+                        // BUTTON for saving the changes.
                       ],
                     ),
                   ).animateOnPageLoad(

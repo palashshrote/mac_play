@@ -122,7 +122,8 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                             containerTankRecordList.isNotEmpty
                                 ? containerTankRecordList.first
                                 : null;
-                        final isActive = getJsonField(tanksItem, r'''$.Activity''');
+                        final isActive =
+                            getJsonField(tanksItem, r'''$.Activity''');
                         return Container(
                             height: 160,
                             decoration: BoxDecoration(
@@ -150,27 +151,28 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(//row1 subrow1
+                                            Row(//row1 subrow1, NA
                                                 children: [
                                               Text(
-                                                isActive == "true"?
-                                                functions
-                                                        .convertToInt(functions.tankAPI(
-                                                            functions.calculateWaterAvailable(
-                                                                containerTankRecord!.length!,
-                                                                containerTankRecord!.breadth!,
-                                                                containerTankRecord!.height!,
-                                                                containerTankRecord!.radius!,
-                                                                functions.stringToDouble(getJsonField(
-                                                                  tanksItem,
-                                                                  r'''$.WaterLevel''',
-                                                                ).toString()),
-                                                                containerTankRecord!.isCuboid!),
-                                                            containerTankRecord!.capacity))
-                                                        .toString() +
-                                                    ' %':'N/A',
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                isActive == "true"
+                                                    ? functions
+                                                            .convertToInt(functions.tankAPI(
+                                                                functions.calculateWaterAvailable(
+                                                                    containerTankRecord!.length!,
+                                                                    containerTankRecord!.breadth!,
+                                                                    containerTankRecord!.height!,
+                                                                    containerTankRecord!.radius!,
+                                                                    functions.stringToDouble(getJsonField(
+                                                                      tanksItem,
+                                                                      r'''$.WaterLevel''',
+                                                                    ).toString()),
+                                                                    containerTankRecord!.isCuboid!),
+                                                                containerTankRecord!.capacity))
+                                                            .toString() +
+                                                        ' %'
+                                                    : 'N/A',
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   fontSize: 28,
                                                   color: Color(0xFF91D9E9),
                                                   fontWeight: FontWeight.w600,
@@ -180,12 +182,12 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                             SizedBox(
                                               height: 7,
                                             ),
-                                            Row(//row1 subrow2
+                                            Row(//row1 subrow2 ,Tank filled
                                                 children: [
                                               Text(
                                                 'Tank Filled',
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   fontSize: 18,
                                                   color: Color(0xFFFFFFFF),
                                                   fontWeight: FontWeight.normal,
@@ -214,32 +216,33 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(//row2 subrow1
+                                            Row(//row2 subrow1 ,NA
                                                 children: [
                                               Text(
-                                                isActive == "true"?
-                                                functions
-                                                        .calculateWaterAvailable(
-                                                            containerTankRecord!
-                                                                .length!,
-                                                            containerTankRecord!
-                                                                .breadth!,
-                                                            containerTankRecord!
-                                                                .height!,
-                                                            containerTankRecord!
-                                                                .radius!,
-                                                            functions
-                                                                .stringToDouble(
-                                                                    getJsonField(
-                                                              tanksItem,
-                                                              r'''$.WaterLevel''',
-                                                            ).toString()),
-                                                            containerTankRecord!
-                                                                .isCuboid!)
-                                                        .toString() +
-                                                    ' L':'N/A',
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                isActive == "true"
+                                                    ? functions
+                                                            .calculateWaterAvailable(
+                                                                containerTankRecord!
+                                                                    .length!,
+                                                                containerTankRecord!
+                                                                    .breadth!,
+                                                                containerTankRecord!
+                                                                    .height!,
+                                                                containerTankRecord!
+                                                                    .radius!,
+                                                                functions
+                                                                    .stringToDouble(
+                                                                        getJsonField(
+                                                                  tanksItem,
+                                                                  r'''$.WaterLevel''',
+                                                                ).toString()),
+                                                                containerTankRecord!
+                                                                    .isCuboid!)
+                                                            .toString() +
+                                                        ' L'
+                                                    : 'N/A',
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   fontSize: 28,
                                                   color: Color(0xFF91D9E9),
                                                   fontWeight: FontWeight.w600,
@@ -249,12 +252,12 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
                                             SizedBox(
                                               height: 7,
                                             ),
-                                            Row(//row2 subrow2
+                                            Row(//row2 subrow2 , Available for use
                                                 children: [
                                               Text(
                                                 'Available for use',
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   fontSize: 18,
                                                   color: Color(0xFFFFFFFF),
                                                   fontWeight: FontWeight.normal,

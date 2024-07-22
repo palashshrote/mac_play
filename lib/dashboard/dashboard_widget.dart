@@ -64,7 +64,7 @@ final appTheme = ThemeData(
 class _DashboardWidgetState extends State<DashboardWidget>
     with TickerProviderStateMixin {
   late DashboardModel _model;
-
+  bool _isLoading = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
   String date = new DateFormat.yMMMMd('en_US').format(new DateTime.now());
@@ -99,7 +99,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.lockOrientation();
       isActive = await functions.checkActivity(FFAppState().tankKey);
-      isActivePravah = await functions.checkActivityPravah(FFAppState().meterKey);
+      isActivePravah =
+          await functions.checkActivityPravah(FFAppState().meterKey);
       _model.waterLevel = await actions.callAPI(
           functions.generateChannelID(FFAppState().tankKey),
           functions.generateReadAPI(FFAppState().tankKey));
@@ -975,7 +976,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 16,
                                                                   color: Color(
@@ -1003,7 +1005,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 24,
                                                                   color: Color(
@@ -1033,7 +1036,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 16,
                                                                   color: Color(
@@ -1073,7 +1077,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 24,
                                                                   color: Color(
@@ -1113,7 +1118,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 16,
                                                                   color: Color(
@@ -1142,7 +1148,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 24,
                                                                   color: Color(
@@ -1171,7 +1178,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 16,
                                                                   color: Color(
@@ -1200,7 +1208,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
-                                                                style: GF.GoogleFonts
+                                                                style: GF
+                                                                        .GoogleFonts
                                                                     .leagueSpartan(
                                                                   fontSize: 24,
                                                                   color: Color(
@@ -1401,13 +1410,43 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   children: [
                                     ElevatedButton(
                                       onPressed: () async {
-                                        _model.output =
-                                            await actions.newCustomAction(
-                                          (currentUserDocument?.keyList
-                                                      ?.toList() ??
-                                                  [])
-                                              .toList(),
-                                        );
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+                                        // _model.output =
+                                        //     await actions.newCustomAction(
+                                        //   (currentUserDocument?.keyList
+                                        //               ?.toList() ??
+                                        //           [])
+                                        //       .toList(),
+                                        // );
+                                        try {
+                                          _model.output =
+                                              await actions.newCustomAction(
+                                            (currentUserDocument?.keyList
+                                                        ?.toList() ??
+                                                    [])
+                                                .toList(),
+                                          );
+
+                                          // Check if _model.output is null or any other failure condition
+                                          if (_model.output == null) {
+                                            // Handle the case where the output is null
+                                            print(
+                                                'Action failed: output is null');
+                                          } else {
+                                            // Handle the successful case
+                                            // print(
+                                            // 'Action succeeded: output is ${_model.output}');
+                                          }
+                                        } catch (e) {
+                                          // Handle any exceptions that occur
+                                          print('An error occurred: $e');
+                                        }
+
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
 
                                         context.pushNamed(
                                           'TankSummary',
@@ -1418,8 +1457,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             ),
                                           }.withoutNulls,
                                         );
-
-                                        setState(() {});
                                       },
                                       child: Text(
                                         'Show All Devices',
@@ -1704,7 +1741,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                         Text('Reading',
                                                             textAlign: TextAlign
                                                                 .center,
-                                                            style: GF.GoogleFonts
+                                                            style: GF
+                                                                    .GoogleFonts
                                                                 .leagueSpartan(
                                                               fontSize: 16,
                                                               color: Color(
@@ -1724,67 +1762,65 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
-                                                        isActivePravah ?
-                                                        FutureBuilder<dynamic>(
-                                                          future: functions
-                                                              .getReading(
-                                                                  meterRecord
-                                                                      .meterKey!),
-                                                          builder: (BuildContext
-                                                                  context,
-                                                              AsyncSnapshot<
-                                                                      dynamic>
-                                                                  snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                            } else if (snapshot
-                                                                .hasError) {
-                                                              return Text(
-                                                                  'Error: ${snapshot.error}');
-                                                            } else {
-                                                              var value =
-                                                                  snapshot.data;
-                                                              return Text(
-                                                                  // value
-                                                                  //     .toString(),
-                                                                  functions.shortenNumber(
-                                                                          value) +
-                                                                      "L",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: GF.GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        24,
-                                                                    color: Color(
-                                                                        0xFF91D9E9),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ));
-                                                            }
-                                                          },
-                                                        )
-                                                        : Text(
-                                                          'N/A',
-                                                          textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: GF.GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        24,
-                                                                    color: Color(
-                                                                        0xFF91D9E9),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                      )
-                                                        )
+                                                        isActivePravah
+                                                            ? FutureBuilder<
+                                                                dynamic>(
+                                                                future: functions
+                                                                    .getReading(
+                                                                        meterRecord
+                                                                            .meterKey!),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            dynamic>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                  } else if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Error: ${snapshot.error}');
+                                                                  } else {
+                                                                    var value =
+                                                                        snapshot
+                                                                            .data;
+                                                                    return Text(
+                                                                        // value
+                                                                        //     .toString(),
+                                                                        functions.shortenNumber(value) +
+                                                                            "L",
+                                                                        textAlign:
+                                                                            TextAlign
+                                                                                .center,
+                                                                        style: GF.GoogleFonts
+                                                                            .leagueSpartan(
+                                                                          fontSize:
+                                                                              24,
+                                                                          color:
+                                                                              Color(0xFF91D9E9),
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ));
+                                                                  }
+                                                                },
+                                                              )
+                                                            : Text('N/A',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: GF
+                                                                        .GoogleFonts
+                                                                    .leagueSpartan(
+                                                                  fontSize: 24,
+                                                                  color: Color(
+                                                                      0xFF91D9E9),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ))
                                                       ],
                                                     ),
                                                   ],
@@ -1803,7 +1839,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                         Text('Flow Rate',
                                                             textAlign: TextAlign
                                                                 .center,
-                                                            style: GF.GoogleFonts
+                                                            style: GF
+                                                                    .GoogleFonts
                                                                 .leagueSpartan(
                                                               fontSize: 16,
                                                               color: Color(
@@ -1823,64 +1860,63 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
-                                                        isActivePravah ?
-                                                        FutureBuilder<dynamic>(
-                                                          future: functions
-                                                              .getFlowRate(
-                                                                  meterRecord
-                                                                      .meterKey!),
-                                                          builder: (BuildContext
-                                                                  context,
-                                                              AsyncSnapshot<
-                                                                      dynamic>
-                                                                  snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                            } else if (snapshot
-                                                                .hasError) {
-                                                              return Text(
-                                                                  'Error: ${snapshot.error}');
-                                                            } else {
-                                                              var value =
-                                                                  snapshot.data;
-                                                              return Text(
-                                                                  value
-                                                                      .toString(),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: GF.GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        24,
-                                                                    color: Color(
-                                                                        0xFF91D9E9),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ));
-                                                            }
-                                                          },
-                                                        )
-                                                        : Text(
-                                                          'N/A',
-                                                          textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: GF.GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        24,
-                                                                    color: Color(
-                                                                        0xFF91D9E9),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                      )
-                                                        )
+                                                        isActivePravah
+                                                            ? FutureBuilder<
+                                                                dynamic>(
+                                                                future: functions
+                                                                    .getFlowRate(
+                                                                        meterRecord
+                                                                            .meterKey!),
+                                                                builder: (BuildContext
+                                                                        context,
+                                                                    AsyncSnapshot<
+                                                                            dynamic>
+                                                                        snapshot) {
+                                                                  if (snapshot
+                                                                          .connectionState ==
+                                                                      ConnectionState
+                                                                          .waiting) {
+                                                                    return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                  } else if (snapshot
+                                                                      .hasError) {
+                                                                    return Text(
+                                                                        'Error: ${snapshot.error}');
+                                                                  } else {
+                                                                    var value =
+                                                                        snapshot
+                                                                            .data;
+                                                                    return Text(
+                                                                        value
+                                                                            .toString(),
+                                                                        textAlign:
+                                                                            TextAlign
+                                                                                .center,
+                                                                        style: GF.GoogleFonts
+                                                                            .leagueSpartan(
+                                                                          fontSize:
+                                                                              24,
+                                                                          color:
+                                                                              Color(0xFF91D9E9),
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ));
+                                                                  }
+                                                                },
+                                                              )
+                                                            : Text('N/A',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: GF
+                                                                        .GoogleFonts
+                                                                    .leagueSpartan(
+                                                                  fontSize: 24,
+                                                                  color: Color(
+                                                                      0xFF91D9E9),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ))
                                                       ],
                                                     ),
                                                   ],
@@ -2001,8 +2037,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(value,
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   fontSize: 14,
                                                   color: Color(0xFFFFFFFF),
                                                   fontWeight: FontWeight.normal,
@@ -2100,8 +2136,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           return DropdownMenuItem<String>(
                                             value: value,
                                             child: Text(value,
-                                                style:
-                                                    GF.GoogleFonts.leagueSpartan(
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
                                                   fontSize: 14,
                                                   color: Color(0xFFFFFFFF),
                                                   fontWeight: FontWeight.normal,
@@ -2152,13 +2188,36 @@ class _DashboardWidgetState extends State<DashboardWidget>
                               children: [
                                 ElevatedButton(
                                   onPressed: () async {
-                                    _model.outputPravah =
-                                        await newCustomActionPravah(
-                                      (currentUserDocument?.meterKeyList
-                                                  ?.toList() ??
-                                              [])
-                                          .toList(),
-                                    );
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+
+                                    try {
+                                      _model.outputPravah =
+                                          await newCustomActionPravah(
+                                        (currentUserDocument?.meterKeyList
+                                                    ?.toList() ??
+                                                [])
+                                            .toList(),
+                                      );
+
+                                      // Check if _model.output is null or any other failure condition
+                                      if (_model.outputPravah == null) {
+                                        // Handle the case where the output is null
+                                        print('Action failed: output is null');
+                                      } else {
+                                        // Handle the successful case
+                                        // print(
+                                        //     'Action succeeded: output is ${_model.outputPravah}');
+                                      }
+                                    } catch (e) {
+                                      // Handle any exceptions that occur
+                                      print('An error occurred: $e');
+                                    }
+                                    setState(() {
+                                      _isLoading = false;
+                                      print("State is set to false");
+                                    });
 
                                     context.pushNamed(
                                       'MeterSummary',
@@ -2169,8 +2228,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         ),
                                       }.withoutNulls,
                                     );
-
-                                    setState(() {});
                                   },
                                   child: Text(
                                     'Show All Devices',
@@ -2219,7 +2276,24 @@ class _DashboardWidgetState extends State<DashboardWidget>
         ),
       ),
       //It will select the Starr or Pravah dashboard based of selectedindex value
-      body: pages.elementAt(selectedindex),
+      // body: pages.elementAt(selectedindex),
+      body: Stack(
+        children: [
+          pages.elementAt(selectedindex),
+          if (_isLoading)
+            const Opacity(
+              opacity: 0.5,
+              child: ModalBarrier(
+                color: Colors.black,
+                dismissible: false,
+              ),
+            ),
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      ),
       //Bottom navigation bar of Starr and Pravah
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF112025),

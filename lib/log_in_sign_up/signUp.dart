@@ -236,6 +236,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 children: [
                   TextField(
                     controller: _model.signUpPasswordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.black,
@@ -284,6 +285,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 children: [
                   TextField(
                     controller: _model.signUpConfirmPasswordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.black,
@@ -413,7 +415,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                   color: Colors.white,
                   fontFamily: 'Spartan',
                   fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
+                  // decoration: TextDecoration.underline,
                 ),
               ),
             )
