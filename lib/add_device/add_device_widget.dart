@@ -494,7 +494,11 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                                     },
                                   );
 
-                                  context.pushNamed('Dashboard');
+                                  // context.pushNamed('Dashboard');
+                                  //THREE TIMES to reach back to the hompage
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
                                 },
                                 child: Text(
                                   'Save',

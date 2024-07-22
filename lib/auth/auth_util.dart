@@ -77,6 +77,18 @@ Future<User?> signInOrCreateAccount(
   }
 }
 
+Future<UserCredential> signInWithEmailAndPassword(
+    String email, password) async {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  try {
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    return userCredential;
+  } on FirebaseAuthException catch (e) {
+    throw Exception(e.code);
+  }
+}
+
 Future signOut() {
   return FirebaseAuth.instance.signOut();
 }

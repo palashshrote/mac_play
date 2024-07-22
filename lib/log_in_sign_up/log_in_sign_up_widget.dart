@@ -35,6 +35,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
       _isPasswordVisible = !_isPasswordVisible;
     });
   }
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
@@ -80,6 +81,32 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
 
     _unfocusNode.dispose();
     super.dispose();
+  }
+
+  void _login(BuildContext context) async {
+    GoRouter.of(context).prepareAuthEvent();
+    final user = await signInWithEmail(
+      context,
+      _model.logInEmailController.text,
+      _model.logInPasswordController.text,
+    );
+
+    if (user == null) {
+      return;
+    }
+    // print(user.email);
+
+    // login to dashboard code below.
+    context.goNamedAuth(
+      'Dashboard',
+      mounted,
+      queryParams: {
+        'water': serializeParam(
+          _model.output,
+          ParamType.JSON,
+        ),
+      }.withoutNulls,
+    );
   }
 
   @override
@@ -167,9 +194,12 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.white,
-                        ), onPressed: _tooglePassowrdVisibility,
+                        ),
+                        onPressed: _tooglePassowrdVisibility,
                       ),
                       filled: true,
                       fillColor: Colors.black,
@@ -219,30 +249,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
             Container(
               width: 200,
               child: ElevatedButton(
-                onPressed: () async {
-                  GoRouter.of(context).prepareAuthEvent();
-                  final user = await signInWithEmail(
-                    context,
-                    _model.logInEmailController.text,
-                    _model.logInPasswordController.text,
-                  );
-
-                  if (user == null) {
-                    return;
-                  }
-
-                  // If already logged In ,redirect to the dashboard directly.
-                  context.goNamedAuth(
-                    'Dashboard',
-                    mounted,
-                    queryParams: {
-                      'water': serializeParam(
-                        _model.output,
-                        ParamType.JSON,
-                      ),
-                    }.withoutNulls,
-                  );
-                },
+                onPressed: () => _login(context),
                 child: Text(
                   'Log In',
                   style: TextStyle(fontFamily: 'Spartan'),
@@ -273,24 +280,24 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
               width: 300,
               child: ElevatedButton.icon(
                 onPressed: () async {
-                AuthService().signInWithGoogle().then((success) {
-                  if (success) {
-                    // Navigator.of(context).pushReplacement(
-                    //   MaterialPageRoute(builder: (context) => DashboardWidget()),
-                    // );
-                    context.goNamedAuth(
-                    'Dashboard',
-                    mounted,
-                    queryParams: {
-                      'water': serializeParam(
-                        _model.output,
-                        ParamType.JSON,
-                      ),
-                    }.withoutNulls,
-                  );
-                  }
-                });
-              },
+                  AuthService().signInWithGoogle().then((success) {
+                    if (success) {
+                      // Navigator.of(context).pushReplacement(
+                      //   MaterialPageRoute(builder: (context) => DashboardWidget()),
+                      // );
+                      context.goNamedAuth(
+                        'Dashboard',
+                        mounted,
+                        queryParams: {
+                          'water': serializeParam(
+                            _model.output,
+                            ParamType.JSON,
+                          ),
+                        }.withoutNulls,
+                      );
+                    }
+                  });
+                },
                 // onPressed: () => AuthService().signInWithGoogle(),
                 // Implement your Google login functionality herer
                 icon: Image.asset(

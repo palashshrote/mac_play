@@ -145,7 +145,10 @@ class _PrimaryMeterWidgetState extends State<PrimaryMeterWidget>
                                 FFAppState().meterKey =
                                     listViewMeterRecord.meterKey!;
                               });
-                              context.pushNamed('Dashboard');
+                              // context.pushNamed('Dashboard');
+                              //TWO TIMES to reach back to the hompage
+                              Navigator.pop(context);
+                              Navigator.pop(context);
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,

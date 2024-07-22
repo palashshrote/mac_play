@@ -78,7 +78,7 @@ Future<dynamic> newCustomActionPravah(List<String> keys) async {
         ", \"Activity\":" +
         "\"" +
         isActive.toString() +
-        "\""+
+        "\"" +
         "}";
     if (i == keys.length - 1) {
       FinalString += String2;
@@ -87,6 +87,8 @@ Future<dynamic> newCustomActionPravah(List<String> keys) async {
     }
   }
   FinalString += "]}";
+  print(FinalString);
+
   var mapObject = json.decode(FinalString);
 
   return mapObject;
@@ -113,17 +115,17 @@ Future<dynamic> newCustomAction(List<String> keys) async {
     var waterLevel = jdata["feeds"][0]["field6"];
     var temperature = jdata["feeds"][0]["field7"];
 
-    if(waterLevel==null){
+    if (waterLevel == null) {
       waterLevel = "0.0";
     }
-    if(temperature==null){
+    if (temperature == null) {
       temperature = "0.0";
     }
 
     var url2 = Uri.parse(str10);
     var response2 = await http.get(url2);
     var jdata2 = json.decode(response2.body);
-    print("JDATA2"+jdata2.toString());
+    print("JDATA2" + jdata2.toString());
     var tankName = jdata2["field1"];
 
     bool isActive = await checkActivity(keys[i]);
@@ -143,7 +145,7 @@ Future<dynamic> newCustomAction(List<String> keys) async {
         ", \"Activity\":" +
         "\"" +
         isActive.toString() +
-        "\""+
+        "\"" +
         "}";
     if (i == keys.length - 1) {
       FinalString += String2;
@@ -152,6 +154,7 @@ Future<dynamic> newCustomAction(List<String> keys) async {
     }
   }
   FinalString += "]}";
+  print(FinalString);
   var mapObject = json.decode(FinalString);
 
   return mapObject;

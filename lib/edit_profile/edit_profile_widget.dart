@@ -96,7 +96,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding:EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 20.0),
                   // padding:EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                   child: Container(
                     decoration: BoxDecoration(
@@ -104,13 +105,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: Column(
-                      
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Padding(
                           // padding: EdgeInsetsDirectional.fromSTEB(2.0, 20.0, 2.0, 20.0),
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 30.0, 0, 0.0),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(0, 30.0, 0, 0.0),
                           child: Text(
                             'Email ID',
                             style: GF.GoogleFonts.leagueSpartan(
@@ -180,7 +181,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                             ),
                           ),
                         ),
-                        
+
                         // Fetching, displaying and editing of the phone number.
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
@@ -236,55 +237,58 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                           ),
                         ),
                         Padding(
-                                                  padding: EdgeInsetsDirectional.fromSTEB(
-                          0.0, 20.0, 0.0, 30.0),
-                                                  child: ElevatedButton(
-                        onPressed: () async {
-                          final usersUpdateData = createUsersRecordData(
-                            displayName: _model.textController1.text,
-                            phoneNumber: _model.textController2.text,
-                          );
-                          await currentUserReference!
-                              .update(usersUpdateData);
-                          await showDialog(
-                            context: context,
-                            builder: (alertDialogContext) {
-                              return AlertDialog(
-                                title: Text('Saved'),
-                                content:
-                                    Text('Changes saved successfully.'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(alertDialogContext),
-                                    child: Text('Ok'),
-                                  ),
-                                ],
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 20.0, 0.0, 30.0),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              final usersUpdateData = createUsersRecordData(
+                                displayName: _model.textController1.text,
+                                phoneNumber: _model.textController2.text,
                               );
+                              await currentUserReference!
+                                  .update(usersUpdateData);
+                              await showDialog(
+                                context: context,
+                                builder: (alertDialogContext) {
+                                  return AlertDialog(
+                                    title: Text('Saved'),
+                                    content:
+                                        Text('Changes saved successfully.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(alertDialogContext),
+                                        child: Text('Ok'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              // context.pushNamed('Dashboard');
+                              //THREE TIMES to reach back to the hompage
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              // Navigator.pop(context);
                             },
-                          );
-                          context.pushNamed('Dashboard');
-                        },
-                        child: Text(
-                          'Save Changes',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            fontSize: 18,
-                            color: Color(0xFF0C0C0C),
-                            fontWeight: FontWeight.w600,
+                            child: Text(
+                              'Save Changes',
+                              style: GF.GoogleFonts.leagueSpartan(
+                                fontSize: 18,
+                                color: Color(0xFF0C0C0C),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7.5),
+                                ),
+                                backgroundColor: Color(0xFFC6DDDB),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 17, 20, 17)),
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.5),
-                            ),
-                            backgroundColor: Color(0xFFC6DDDB),
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                20, 17, 20, 17)),
-                                                  ),
-                                                ),
 
                         // BUTTON for saving the changes.
-                        
                       ],
                     ),
                   ).animateOnPageLoad(
@@ -295,8 +299,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
           ),
         ),
       ),
-      
-    
     );
   }
 }

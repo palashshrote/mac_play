@@ -1436,8 +1436,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                 'Action failed: output is null');
                                           } else {
                                             // Handle the successful case
-                                            print(
-                                                'Action succeeded: output is ${_model.output}');
+                                            // print(
+                                            // 'Action succeeded: output is ${_model.output}');
                                           }
                                         } catch (e) {
                                           // Handle any exceptions that occur
@@ -2207,8 +2207,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         print('Action failed: output is null');
                                       } else {
                                         // Handle the successful case
-                                        print(
-                                            'Action succeeded: output is ${_model.outputPravah}');
+                                        // print(
+                                        //     'Action succeeded: output is ${_model.outputPravah}');
                                       }
                                     } catch (e) {
                                       // Handle any exceptions that occur
