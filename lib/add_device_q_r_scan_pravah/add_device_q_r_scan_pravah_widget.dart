@@ -153,13 +153,13 @@ class _AddDeviceQRScanPravahWidgetState
                                                     true, // whether to show the flash icon
                                                     ScanMode.QR,
                                                   );
-                                                  print("No ErRorRR till now");
-                                                  print(
-                                                      "Model output: ${_model.qROutput}");
-                                                  print(
-                                                      "Answer is ${functions.qrPravah(_model.qROutput)}");
+                                                  // print("No ErRorRR till now");
+                                                  // print(
+                                                  //     "Model output: ${_model.qROutput}");
+                                                  // print(
+                                                  //     "Answer is ${functions.qrPravah(_model.qROutput)}");
                                                 } catch (e) {
-                                                  print(e);
+                                                  // print(e);
                                                 }
                                                 // _model.qROutput =
                                                 //     await FlutterBarcodeScanner
@@ -205,7 +205,7 @@ class _AddDeviceQRScanPravahWidgetState
 
                                                   context.pop();
                                                   context.pushNamed(
-                                                      'AddDeviceQRScan');
+                                                      'AddDeviceQRScanPravah');
                                                 }
 
                                                 setState(() {});

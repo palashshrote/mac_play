@@ -30,7 +30,7 @@ Future<User?> signInOrCreateAccount(
     }
     return userCredential?.user;
   } on FirebaseAuthException catch (e) {
-    print("Error is ${e}");
+    // print("Error is ${e}");
     if (e.message ==
         "There is no user record corresponding to this identifier. The user may have been deleted.") {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -96,7 +96,7 @@ Future signOut() {
 Future deleteUser(BuildContext context) async {
   try {
     if (currentUser?.user == null) {
-      print('Error: delete user attempted with no logged in user!');
+      // print('Error: delete user attempted with no logged in user!');
       return;
     }
     await currentUser?.user?.delete();

@@ -148,12 +148,11 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                         true, // whether to show the flash icon
                                         ScanMode.QR,
                                       );
-                                      print("No ErRorRR till now");
-                                      print("Model output: ${_model.qROutput}");
-                                      print(
-                                          "Answer is ${functions.qrStarr(_model.qROutput)}");
+                                      // print("No ErRorRR till now");
+                                      // print("Model output: ${_model.qROutput}");
+                                      // print("Answer is ${functions.qrStarr(_model.qROutput)}");
                                     } catch (e) {
-                                      print("Error: $e");
+                                      // print("Error: $e");
                                     }
                                     // _model.qROutput =
                                     //     await FlutterBarcodeScanner.scanBarcode(
@@ -169,6 +168,9 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                     // }
 
                                     if (functions.qrStarr(_model.qROutput)) {
+                                      // String? tr1 = serializeParam(
+                                      //     _model.qROutput, ParamType.String);
+                                      // print("Serial param : $tr1");
                                       context.pushNamed(
                                         'CubeOrCy',
                                         queryParams: {
@@ -202,6 +204,7 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
 
                                     setState(() {});
                                   } else {
+                                    // print("Internet disconnected");
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(

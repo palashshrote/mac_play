@@ -149,6 +149,7 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            //1 name
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 30.0),
@@ -198,6 +199,7 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                               ),
                             ),
                             if (widget.isCuboid ?? true)
+                              //2 length
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 30.0),
@@ -250,6 +252,7 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                                 ),
                               ),
                             if (widget.isCuboid ?? true)
+                              //3 breadth
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 30.0),
@@ -301,6 +304,7 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                                       .asValidator(context),
                                 ),
                               ),
+                            // 4 height
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 30.0),
@@ -353,6 +357,7 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                               ),
                             ),
                             if (!widget.isCuboid!)
+                              //5 radius
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 0.0, 0.0, 30.0),
@@ -402,6 +407,7 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                                       .asValidator(context),
                                 ),
                               ),
+                            //Calculating volume
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 30.0),
@@ -460,6 +466,8 @@ class _AddDeviceWidgetState extends State<AddDeviceWidget>
                                   await TankRecord.createDoc(
                                           currentUserReference!)
                                       .set(tankCreateData);
+
+                                  //.call method responsible for adding starr device
                                   await AddDeviceCall.call(
                                     field1: _model.textController1.text,
                                     field2: _model.textController3.text,

@@ -383,7 +383,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                               //container1 //row1
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Top Height',
+                                Text('Head space',
                                     textAlign: TextAlign.center,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       fontSize: 16,

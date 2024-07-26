@@ -53,7 +53,7 @@ class _MeterSummaryWidgetState extends State<MeterSummaryWidget> {
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
-    print(widget.reading.toString());
+    // print(widget.reading.toString());
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
@@ -117,7 +117,8 @@ class _MeterSummaryWidgetState extends State<MeterSummaryWidget> {
                                 containerMeterRecordList.isNotEmpty
                                     ? containerMeterRecordList.first
                                     : null;
-                            final isActive = getJsonField(metersItem, r'''$.Activity''');
+                            final isActive =
+                                getJsonField(metersItem, r'''$.Activity''');
                             return Container(
                                 height: 160,
                                 decoration: BoxDecoration(
@@ -148,12 +149,13 @@ class _MeterSummaryWidgetState extends State<MeterSummaryWidget> {
                                                 Row(//row1 subrow1
                                                     children: [
                                                   Text(
-                                                    isActive == "true" ?
-                                                    getJsonField(
-                                                                  metersItem,
-                                                                  r'''$.TotalFlow''',
-                                                                ).toString()+
-                                                        " L" : 'N/A',
+                                                    isActive == "true"
+                                                        ? getJsonField(
+                                                              metersItem,
+                                                              r'''$.TotalFlow''',
+                                                            ).toString() +
+                                                            " L"
+                                                        : 'N/A',
                                                     style: GF.GoogleFonts
                                                         .leagueSpartan(
                                                       fontSize: 28,
@@ -205,11 +207,13 @@ class _MeterSummaryWidgetState extends State<MeterSummaryWidget> {
                                                 Row(//row2 subrow1
                                                     children: [
                                                   Text(
-                                                    isActive == "true"?
-                                                    getJsonField(metersItem,
-                                                                r'''$.FlowRate''')
-                                                            .toString() +
-                                                        ' kL/s': 'N/A',
+                                                    isActive == "true"
+                                                        ? getJsonField(
+                                                                    metersItem,
+                                                                    r'''$.FlowRate''')
+                                                                .toString() +
+                                                            ' kL/s'
+                                                        : 'N/A',
                                                     style: GF.GoogleFonts
                                                         .leagueSpartan(
                                                       fontSize: 28,
@@ -285,7 +289,8 @@ class _MeterSummaryWidgetState extends State<MeterSummaryWidget> {
                                             },
                                             child: Text(
                                               'View More',
-                                              style: GF.GoogleFonts.leagueSpartan(
+                                              style:
+                                                  GF.GoogleFonts.leagueSpartan(
                                                 fontSize: 18,
                                                 color: Color(0xFF0C0C0C),
                                                 fontWeight: FontWeight.w600,
