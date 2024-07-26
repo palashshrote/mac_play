@@ -453,7 +453,7 @@ List<DataEntry> convertDataStarr(String jsonData) {
       }
     }
   } catch (e) {
-    print('Error decoding JSON: $e');
+    // print('Error decoding JSON: $e');
   }
   return dataEntries;
 }
@@ -486,7 +486,7 @@ List<DataEntry> convertDataPravahTotal(String jsonData) {
       }
     }
   } catch (e) {
-    print('Error decoding JSON: $e');
+    // print('Error decoding JSON: $e');
   }
   return dataEntries;
 }
@@ -519,7 +519,7 @@ List<DataEntry> convertDataPravahRate(String jsonData) {
       }
     }
   } catch (e) {
-    print('Error decoding JSON: $e');
+    // print('Error decoding JSON: $e');
   }
   return dataEntries;
 }
@@ -754,7 +754,7 @@ List<DataEntry> convertDataFormatStarr(
       }
     }
   } catch (e) {
-    print('Error decoding JSON: $e');
+    // print('Error decoding JSON: $e');
   }
   if (value == "Weekly") {
     return getWeeklyDataStarr(dataEntries);
@@ -790,7 +790,7 @@ List<DataEntry> convertDataFormatPravahRate(String jsonData, String value) {
       }
     }
   } catch (e) {
-    print('Error decoding JSON: $e');
+    // print('Error decoding JSON: $e');
   }
   if (value == "Weekly") {
     return getWeeklyDataPravahRate(dataEntries);
@@ -826,7 +826,7 @@ List<DataEntry> convertDataFormatPravahTotal(String jsonData, String value) {
       }
     }
   } catch (e) {
-    print('Error decoding JSON: $e');
+    // print('Error decoding JSON: $e');
   }
   if (value == "Weekly") {
     return getWeeklyDataPravahTotal(dataEntries);

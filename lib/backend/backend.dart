@@ -195,7 +195,7 @@ Future<int> queryCollectionCount(
   }
 
   return query.count().get().catchError((err) {
-    print('Error querying $collection: $err');
+    // print('Error querying $collection: $err');
   }).then((value) => value.count);
 }
 
@@ -209,7 +209,7 @@ Stream<List<T>> queryCollection<T>(Query collection, Serializer<T> serializer,
     query = query.limit(singleRecord ? 1 : limit);
   }
   return query.snapshots().handleError((err) {
-    print('Error querying $collection: $err');
+    // print('Error querying $collection: $err');
   }).map((s) => s.docs
       .map(
         (d) => safeGet(

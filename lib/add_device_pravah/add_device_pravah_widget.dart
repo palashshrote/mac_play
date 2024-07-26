@@ -110,6 +110,7 @@ class _AddDevicePravahWidgetState extends State<AddDevicePravahWidget>
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        //pravah device name input
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 30.0),

@@ -267,8 +267,8 @@ class ApiManager {
 
     ApiCallResponse result;
     switch (callType) {
-      case ApiCallType.GET:
-      case ApiCallType.DELETE:
+      case ApiCallType.GET: //1
+      case ApiCallType.DELETE: //2
         result = await urlRequest(
           callType,
           apiUrl,

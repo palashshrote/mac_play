@@ -669,7 +669,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
     List<Widget> pages = <Widget>[
       SingleChildScrollView(
         child: Container(
-          color: Colors.black,
+          // color: Colors.black,
+          color: Color(0xFF0C0C0C),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1432,8 +1433,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           // Check if _model.output is null or any other failure condition
                                           if (_model.output == null) {
                                             // Handle the case where the output is null
-                                            print(
-                                                'Action failed: output is null');
+                                            // print(
+                                            //     'Action failed: output is null');
                                           } else {
                                             // Handle the successful case
                                             // print(
@@ -1441,7 +1442,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           }
                                         } catch (e) {
                                           // Handle any exceptions that occur
-                                          print('An error occurred: $e');
+                                          // print('An error occurred: $e');
                                         }
 
                                         setState(() {
@@ -1495,6 +1496,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
       SingleChildScrollView(
         child: Container(
           color: Color(0xFF0C0C0C),
+          // color: Colors.black,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2204,7 +2206,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       // Check if _model.output is null or any other failure condition
                                       if (_model.outputPravah == null) {
                                         // Handle the case where the output is null
-                                        print('Action failed: output is null');
+                                        // print('Action failed: output is null');
                                       } else {
                                         // Handle the successful case
                                         // print(
@@ -2212,11 +2214,11 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       }
                                     } catch (e) {
                                       // Handle any exceptions that occur
-                                      print('An error occurred: $e');
+                                      // print('An error occurred: $e');
                                     }
                                     setState(() {
                                       _isLoading = false;
-                                      print("State is set to false");
+                                      // print("State is set to false");
                                     });
 
                                     context.pushNamed(
@@ -2302,6 +2304,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
             backgroundColor: Colors.white,
             icon: Icon(
               Icons.invert_colors,
+              // color: Colors.blueAccent,
             ),
             label: 'Starr',
           ),
@@ -2321,7 +2324,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
           fontSize: 16,
         ),
         unselectedItemColor: Colors.white,
-        selectedItemColor: Color(0xFF93DCEC),
+        selectedItemColor: Color.fromARGB(255, 0, 197, 241),
         onTap: onTapItem,
       ),
     );

@@ -49,6 +49,9 @@ String? serializeParam(
   bool isList = false,
 ]) {
   try {
+    // print("Param is $param");
+    // print("ParamType is $paramType");
+    // print("Is list : $isList");
     if (param == null) {
       return null;
     }
@@ -93,7 +96,7 @@ String? serializeParam(
         return null;
     }
   } catch (e) {
-    print('Error serializing parameter: $e');
+    // print('Error serializing parameter: $e');
     return null;
   }
 }
@@ -236,7 +239,7 @@ dynamic deserializeParam<T>(
         return null;
     }
   } catch (e) {
-    print('Error deserializing parameter: $e');
+    // print('Error deserializing parameter: $e');
     return null;
   }
 }

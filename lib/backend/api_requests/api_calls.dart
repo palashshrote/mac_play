@@ -26,12 +26,13 @@ class AddDeviceCall {
       headers: {},
       params: {
         'api_key': apiKey,
-        'field1': field1,
-        'field2': field2,
-        'field3': field3,
-        'field4': field4,
-        'field5': field5,
-        'field6': field6 ?? field3,
+        'field1': field1, //tankname
+        'field2': field2, //breadth
+        'field3': field3, //height
+        'field4': field4, //length
+        'field5': field5, //radius
+        'field6': field6 ??
+            field3, // if f6 is null then it will take the value of f3 i.e height
       },
       returnBody: true,
       encodeBodyUtf8: false,
@@ -46,7 +47,7 @@ class AddDeviceCall {
 class AddDevicePravahCall {
   static Future<ApiCallResponse> call({
     String? apiKey = '',
-    String? field3 = '', //name field, not sure
+    String? field3 = '', //name we choose when we add a pravah device
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'addDevicePravah',
