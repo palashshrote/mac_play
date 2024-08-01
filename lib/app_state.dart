@@ -18,6 +18,8 @@ class FFAppState extends ChangeNotifier {
     secureStorage = FlutterSecureStorage();
     _tankKey = await secureStorage.getString('ff_tankKey') ?? _tankKey;
     _meterKey = await secureStorage.getString('ff_meterKey') ?? _meterKey;
+    _borewellKey =
+        await secureStorage.getString('ff_borewellKey') ?? _borewellKey;
   }
 
   void update(VoidCallback callback) {
@@ -41,8 +43,23 @@ class FFAppState extends ChangeNotifier {
     secureStorage.setString('ff_meterKey', _value);
   }
 
+  String _borewellKey = '';
+  String get borewellKey => _borewellKey;
+  set borewellKey(String _value) {
+    _borewellKey = _value;
+    secureStorage.setString('ff_borewellKey', _value);
+  }
+
   void deleteTankKey() {
     secureStorage.delete(key: 'ff_tankKey');
+  }
+
+  void deleteMeterKey() {
+    secureStorage.delete(key: 'ff_meterKey');
+  }
+
+  void deleteBorewellKey() {
+    secureStorage.delete(key: 'ff_borewellKey');
   }
 }
 

@@ -264,6 +264,13 @@ Future<bool> checkActivityPravah(String key) async {
   return isActivePravah(data);
 }
 
+Future<bool> checkActivityDebore(String key) async {
+  String url = await getActivityURLDebore(key);
+  String jsonData = await fetchData(url);
+  List<DataEntry> data = convertDataDebore(jsonData);
+  return isActiveDebore(data);
+}
+
 Future<String> getActivityURL(String key) async {
   key = key ?? "NA";
   if (key == "NA") {
@@ -286,6 +293,38 @@ Future<String> getActivityURLPravah(String key) async {
     String d = "&results=5&timezone=Asia/Kolkata";
     return a + generateChannelID(key) + c + generateReadAPI(key) + d;
   }
+}
+
+Future<String> getActivityURLDebore(String key) async {
+  key = key ?? "NA";
+  if (key == "NA") {
+    return "https://thingspeak.com/";
+  } else {
+    String a = "https://thingspeak.com/channels/";
+    String c = "/fields/1.json?api_key=";
+    String d = "&results=5&timezone=Asia/Kolkata";
+    return a + generateChannelID(key) + c + generateReadAPI(key) + d;
+  }
+}
+
+bool isActiveDebore(List<DataEntry> data) {
+  if (data.isEmpty) {
+    return false;
+  }
+  DataEntry latestEntry = data.last;
+  if (latestEntry.value == null ||
+      latestEntry.value == "No Value" ||
+      latestEntry.value == "") {
+    return false;
+  }
+
+  DateTime now = DateTime.now();
+  Duration difference = now.difference(latestEntry.date);
+  if (difference.inMinutes > 15) {
+    return false; // Time difference exceeds 15 minutes, device is inactive
+  }
+
+  return true;
 }
 
 bool isActive(List<DataEntry> data) {
@@ -423,6 +462,36 @@ Future<String> getTodayUseURL(String? tankKey) async {
         d +
         todayStart.toString();
   }
+}
+
+List<DataEntry> convertDataDebore(String jsonData) {
+  List<DataEntry> dataEntries = [];
+  try {
+    Map<String, dynamic> jsonMap = jsonDecode(jsonData, reviver: (key, value) {
+      if (value == null) {
+        return "No Value";
+      }
+      return value;
+    });
+    if (jsonMap.containsKey('feeds')) {
+      List<dynamic> feeds = jsonMap['feeds'];
+      for (dynamic feed in feeds) {
+        if (feed is Map<String, dynamic>) {
+          if (feed.containsKey('created_at') && feed.containsKey('field1')) {
+            DateTime? createdAt = DateTime.tryParse(feed['created_at']);
+            double? field1 = double.tryParse(feed['field1']);
+            if (createdAt != null && field1 != null) {
+              DataEntry dataEntry = DataEntry(createdAt, field1);
+              dataEntries.add(dataEntry);
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // print('Error decoding JSON: $e');
+  }
+  return dataEntries;
 }
 
 // Generic Function to convert API data to the form of DataEntry class for Starr devices.

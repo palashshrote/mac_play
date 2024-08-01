@@ -7,6 +7,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 
 import 'schema/users_record.dart';
 import 'schema/tank_record.dart';
+import 'schema/borewell_record.dart';
 import 'schema/meter_record.dart';
 import 'schema/serializers.dart';
 
@@ -121,6 +122,59 @@ Future<FFFirestorePage<TankRecord>> queryTankRecordPage({
     queryCollectionPage(
       TankRecord.collection(parent),
       TankRecord.serializer,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+// Functions to query BorewellRecords (as a Stream and as a Future).
+Future<int> queryBorewellRecordCount({
+  DocumentReference? parent,
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      BorewellRecord.collection(parent),
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+Stream<List<BorewellRecord>> queryBorewellRecord({
+  DocumentReference? parent,
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      BorewellRecord.collection(parent),
+      BorewellRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+Future<List<BorewellRecord>> queryBorewellRecordOnce({
+  DocumentReference? parent,
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      BorewellRecord.collection(parent),
+      BorewellRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+Future<FFFirestorePage<BorewellRecord>> queryBorewellRecordPage({
+  DocumentReference? parent,
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      BorewellRecord.collection(parent),
+      BorewellRecord.serializer,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,
