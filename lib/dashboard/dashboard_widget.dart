@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/constants/k_dashboard_container.dart';
 import 'package:hydrow/custom_code/actions/call_a_p_i.dart';
+import 'package:hydrow/edit_device_debore/edit_device_debore_widget.dart';
 import 'package:hydrow/edit_device_pravah/edit_device_pravah_widget.dart';
 import 'package:hydrow/primary_borewell/primary_borewell_widget.dart';
 import 'package:hydrow/primary_meter/primary_meter_widget.dart';
@@ -686,7 +687,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
               // Drawer Element
               InkWell(
                 onTap: () async {
-                  context.pushNamed('AddDeviceQRScanPravah');
+                  context.pushNamed('AddDeviceQRScanDebore');
                 },
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
@@ -784,7 +785,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const EditDevicePravahWidget()),
+                      builder: (context) => const EditDeviceDeboreWidget(),
+                    ),
                   )
                 },
                 child: Padding(

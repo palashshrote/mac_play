@@ -74,7 +74,7 @@ class _AddDeviceQRScanDeboreWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'Add Device - QR Scan',
+          'Add Debore - QR Scan',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -143,7 +143,9 @@ class _AddDeviceQRScanDeboreWidgetState
                                         true, // whether to show the flash icon
                                         ScanMode.QR,
                                       );
-                                    } catch (e) {}
+                                    } catch (e) {
+                                      print(e.toString());
+                                    }
                                     if (functions.qrDebore(_model.qROutput)) {
                                       context.pushNamed(
                                         'AddDeviceDebore',

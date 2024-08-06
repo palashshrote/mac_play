@@ -45,8 +45,8 @@ class AddDeviceCall {
 // TODO: verify this code
 class AddDeviceDeboreCall {
   static Future<ApiCallResponse> call({
-    String? apiKey = '', //name we choose when we add a pravah device
-    String? field2 = '',
+    String? apiKey = '',
+    String? field2 = '', //name we choose when we add a debore device
   }) {
     return ApiManager.instance.makeApiCall(
       callName: 'addDeviceDebore',
@@ -58,6 +58,9 @@ class AddDeviceDeboreCall {
         'field2': field2,
       },
       returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
     );
   }
 }

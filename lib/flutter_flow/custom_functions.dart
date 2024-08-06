@@ -45,6 +45,15 @@ bool qrStarr(String? qrString) {
   }
 }
 
+bool qrDebore(String? qrString) {
+  String str = qrString ?? "";
+  if (str == "" || str == "-1" || generateVerifString(str) != "db") {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 bool qrPravah(String? qrString) {
   String str = qrString ?? "";
   if (str == "" ||

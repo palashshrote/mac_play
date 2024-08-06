@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hydrow/add_device_debore/add_device_debore_widget.dart';
 import 'package:hydrow/add_device_pravah/add_device_pravah_widget.dart';
+import 'package:hydrow/add_device_q_r_scan_debore/add_device_q_r_scan_debore_widget.dart';
 import 'package:hydrow/add_device_q_r_scan_pravah/add_device_q_r_scan_pravah_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
@@ -94,6 +95,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'AddDeviceQRScan',
               path: 'addDeviceQRScan',
               builder: (context, params) => AddDeviceQRScanWidget(),
+            ),
+            FFRoute(
+              name: 'AddDeviceQRScanDebore',
+              path: 'addDeviceQRScanDebore',
+              builder: (context, params) => AddDeviceQRScanDeboreWidget(),
             ),
             FFRoute(
               name: 'AddDeviceQRScanPravah',
