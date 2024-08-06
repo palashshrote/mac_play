@@ -48,12 +48,13 @@ abstract class BorewellRecord
       .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   BorewellRecord._();
-  factory BorewellRecord([void Fucntion(BorewellRecordBuilder) updates]) = _$BorewellRecord;
+  factory BorewellRecord([void Function(BorewellRecordBuilder) updates]) =
+      _$BorewellRecord;
 
   static BorewellRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-      {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createBorewellRecordData({
@@ -62,7 +63,7 @@ Map<String, dynamic> createBorewellRecordData({
   String? height,
 }) {
   final firestoreData = serializers.toFirestore(
-    BorewellRecord.serializer, 
+    BorewellRecord.serializer,
     BorewellRecord(
       (t) => t
         ..borewellName = borewellName
@@ -70,7 +71,6 @@ Map<String, dynamic> createBorewellRecordData({
         ..height = height,
     ),
   );
-  
-  return firestoreData;
 
+  return firestoreData;
 }

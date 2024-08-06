@@ -43,6 +43,24 @@ class AddDeviceCall {
 }
 
 // TODO: verify this code
+class AddDeviceDeboreCall {
+  static Future<ApiCallResponse> call({
+    String? apiKey = '', //name we choose when we add a pravah device
+    String? field2 = '',
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'addDeviceDebore',
+      apiUrl: 'https://api.thingspeak.com/update',
+      callType: ApiCallType.GET,
+      headers: {},
+      params: {
+        'api_key': apiKey,
+        'field2': field2,
+      },
+      returnBody: true,
+    );
+  }
+}
 
 class AddDevicePravahCall {
   static Future<ApiCallResponse> call({

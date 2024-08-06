@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hydrow/add_device_debore/add_device_debore_widget.dart';
 import 'package:hydrow/add_device_pravah/add_device_pravah_widget.dart';
 import 'package:hydrow/add_device_q_r_scan_pravah/add_device_q_r_scan_pravah_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
@@ -124,6 +125,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'addDevicePravah',
               builder: (context, params) => AddDevicePravahWidget(
                 meterKey: params.getParam('meterKey', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'AddDeviceDebore',
+              path: 'addDeviceDebore',
+              builder: (context, params) => AddDeviceDeboreWidget(
+                borewellKey: params.getParam('borewellKey', ParamType.String),
               ),
             ),
             FFRoute(

@@ -249,6 +249,29 @@ Future<dynamic> getReading(String meterKey) async {
   }
 }
 
+Future<dynamic> getWaterLevelfromGround(String borewellKey) async {
+  String str1 = 'https://api.thingspeak.com/channels/';
+  String str2 = '/fields/1/last.json?api_key=';
+  String apiUrl = str1 +
+      generateChannelID(borewellKey) +
+      str2 +
+      generateReadAPI(borewellKey);
+  String res = await fetchData(apiUrl);
+  var jsonData = json.decode(res, reviver: (key, value) {
+    if (value == null) {
+      return 'N/A';
+    }
+    return value;
+  });
+  var val = jsonData['field1'];
+  try {
+    var ans = double.tryParse(val);
+    return ans;
+  } catch (e) {
+    return "N/A";
+  }
+}
+
 // code for checking whether device is active or not for pravah and starr
 Future<bool> checkActivity(String key) async {
   String url = await getActivityURL(key);
@@ -595,6 +618,55 @@ List<DataEntry> convertDataPravahRate(String jsonData) {
 
 // backend code for plotting graphs
 // method which returns the sfchart using chart library
+Future<SfCartesianChart> getChartDebore(String? channel, String value) async {
+  String url = await getAPIUrlDebore(channel);
+  // String url =
+  //     "https://api.thingspeak.com/channels/2086669/fields/6.json?api_key=F0QFTNP2WB3II639";
+  if (value == "Weekly") {
+    url = url + "&days=7&average=720&timezone=Asia/Kolkata";
+  } else if (value == "Monthly") {
+    url = url + "&days=30&average=daily&timezone=Asia/Kolkata";
+  } else {
+    url = url + "&minutes=1440&timescale=60&timezone=Asia/Kolkata";
+  }
+  String jsonData = await fetchData(url);
+  List<DataEntry> filteredData = convertDataFormatDebore(jsonData, value);
+
+  // List<DataEntry> filteredData = convertDataFormatStarr(
+  //     jsonData, value, length, breadth, height, radius, capacity, isCuboid);
+  // double minValue = filteredData.isNotEmpty
+  //     ? filteredData.map((entry) => entry.value).reduce((a, b) => a < b ? a : b)
+  //     : 0;
+  return SfCartesianChart(
+    tooltipBehavior: TooltipBehavior(enable: true),
+    primaryXAxis: DateTimeAxis(
+      labelStyle: TextStyle(fontSize: 9),
+      majorGridLines:
+          MajorGridLines(width: 0.3, color: Colors.grey.withOpacity(0.7)),
+      minorGridLines:
+          MinorGridLines(width: 0.2, color: Colors.grey.withOpacity(0.5)),
+    ),
+    primaryYAxis: NumericAxis(
+      // minimum: minValue,
+      anchorRangeToVisiblePoints: false,
+      labelStyle: TextStyle(fontSize: 9),
+      majorGridLines:
+          MajorGridLines(width: 0.3, color: Colors.grey.withOpacity(0.7)),
+      minorGridLines:
+          MinorGridLines(width: 0.2, color: Colors.grey.withOpacity(0.5)),
+    ),
+    series: <ChartSeries<DataEntry, DateTime>>[
+      LineSeries<DataEntry, DateTime>(
+        name: "Water Level (%)",
+        dataSource: filteredData..sort((a, b) => a.date.compareTo(b.date)),
+        xValueMapper: (DataEntry entry, _) => entry.date,
+        yValueMapper: (DataEntry entry, _) => entry.value,
+        color: Color(0xFF91D9E9),
+      ),
+    ],
+  );
+}
+
 Future<SfCartesianChart> getChartStarr(
     String? channel,
     String value,
@@ -744,6 +816,17 @@ Future<SfCartesianChart> getChartPravahTotal(
   );
 }
 
+Future<String> getAPIUrlDebore(String? channel) async {
+  channel = channel ?? "NA";
+  if (channel == "NA") {
+    return "https://thingspeak.com/";
+  } else {
+    String a = "https://thingspeak.com/channels/";
+    String c = "/fields/1.json?api_key=";
+    return a + generateChannelID(channel) + c + generateReadAPI(channel);
+  }
+}
+
 Future<String> getAPIUrlStarr(String? channel) async {
   channel = channel ?? "NA";
   if (channel == "NA") {
@@ -869,6 +952,50 @@ List<DataEntry> convertDataFormatPravahRate(String jsonData, String value) {
   return getDailyDataPravahRate(dataEntries);
 }
 
+List<DataEntry> convertDataFormatDebore(String jsonData, String value) {
+  List<DataEntry> dataEntries = [];
+  try {
+    Map<String, dynamic> jsonMap = jsonDecode(jsonData, reviver: (key, value) {
+      if (value == null) {
+        return "No Value"; // Exclude null values from the decoded JSON object
+      }
+      return value;
+    });
+    if (jsonMap.containsKey('feeds')) {
+      List<dynamic> feeds = jsonMap['feeds'];
+      for (dynamic feed in feeds) {
+        if (feed is Map<String, dynamic>) {
+          if (feed.containsKey('created_at') && feed.containsKey('field1')) {
+            DateTime? createdAt = DateTime.tryParse(feed['created_at']);
+            double? field1 = double.tryParse(feed['field1']);
+
+            if (createdAt != null && field1 != null) {
+              // calculate the water % here.
+              // double level = tankAPI(
+              //         calculateWaterAvailable(
+              //             length, breadth, height, radius, field6, isCuboid),
+              //         capacity) *
+              //     100;
+              // double depth = 200.3;
+              DataEntry dataEntry = DataEntry(createdAt, field1);
+              // DataEntry dataEntry = DataEntry(createdAt, field6);
+              dataEntries.add(dataEntry);
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // print('Error decoding JSON: $e');
+  }
+  if (value == "Weekly") {
+    return getWeeklyDataDebore(dataEntries);
+  } else if (value == "Monthly") {
+    return getMonthlyDataDebore(dataEntries);
+  }
+  return getDailyDataDebore(dataEntries);
+}
+
 List<DataEntry> convertDataFormatPravahTotal(String jsonData, String value) {
   List<DataEntry> dataEntries = [];
   try {
@@ -905,6 +1032,15 @@ List<DataEntry> convertDataFormatPravahTotal(String jsonData, String value) {
   return getDailyDataPravahTotal(dataEntries);
 }
 
+List<DataEntry> getDailyDataDebore(List<DataEntry> dataEntries) {
+  DateTime currentDate = DateTime.now();
+  DateTime startDate = currentDate.subtract(Duration(days: 1));
+
+  List<DataEntry> filteredData =
+      dataEntries.where((entry) => entry.date.isAfter(startDate)).toList();
+  return filteredData;
+}
+
 List<DataEntry> getDailyDataStarr(List<DataEntry> dataEntries) {
   DateTime currentDate = DateTime.now();
   DateTime startDate = currentDate.subtract(Duration(days: 1));
@@ -929,6 +1065,16 @@ List<DataEntry> getDailyDataPravahTotal(List<DataEntry> dataEntries) {
 
   List<DataEntry> filteredData =
       dataEntries.where((entry) => entry.date.isAfter(startDate)).toList();
+  return filteredData;
+}
+
+List<DataEntry> getWeeklyDataDebore(List<DataEntry> dataEntries) {
+  DateTime currentDate = DateTime.now();
+  DateTime startDate = currentDate.subtract(Duration(days: 7));
+
+  List<DataEntry> filteredData =
+      dataEntries.where((entry) => entry.date.isAfter(startDate)).toList();
+
   return filteredData;
 }
 
@@ -958,6 +1104,16 @@ List<DataEntry> getWeeklyDataPravahTotal(List<DataEntry> dataEntries) {
 
   List<DataEntry> filteredData =
       dataEntries.where((entry) => entry.date.isAfter(startDate)).toList();
+  return filteredData;
+}
+
+List<DataEntry> getMonthlyDataDebore(List<DataEntry> dataEntries) {
+  DateTime currentDate = DateTime.now();
+  DateTime startDate = currentDate.subtract(Duration(days: 30));
+
+  List<DataEntry> filteredData =
+      dataEntries.where((entry) => entry.date.isAfter(startDate)).toList();
+
   return filteredData;
 }
 

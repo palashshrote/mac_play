@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:hydrow/backend/schema/borewell_record.dart';
+import 'package:hydrow/constants/k_dashboard_container.dart';
 import 'package:hydrow/custom_code/actions/call_a_p_i.dart';
 import 'package:hydrow/edit_device_pravah/edit_device_pravah_widget.dart';
+import 'package:hydrow/primary_borewell/primary_borewell_widget.dart';
 import 'package:hydrow/primary_meter/primary_meter_widget.dart';
 
 import '../components/TermsandCondition_widget.dart';
@@ -104,7 +107,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
       isActive = await functions.checkActivity(FFAppState().tankKey);
       isActivePravah =
           await functions.checkActivityPravah(FFAppState().meterKey);
-      isActiveDebore = await functions.checkActivityDebore(FFAppState().borewellKey);
+      isActiveDebore =
+          await functions.checkActivityDebore(FFAppState().borewellKey);
       _model.waterLevel = await actions.callAPI(
           functions.generateChannelID(FFAppState().tankKey),
           functions.generateReadAPI(FFAppState().tankKey));
@@ -698,7 +702,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                       SizedBox(
                         width: 15,
                       ),
-                      Text('Add Device',
+                      Text('Add Debore',
                           style: GF.GoogleFonts.leagueSpartan(
                             color: Color(0xFFFFFFFF),
                             fontWeight: FontWeight.w600,
@@ -713,7 +717,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const PrimaryMeterWidget()),
+                      builder: (context) => const PrimaryBorewellWidget(),
+                    ),
                   )
                 },
                 child: Padding(
@@ -731,7 +736,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                       SizedBox(
                         width: 15,
                       ),
-                      Text('Change Defaults',
+                      Text('Change Debore',
                           style: GF.GoogleFonts.leagueSpartan(
                             color: Color(0xFFFFFFFF),
                             fontWeight: FontWeight.w600,
@@ -797,7 +802,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                       SizedBox(
                         width: 15,
                       ),
-                      Text('Settings',
+                      Text('Debore Settings',
                           style: GF.GoogleFonts.leagueSpartan(
                             color: Color(0xFFFFFFFF),
                             fontWeight: FontWeight.w600,
@@ -2577,15 +2582,15 @@ class _DashboardWidgetState extends State<DashboardWidget>
                 ),
               ),
 
-              
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
-                child: StreamBuilder<List<TankRecord>>(
+                child: StreamBuilder<List<BorewellRecord>>(
                   //Fetching the tank record of the default tank
-                  stream: queryTankRecord(
+                  stream: queryBorewellRecord(
                     parent: currentUserReference,
-                    queryBuilder: (tankRecord) => tankRecord.where('TankKey',
-                        isEqualTo: FFAppState().tankKey),
+                    queryBuilder: (borewellRecord) => borewellRecord.where(
+                        'BorewellKey',
+                        isEqualTo: FFAppState().borewellKey),
                     singleRecord: true,
                   ),
                   builder: (context, snapshot) {
@@ -2602,7 +2607,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                         ),
                       );
                     }
-                    List<TankRecord> containerTankRecordList = snapshot.data!;
+                    List<BorewellRecord> containerBorewellRecordList =
+                        snapshot.data!;
                     // Return an empty Container when the item does not exist.
                     if (snapshot.data!.isEmpty) {
                       return Padding(
@@ -2611,10 +2617,12 @@ class _DashboardWidgetState extends State<DashboardWidget>
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PrimaryTankWidget()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PrimaryBorewellWidget(),
+                                ),
+                              );
                             },
                             child: Container(
                               height: 100,
@@ -2629,21 +2637,16 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 children: [
                                   Text(
                                     'Borewell not selected. \nClick to select a Default borewell.',
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      height: 1.5,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
+                                    style: notSelectedStyle,
                                   ),
                                 ],
                               ),
                             ),
                           ));
                     }
-                    final containerTankRecord =
-                        containerTankRecordList.isNotEmpty
-                            ? containerTankRecordList.first
+                    final containerBorewellRecord =
+                        containerBorewellRecordList.isNotEmpty
+                            ? containerBorewellRecordList.first
                             : null;
                     //If data found return the Water tank container
                     return Container(
@@ -2670,7 +2673,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   ),
                                   child: Stack(
                                     children: [
-                                      Positioned(
+                                      /*Positioned(
                                         child: WaveWidget(
                                           config: CustomConfig(colors: [
                                             Color(0xFF93DCEC),
@@ -2685,23 +2688,23 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                 ? 0.87 -
                                                     functions.tankAPI(
                                                         functions.calculateWaterAvailable(
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .length!,
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .breadth!,
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .height!,
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .radius!,
                                                             _model.waterLevel,
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .isCuboid!),
                                                         functions.calculateVolume(
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .isCuboid!,
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .length!,
-                                                            containerTankRecord!
+                                                            containerBorewellRecord!
                                                                 .breadth!,
                                                             containerTankRecord!
                                                                 .height!,
@@ -2779,6 +2782,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           ),
                                         ),
                                       ),
+                                      
+                                      */
                                       Positioned(
                                           child: Center(
                                         child: Container(
@@ -2802,14 +2807,14 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                   MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Row(
-                                                  //Row 1
+                                                  //Row 1  name
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     Container(
                                                       child: Text(
-                                                        containerTankRecord!
-                                                            .tankName!, //replace with $tankname variable
+                                                        containerBorewellRecord!
+                                                            .borewellName!, //replace with $tankname variable
                                                         // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
                                                         style: GF.GoogleFonts
                                                             .leagueSpartan(
@@ -2846,7 +2851,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                               MainAxisAlignment
                                                                   .center,
                                                           children: [
-                                                            Text('Tank Filled',
+                                                            Text(
+                                                                'Waterlevel from ground',
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
@@ -2872,226 +2878,29 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                   .center,
                                                           children: [
                                                             Text(
-                                                                isActive
-                                                                    ? functions.convertToInt(functions.tankAPI(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!), containerTankRecord!.capacity)).toString() +
-                                                                        " %"
-                                                                    : 'N/A', //replace with original data
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 24,
-                                                                  color: Color(
-                                                                      0xFF91D9E9),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      //row2 column2
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          //row2 column2 subrow1
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                                'Available for use',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 16,
-                                                                  color: Color(
-                                                                      0xFFFFFFFF),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-                                                        Row(
-                                                          //row2 column2 subrow2
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                                isActive
-                                                                    ? functions.shortenNumber(functions.calculateWaterAvailable(
-                                                                            containerTankRecord!
-                                                                                .length!,
-                                                                            containerTankRecord!
-                                                                                .breadth!,
-                                                                            containerTankRecord!
-                                                                                .height!,
-                                                                            containerTankRecord!
-                                                                                .radius!,
-                                                                            _model
-                                                                                .waterLevel,
-                                                                            containerTankRecord!
-                                                                                .isCuboid!)) +
-                                                                        "L"
-                                                                    : 'N/A', //replace with oririginal data
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 24,
-                                                                  color: Color(
-                                                                      0xFF91D9E9),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Row(
-                                                  //Row3
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Column(
-                                                      //row3 column1
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          //row3 column1 subrow1
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text('Total Volume',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 16,
-                                                                  color: Color(
-                                                                      0xFFFFFFFF),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-                                                        Row(
-                                                          //row3 column1 subrow2
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                                isActive
-                                                                    ? functions.shortenNumber(containerTankRecord!
-                                                                            .capacity!) +
-                                                                        'L'
-                                                                    : 'N/A', //replace with oririginal data
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 24,
-                                                                  color: Color(
-                                                                      0xFF91D9E9),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      //row3 column2
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          //row3 column2 subrow1
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text('Temperature',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 16,
-                                                                  color: Color(
-                                                                      0xFFFFFFFF),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-                                                        Row(
-                                                          //row3 column2 subrow2
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                                isActive
-                                                                    ? _model.temperature
-                                                                            .toString() +
-                                                                        ' \u00B0C'
-                                                                    : 'N/A', //replace with original data
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 24,
-                                                                  color: Color(
-                                                                      0xFF91D9E9),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                )),
+                                                              // isActive
+                                                              //     ? functions
+                                                              //             .convertToInt(functions.tankAPI(
+                                                              //                 functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!),
+                                                              //                 containerTankRecord!.capacity))
+                                                              //             .toString() +
+                                                              //         " %"
+                                                              //     : 'N/A',
+                                                              "32", //replace with original data
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: GF
+                                                                      .GoogleFonts
+                                                                  .leagueSpartan(
+                                                                fontSize: 24,
+                                                                color: Color(
+                                                                    0xFF91D9E9),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                            ),
                                                           ],
                                                         ),
                                                       ],
@@ -3108,6 +2917,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                   children: [
                                                     ElevatedButton.icon(
                                                       // <-- ElevatedButton
+                                                      /*
                                                       onPressed: () async {
                                                         isActive = await functions
                                                             .checkActivity(
@@ -3129,6 +2939,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                     .tankKey!));
                                                         setState(() {});
                                                       },
+                                                      */
+                                                      onPressed: () {},
                                                       icon: Icon(
                                                         CupertinoIcons
                                                             .arrow_2_squarepath,
@@ -3177,7 +2989,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Tank Summary',
+                                      'Borewell Summary',
                                       style: GF.GoogleFonts.leagueSpartan(
                                         fontSize: 24,
                                         color: Color(0xFFFFFFFF),
@@ -3200,7 +3012,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                               EdgeInsetsDirectional.fromSTEB(
                                                   15, 0, 15, 0),
                                           child: DropdownButton<String>(
-                                            value: dropdownValueStarr,
+                                            value: dropdownValueDebore,
                                             // borderRadius: BorderRadius.circular(5),
                                             dropdownColor: Color(0xFF1A1A1A),
                                             focusColor: Color(0xFF1A1A1A),
@@ -3236,7 +3048,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             }).toList(),
                                             onChanged: (String? newValue) {
                                               setState(() {
-                                                dropdownValueStarr = newValue!;
+                                                dropdownValueDebore = newValue!;
                                               });
                                             },
                                           ),
@@ -3251,15 +3063,10 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   height: 200,
                                   child: FutureBuilder<SfCartesianChart>(
                                     // replace with following call
-                                    future: functions.getChartStarr(
-                                        containerTankRecord!.tankKey,
-                                        dropdownValueStarr,
-                                        containerTankRecord!.length!,
-                                        containerTankRecord!.breadth!,
-                                        containerTankRecord!.height!,
-                                        containerTankRecord!.radius!,
-                                        containerTankRecord!.capacity!,
-                                        containerTankRecord!.isCuboid!),
+                                    future: functions.getChartDebore(
+                                        containerBorewellRecord!.borewellKey,
+                                        dropdownValueDebore),
+
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -3333,7 +3140,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         );
                                       },
                                       child: Text(
-                                        'Show All Devices',
+                                        'Show All Debore',
                                         style: GF.GoogleFonts.leagueSpartan(
                                           fontSize: 18,
                                           color: Color(0xFF0C0C0C),
@@ -3361,7 +3168,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                   },
                 ),
               ),
-              */
             ],
           ),
         ),
