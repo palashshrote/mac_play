@@ -17,9 +17,6 @@ abstract class BorewellRecord
   @BuiltValueField(wireName: 'BorewellKey')
   String? get borewellKey;
 
-  @BuiltValueField(wireName: 'Height')
-  String? get height;
-
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -28,16 +25,15 @@ abstract class BorewellRecord
 
   static void _initializeBuilder(BorewellRecordBuilder builder) => builder
     ..borewellName = ''
-    ..borewellKey = ''
-    ..height = '';
+    ..borewellKey = '';
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
       parent != null
-          ? parent.collection('tank')
+          ? parent.collection('borewell')
           : FirebaseFirestore.instance.collectionGroup('borewell');
 
   static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('tank').doc();
+      parent.collection('borewell').doc();
 
   static Stream<BorewellRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
@@ -60,16 +56,12 @@ abstract class BorewellRecord
 Map<String, dynamic> createBorewellRecordData({
   String? borewellName,
   String? borewellKey,
-  String? height,
 }) {
   final firestoreData = serializers.toFirestore(
     BorewellRecord.serializer,
-    BorewellRecord(
-      (t) => t
-        ..borewellName = borewellName
-        ..borewellKey = borewellKey
-        ..height = height,
-    ),
+    BorewellRecord((t) => t
+      ..borewellName = borewellName
+      ..borewellKey = borewellKey),
   );
 
   return firestoreData;

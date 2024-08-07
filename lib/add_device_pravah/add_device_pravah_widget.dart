@@ -173,6 +173,7 @@ class _AddDevicePravahWidgetState extends State<AddDevicePravahWidget>
                                 meterName: _model.textController1.text,
                                 meterKey: widget.meterKey,
                               );
+
                               await MeterRecord.createDoc(currentUserReference!)
                                   .set(meterCreateData);
                               await AddDevicePravahCall.call(

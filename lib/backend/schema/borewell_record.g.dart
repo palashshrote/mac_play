@@ -35,12 +35,13 @@ class _$BorewellRecordSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.height;
+    value = object.ffRef;
     if (value != null) {
       result
-        ..add('Height')
+        ..add('Document__Reference__Field')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+            specifiedType: const FullType(
+                DocumentReference, const [const FullType.nullable(Object)])));
     }
     return result;
   }
@@ -68,11 +69,6 @@ class _$BorewellRecordSerializer
               specifiedType: const FullType(String)) as String?;
           break;
 
-        case 'Height':
-          result.height = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -94,16 +90,12 @@ class _$BorewellRecord extends BorewellRecord {
   final String? borewellKey;
 
   @override
-  final String? height;
-
-  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$BorewellRecord([void Function(BorewellRecordBuilder)? updates]) =>
       (new BorewellRecordBuilder()..update(updates))._build();
 
-  _$BorewellRecord._(
-      {this.borewellName, this.borewellKey, this.height, this.ffRef})
+  _$BorewellRecord._({this.borewellName, this.borewellKey, this.ffRef})
       : super._();
 
   @override
@@ -120,15 +112,12 @@ class _$BorewellRecord extends BorewellRecord {
     return other is BorewellRecord &&
         borewellName == other.borewellName &&
         borewellKey == other.borewellKey &&
-        height == other.height &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc(0, borewellName.hashCode), borewellKey.hashCode),
-            height.hashCode),
+    return $jf($jc($jc($jc(0, borewellName.hashCode), borewellKey.hashCode),
         ffRef.hashCode));
   }
 
@@ -137,7 +126,6 @@ class _$BorewellRecord extends BorewellRecord {
     return (newBuiltValueToStringHelper(r'BorewellRecord')
           ..add('borewellName', borewellName)
           ..add('borewellKey', borewellKey)
-          ..add('height', height)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -155,10 +143,6 @@ class BorewellRecordBuilder
   String? get borewellKey => _$this._borewellKey;
   set borewellKey(String? borewellKey) => _$this._borewellKey = borewellKey;
 
-  String? _height;
-  String? get height => _$this._height;
-  set height(String? height) => _$this._height = height;
-
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -172,8 +156,6 @@ class BorewellRecordBuilder
     if ($v != null) {
       _borewellName = $v.borewellName;
       _borewellKey = $v.borewellKey;
-
-      _height = $v.height;
 
       _ffRef = $v.ffRef;
       _$v = null;
@@ -198,10 +180,7 @@ class BorewellRecordBuilder
   _$BorewellRecord _build() {
     final _$result = _$v ??
         new _$BorewellRecord._(
-            borewellName: borewellName,
-            borewellKey: borewellKey,
-            height: height,
-            ffRef: ffRef);
+            borewellName: borewellName, borewellKey: borewellKey, ffRef: ffRef);
     replace(_$result);
     return _$result;
   }

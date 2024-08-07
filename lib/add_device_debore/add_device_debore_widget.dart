@@ -84,115 +84,143 @@ class _AddDeviceDeboreWidgetState extends State<AddDeviceDeboreWidget>
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
-                  child: TextFormField(
-                    controller: _model.textController1,
-                    autofocus: true,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xFF0c0c0c),
-                      hintText: 'Name',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 13,
-                        fontFamily: 'Spartan',
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 0.5,
-                        ),
-                      ),
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFFFFFFFF),
-                    ),
-                    validator:
-                        _model.textController1Validator.asValidator(context),
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 30.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_model.formKey.currentState == null ||
-                          !_model.formKey.currentState!.validate()) {
-                        return;
-                      }
-
-                      final borewellCreateData = createBorewellRecordData(
-                        borewellName: _model.textController1.text,
-                        borewellKey: widget.borewellKey,
-                      );
-                      await BorewellRecord.createDoc(currentUserReference!)
-                          .set(borewellCreateData);
-                      await AddDeviceDeboreCall.call(
-                        field2: _model.textController1.text,
-                        apiKey: functions.generateWrite(widget.borewellKey!),
-                      );
-                      final usersUpdateData = {
-                        'borewellKeyList':
-                            FieldValue.arrayUnion([widget.borewellKey]),
-                      };
-                      await currentUserReference!.update(usersUpdateData);
-                      await showDialog(
-                        context: context,
-                        builder: (alertDialogContext) {
-                          return AlertDialog(
-                            title: Text("Success"),
-                            content: Text("Device added successfully"),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext),
-                                child: Text('OK'),
+                Form(
+                  key: _model.formKey,
+                  autovalidateMode: AutovalidateMode.disabled,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+                              child: TextFormField(
+                                controller: _model.textController1,
+                                autofocus: true,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xFF0c0c0c),
+                                  hintText: 'Name',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 13,
+                                    fontFamily: 'Spartan',
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 0.5,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 0.5,
+                                    ),
+                                  ),
+                                  labelStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                style: GF.GoogleFonts.leagueSpartan(
+                                  color: Color(0xFFFFFFFF),
+                                ),
+                                validator: _model.textController1Validator
+                                    .asValidator(context),
                               ),
-                            ],
-                          );
-                        },
-                      );
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'Save',
-                      style: GF.GoogleFonts.leagueSpartan(
-                        fontSize: 20,
-                        color: Color(0xFF0C0C0C),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7.5),
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 30.0),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  print("Onpressed tapped");
+
+                                  if (_model.formKey.currentState == null ||
+                                      !_model.formKey.currentState!
+                                          .validate()) {
+                                    print("Form not valid");
+                                    return;
+                                  }
+
+                                  final borewellCreateData =
+                                      createBorewellRecordData(
+                                    borewellName: _model.textController1.text,
+                                    borewellKey: widget.borewellKey,
+                                  );
+                                  print(borewellCreateData);
+                                  await BorewellRecord.createDoc(
+                                          currentUserReference!)
+                                      .set(borewellCreateData);
+                                  await AddDeviceDeboreCall.call(
+                                    field2: _model.textController1.text,
+                                    apiKey: functions
+                                        .generateWrite(widget.borewellKey!),
+                                  );
+                                  final usersUpdateData = {
+                                    'borewellKeyList': FieldValue.arrayUnion(
+                                        [widget.borewellKey]),
+                                  };
+                                  await currentUserReference!
+                                      .update(usersUpdateData);
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text("Success"),
+                                        content:
+                                            Text("Device added successfully"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Save',
+                                  style: GF.GoogleFonts.leagueSpartan(
+                                    fontSize: 20,
+                                    color: Color(0xFF0C0C0C),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7.5),
+                                    ),
+                                    backgroundColor: Color(0xFFC6DDDB),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        20, 17, 20, 17)),
+                              ),
+                            ),
+                          ],
                         ),
-                        backgroundColor: Color(0xFFC6DDDB),
-                        padding:
-                            EdgeInsetsDirectional.fromSTEB(20, 17, 20, 17)),
+                      ),
+                    ],
                   ),
                 ),
               ],

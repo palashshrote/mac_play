@@ -4,6 +4,7 @@ import 'package:from_css_color/from_css_color.dart';
 import 'users_record.dart';
 import 'tank_record.dart';
 import 'meter_record.dart';
+import 'borewell_record.dart';
 
 import 'index.dart';
 
@@ -13,11 +14,7 @@ part 'serializers.g.dart';
 
 const kDocumentReferenceField = 'Document__Reference__Field';
 
-@SerializersFor(const [
-  UsersRecord,
-  TankRecord,
-  MeterRecord,
-])
+@SerializersFor(const [UsersRecord, TankRecord, MeterRecord, BorewellRecord])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())
       ..add(DateTimeSerializer())
