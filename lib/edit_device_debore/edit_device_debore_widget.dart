@@ -172,15 +172,15 @@ class _EditDeviceDeboreWidgetState extends State<EditDeviceDeboreWidget>
                                       ),
                                       onPressed: () async {
                                         context.pushNamed(
-                                          'MeterEdit',
+                                          'BorewellEdit',
                                           queryParams: {
-                                            'meterReference': serializeParam(
+                                            'borewellReference': serializeParam(
                                               listViewBorewellRecord,
                                               ParamType.Document,
                                             ),
                                           }.withoutNulls,
                                           extra: <String, dynamic>{
-                                            'meterReference':
+                                            'borewellReference':
                                                 listViewBorewellRecord,
                                           },
                                         );
@@ -245,8 +245,9 @@ class _EditDeviceDeboreWidgetState extends State<EditDeviceDeboreWidget>
                                           await listViewBorewellRecord.reference
                                               .delete();
 
+                                          //below code removes dbore device from users firestore
                                           final usersUpdateData = {
-                                            'meterKeyList':
+                                            'borewellKeyList':
                                                 FieldValue.arrayRemove([
                                               listViewBorewellRecord.borewellKey
                                             ]),

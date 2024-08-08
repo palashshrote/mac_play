@@ -153,7 +153,7 @@ class _PrimaryTankWidgetState extends State<PrimaryTankWidget>
 
                             // context.pushNamed('Dashboard');
                             //TWO TIMES to reach back to the hompage
-                            Navigator.pop(context);
+                            // Navigator.pop(context);
                             Navigator.pop(context);
                           },
                           child: Row(

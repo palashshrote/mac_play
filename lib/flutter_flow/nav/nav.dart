@@ -7,6 +7,8 @@ import 'package:hydrow/add_device_debore/add_device_debore_widget.dart';
 import 'package:hydrow/add_device_pravah/add_device_pravah_widget.dart';
 import 'package:hydrow/add_device_q_r_scan_debore/add_device_q_r_scan_debore_widget.dart';
 import 'package:hydrow/add_device_q_r_scan_pravah/add_device_q_r_scan_pravah_widget.dart';
+import 'package:hydrow/backend/schema/borewell_record.dart';
+import 'package:hydrow/borewell_edit/borewell_edit_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_widget.dart';
@@ -160,6 +162,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => CuboidalTankEditWidget(
                 tankReference:
                     params.getParam('tankReference', ParamType.Document),
+              ),
+            ),
+            FFRoute(
+              name: 'BorewellEdit',
+              path: 'borewellEdit',
+              asyncParams: {
+                'borewellReference':
+                    getDoc(['users', 'borewell'], BorewellRecord.serializer),
+              },
+              builder: (context, params) => BorewellEditWidget(
+                borewellReference:
+                    params.getParam('borewellReference', ParamType.Document),
               ),
             ),
             FFRoute(

@@ -139,20 +139,20 @@ class _PrimaryBorewellWidgetState extends State<PrimaryBorewellWidget>
                           child: InkWell(
                             onTap: () async {
                               FFAppState().update(() {
-                                FFAppState().meterKey =
+                                FFAppState().borewellKey =
                                     listViewBorewellRecord.borewellKey!;
                               });
                               // context.pushNamed('Dashboard');
                               //TWO TIMES to reach back to the hompage
                               Navigator.pop(context);
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      20.0, 0.0, 0.0, 0.0),
+                                      20.0, 20.0, 20.0, 20.0),
                                   child: Text(
                                     listViewBorewellRecord.borewellName!,
                                     style: recordTextStyle,

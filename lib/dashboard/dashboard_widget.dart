@@ -2638,7 +2638,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Borewell not selected. \nClick to select a Default borewell.',
+                                    'Click to select a \n Default borewell.',
                                     style: notSelectedStyle,
                                   ),
                                 ],

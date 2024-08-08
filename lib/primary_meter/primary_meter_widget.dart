@@ -147,7 +147,7 @@ class _PrimaryMeterWidgetState extends State<PrimaryMeterWidget>
                               });
                               // context.pushNamed('Dashboard');
                               //TWO TIMES to reach back to the hompage
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
                               Navigator.pop(context);
                             },
                             child: Row(
