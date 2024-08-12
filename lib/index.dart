@@ -13,5 +13,5 @@ export '/tank_summary/tank_summary_widget.dart' show TankSummaryWidget;
 export '/individual_summary/individual_summary_widget.dart'
     show IndividualSummaryWidget;
 export '/primary_tank/primary_tank_widget.dart' show PrimaryTankWidget;
-export '/borewell_summary/borewell_summary_widget.dart'
+export 'borewell_summary/borewell_summary_widget_two.dart'
     show BorewellSummaryWidget;

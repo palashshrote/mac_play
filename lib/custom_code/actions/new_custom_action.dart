@@ -19,7 +19,86 @@ String generateReadAPI(String key) {
   return key.split("&").elementAt(1);
 }
 
+Future<dynamic> newCustomActionDebore(List<String> keys) async {
+  if (keys.length == 0) {
+    print("No keys found");
+    return;
+  }
+  String str1 = "channels/";
+  String FinalString = "{\"borewells\"" + ":[";
+  String thingspeak = 'https://api.thingspeak.com/';
+  for (int i = 0; i < keys.length; i++) {
+    print(keys[i]);
+    String ChannelID = generateChannelID(keys[i]);
+    String ReadAPI = generateReadAPI(keys[i]);
+
+    // getting borewell name
+    String s1 = thingspeak +
+        str1 +
+        ChannelID +
+        "/fields/2/last.json?api_key=" +
+        ReadAPI;
+    var url1 = Uri.parse(s1);
+    var response1 = await http.get(url1);
+    var jsonData1 = json.decode(response1.body);
+    var borewellName = jsonData1["field2"];
+
+    // getting the total flow reading and flow rate
+    String s2 = thingspeak +
+        str1 +
+        ChannelID +
+        "/fields/1.json?api_key=" +
+        ReadAPI +
+        "&results=1";
+    var url2 = Uri.parse(s2);
+    var response2 = await http.get(url2);
+    var jsonData2 = json.decode(response2.body);
+    var waterLevel = jsonData2["feeds"][0]["field1"];
+    // var flowRate = jsonData2["feeds"][0]["field2"];
+
+    if (waterLevel == null) {
+      waterLevel = "0.0";
+    }
+
+    bool isActive = await checkActivityDebore(keys[i]);
+
+    var String2 = "{\"BorewellName\":" +
+        "\"" +
+        borewellName +
+        "\"" +
+        ", \"WaterLevel\":" +
+        "\"" +
+        waterLevel +
+        "\"" +
+        ", \"Activity\":" +
+        "\"" +
+        isActive.toString() +
+        "\"" +
+        "}";
+    if (i == keys.length - 1) {
+      FinalString += String2;
+    } else {
+      FinalString += String2 + ",";
+    }
+  }
+
+  FinalString += "]}";
+  print(FinalString);
+  var mapObject = json.decode(FinalString);
+
+  return mapObject;
+}
+
 Future<dynamic> newCustomActionPravah(List<String> keys) async {
+  if (keys.isEmpty) {
+    print("No keys found");
+    return;
+  } else {
+    print(keys.length);
+    for (int i = 0; i < keys.length; i++) {
+      print(keys[i]);
+    }
+  }
   String str1 = "channels/";
   String str2 = "/fields/1&3.json?api_key=";
   String str3 = "/fields/2&3.json?api_key=";
@@ -95,6 +174,15 @@ Future<dynamic> newCustomActionPravah(List<String> keys) async {
 }
 
 Future<dynamic> newCustomAction(List<String> keys) async {
+  if (keys.isEmpty) {
+    print("No keys found");
+    return;
+  } else {
+    print(keys.length);
+    for (int i = 0; i < keys.length; i++) {
+      print(keys[i]);
+    }
+  }
   String str1 = '/channels/';
   String str2 = '/fields/6&7.json?api_key=';
   String str3 = '&results=1';

@@ -52,7 +52,23 @@ Future<dynamic> callAPITemperature(
     return 0.0;
   }
 }
-
+Future<dynamic> callAPIWaterLevel(String channelID, String readAPI) async {
+  String str1 = 'channels/';
+  String str2 = '/feeds.json?api_key=';
+  String str3 = '&results=1';
+  String str = str1 + channelID + str2 + readAPI + str3;
+  String thingspeak = 'https://api.thingspeak.com/';
+  var url = Uri.parse(thingspeak + str);
+  var res = await http.get(url);
+  var jdata = json.decode(res.body);
+  var obj = jdata["feeds"][0]["field1"];
+  try {
+    var ans = double.tryParse(obj);
+    return ans;
+  } catch (e) {
+    return 0.0;
+  }
+}
 Future<dynamic> callAPITotalFlow(
   String channelID,
   String readAPI,

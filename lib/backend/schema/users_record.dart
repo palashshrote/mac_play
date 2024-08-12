@@ -29,6 +29,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   BuiltList<String>? get meterKeyList;
 
+  BuiltList<String>? get borewellKeyList;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -40,7 +42,8 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..uid = ''
     ..phoneNumber = ''
     ..keyList = ListBuilder()
-    ..meterKeyList = ListBuilder();
+    ..meterKeyList = ListBuilder()
+    ..borewellKeyList = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -82,7 +85,8 @@ Map<String, dynamic> createUsersRecordData({
         ..createdTime = createdTime
         ..phoneNumber = phoneNumber
         ..keyList = null
-        ..meterKeyList = null,
+        ..meterKeyList = null
+        ..borewellKeyList = null,
     ),
   );
 

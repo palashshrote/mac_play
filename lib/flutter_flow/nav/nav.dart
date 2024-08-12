@@ -9,6 +9,8 @@ import 'package:hydrow/add_device_q_r_scan_debore/add_device_q_r_scan_debore_wid
 import 'package:hydrow/add_device_q_r_scan_pravah/add_device_q_r_scan_pravah_widget.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/borewell_edit/borewell_edit_widget.dart';
+import 'package:hydrow/borewell_summary/borewell_summary_widget.dart';
+import 'package:hydrow/individual_borewell_summary/individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_widget.dart';
@@ -203,6 +205,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ),
             ),
             FFRoute(
+              name: 'BorewellSummary',
+              path: 'borewellSummary',
+              builder: (context, params) => BorewellSummaryWidget(
+                reading: params.getParam('reading', ParamType.JSON),
+              ),
+            ),
+            FFRoute(
               name: 'IndividualSummary',
               path: 'individualSummary',
               asyncParams: {
@@ -215,6 +224,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   waterLevel: params.getParam('waterLevel', ParamType.double),
                   temperature:
                       params.getParam('temperature', ParamType.double)),
+            ),
+            FFRoute(
+              name: 'IndividualBorewellSummary',
+              path: 'individualBorewellSummary',
+              asyncParams: {
+                'docReference':
+                    getDoc(['users', 'borewell'], BorewellRecord.serializer),
+              },
+              builder: (context, params) => IndividualBorewellSummaryWidget(
+                docReference:
+                    params.getParam('docReference', ParamType.Document),
+                waterLevel: params.getParam('waterLevel', ParamType.double),
+              ),
             ),
             FFRoute(
               name: 'IndividualMeterSummary',
@@ -235,13 +257,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'primaryTank',
               builder: (context, params) => PrimaryTankWidget(),
             ),
-            FFRoute(
-              name: 'BorewellSummary',
-              path: 'borewellSummary',
-              builder: (context, params) => BorewellSummaryWidget(
-                bore: params.getParam('bore', ParamType.double),
-              ),
-            )
+            // FFRoute(
+            //   name: 'BorewellSummary',
+            //   path: 'borewellSummary',
+            //   builder: (context, params) => BorewellSummaryWidget(
+            //     reading: params.getParam('bore', ParamType.double),
+            //   ),
+            // ),
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
       ],

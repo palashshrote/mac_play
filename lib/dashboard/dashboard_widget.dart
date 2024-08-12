@@ -3104,27 +3104,34 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         //       .toList(),
                                         // );
                                         try {
-                                          _model.output =
-                                              await actions.newCustomAction(
-                                            (currentUserDocument?.keyList
+                                          if (currentUserDocument == null) {
+                                            print("Empty user");
+                                          } else {
+                                            print(currentUserDocument
+                                                ?.borewellKeyList);
+                                          }
+                                          _model.outputDebore =
+                                              await newCustomActionDebore(
+                                            (currentUserDocument
+                                                        ?.borewellKeyList
                                                         ?.toList() ??
                                                     [])
                                                 .toList(),
                                           );
 
                                           // Check if _model.output is null or any other failure condition
-                                          if (_model.output == null) {
+                                          if (_model.outputDebore == null) {
                                             // Handle the case where the output is null
-                                            // print(
-                                            //     'Action failed: output is null');
+                                            print(
+                                                'Action failed: output is null');
                                           } else {
                                             // Handle the successful case
-                                            // print(
-                                            // 'Action succeeded: output is ${_model.output}');
+                                            print(
+                                                'Action succeeded: output is ${_model.output}');
                                           }
                                         } catch (e) {
                                           // Handle any exceptions that occur
-                                          // print('An error occurred: $e');
+                                          print('An error occurred: $e');
                                         }
 
                                         setState(() {
@@ -3132,10 +3139,10 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         });
 
                                         context.pushNamed(
-                                          'TankSummary',
+                                          'BorewellSummary',
                                           queryParams: {
-                                            'water': serializeParam(
-                                              _model.output,
+                                            'reading': serializeParam(
+                                              _model.outputDebore,
                                               ParamType.JSON,
                                             ),
                                           }.withoutNulls,

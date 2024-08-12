@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class BorewellSummaryModel extends FlutterFlowModel {
   /// Initialization and disposal methods.
-
+  double? outputWaterLevel;
   void initState(BuildContext context) {}
 
   void dispose() {}

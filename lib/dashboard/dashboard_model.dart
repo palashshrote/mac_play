@@ -35,6 +35,9 @@ class DashboardModel extends FlutterFlowModel {
   dynamic? outputPravah = newCustomActionPravah(
     (currentUserDocument?.meterKeyList?.toList() ?? []).toList(),
   );
+  dynamic? outputDebore = newCustomActionDebore(
+    (currentUserDocument?.borewellKeyList?.toList() ?? []).toList(),
+  );
 
   /// Initialization and disposal methods.
 
