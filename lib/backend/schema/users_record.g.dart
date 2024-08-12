@@ -77,6 +77,14 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
+    value = object.borewellKeyList;
+    if (value != null) {
+      result
+        ..add('borewellKeyList')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(String)])));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -135,6 +143,12 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
                       BuiltList, const [const FullType(String)]))!
               as BuiltList<Object?>);
           break;
+        case 'borewellKeyList':
+          result.borewellKeyList.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -166,6 +180,8 @@ class _$UsersRecord extends UsersRecord {
   @override
   final BuiltList<String>? meterKeyList;
   @override
+  final BuiltList<String>? borewellKeyList;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$UsersRecord([void Function(UsersRecordBuilder)? updates]) =>
@@ -180,6 +196,7 @@ class _$UsersRecord extends UsersRecord {
       this.phoneNumber,
       this.keyList,
       this.meterKeyList,
+      this.borewellKeyList,
       this.ffRef})
       : super._();
 
@@ -202,6 +219,7 @@ class _$UsersRecord extends UsersRecord {
         phoneNumber == other.phoneNumber &&
         keyList == other.keyList &&
         meterKeyList == other.meterKeyList &&
+        borewellKeyList == other.borewellKeyList &&
         ffRef == other.ffRef;
   }
 
@@ -214,14 +232,16 @@ class _$UsersRecord extends UsersRecord {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc(0, email.hashCode),
-                                    displayName.hashCode),
-                                photoUrl.hashCode),
-                            uid.hashCode),
-                        createdTime.hashCode),
-                    phoneNumber.hashCode),
-                keyList.hashCode),
-            meterKeyList.hashCode),
+                                $jc(
+                                    $jc($jc(0, email.hashCode),
+                                        displayName.hashCode),
+                                    photoUrl.hashCode),
+                                uid.hashCode),
+                            createdTime.hashCode),
+                        phoneNumber.hashCode),
+                    keyList.hashCode),
+                meterKeyList.hashCode),
+            borewellKeyList.hashCode),
         ffRef.hashCode));
   }
 
@@ -236,6 +256,7 @@ class _$UsersRecord extends UsersRecord {
           ..add('phoneNumber', phoneNumber)
           ..add('keyList', keyList)
           ..add('meterKeyList', meterKeyList)
+          ..add('borewellKeyList', borewellKeyList)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -279,6 +300,12 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   set meterKeyList(ListBuilder<String>? meterKeyList) =>
       _$this._meterKeyList = meterKeyList;
 
+  ListBuilder<String>? _borewellKeyList;
+  ListBuilder<String> get borewellKeyList =>
+      _$this._borewellKeyList ??= new ListBuilder<String>();
+  set borewellKeyList(ListBuilder<String>? borewellKeyList) =>
+      _$this._borewellKeyList = borewellKeyList;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -298,6 +325,7 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _phoneNumber = $v.phoneNumber;
       _keyList = $v.keyList?.toBuilder();
       _meterKeyList = $v.meterKeyList?.toBuilder();
+      _borewellKeyList = $v.borewellKeyList?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -331,23 +359,20 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
               phoneNumber: phoneNumber,
               keyList: _keyList?.build(),
               meterKeyList: _meterKeyList?.build(),
+              borewellKeyList: _borewellKeyList?.build(),
               ffRef: ffRef);
     } catch (_) {
-      late String _$failedField1;
-      late String _$failedField2;
+      late String _$failedField;
       try {
-        _$failedField1 = 'keyList';
+        _$failedField = 'keyList';
         _keyList?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'UsersRecord', _$failedField1, e.toString());
-      }
-      try {
-        _$failedField2 = 'meterKeyList';
+        _$failedField = 'meterKeyList';
         _meterKeyList?.build();
+        _$failedField = 'borewellKeyList';
+        _borewellKeyList?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'UsersRecord', _$failedField2, e.toString());
+            r'UsersRecord', _$failedField, e.toString());
       }
       rethrow;
     }

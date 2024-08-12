@@ -51,11 +51,10 @@ class _$BorewellRecordSerializer
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new BorewellRecordBuilder();
-    final iterator = serialized.iterator;
 
+    final iterator = serialized.iterator;
     while (iterator.moveNext()) {
       final key = iterator.current! as String;
-
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
@@ -63,12 +62,10 @@ class _$BorewellRecordSerializer
           result.borewellName = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-
         case 'BorewellKey':
           result.borewellKey = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -85,10 +82,8 @@ class _$BorewellRecordSerializer
 class _$BorewellRecord extends BorewellRecord {
   @override
   final String? borewellName;
-
   @override
   final String? borewellKey;
-
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -156,7 +151,6 @@ class BorewellRecordBuilder
     if ($v != null) {
       _borewellName = $v.borewellName;
       _borewellKey = $v.borewellKey;
-
       _ffRef = $v.ffRef;
       _$v = null;
     }
