@@ -23,7 +23,7 @@ service cloud.firestore {
     }
 
     match /users/{parent}/borewell/{document} {
-    	allow create: if request.auth.uid == parent;
+      allow create: if request.auth.uid == parent;
       allow read: if request.auth.uid == parent;
       allow write: if request.auth.uid == parent;
       allow delete: if false;

@@ -2649,7 +2649,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               SizedBox(height: 50,),
-                              // showAllDevicesButton("Testing", () { }),
 
                               Stack(
                                 children: [
@@ -2854,6 +2853,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+
                                     showAllDevicesButton("Show all Debore", () async {
                                       setState(() {
                                         _isLoading = true;
@@ -2881,6 +2881,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         }.withoutNulls,
                                       );
                                     }),
+                                    showAllDevicesButton("Testing", () { context.pushNamed('BorewellSummaryTesting'); }),
+
                                   ],
                                 ),
                               ),

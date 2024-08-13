@@ -9,6 +9,7 @@ import 'package:hydrow/add_device_q_r_scan_debore/add_device_q_r_scan_debore_wid
 import 'package:hydrow/add_device_q_r_scan_pravah/add_device_q_r_scan_pravah_widget.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/borewell_edit/borewell_edit_widget.dart';
+import 'package:hydrow/borewell_summary/borewell_summary_testing_widget.dart';
 import 'package:hydrow/borewell_summary/borewell_summary_widget.dart';
 import 'package:hydrow/individual_borewell_summary/individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
@@ -99,6 +100,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'AddDeviceQRScan',
               path: 'addDeviceQRScan',
               builder: (context, params) => AddDeviceQRScanWidget(),
+            ),
+            FFRoute(
+              name: 'BorewellSummaryTesting',
+              path: 'borewellSummaryTesting',
+              builder: (context, params) => BorewellSummaryTestingWidget(),
             ),
             FFRoute(
               name: 'AddDeviceQRScanDebore',

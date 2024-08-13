@@ -1,6 +1,7 @@
 import 'package:built_value/serializer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hydrow/backend/schema/borewell.dart';
 import '../auth/auth_util.dart';
 
 import '../flutter_flow/flutter_flow_util.dart';
@@ -127,8 +128,22 @@ Future<FFFirestorePage<TankRecord>> queryTankRecordPage({
       pageSize: pageSize,
       isStream: isStream,
     );
+//Function to fetch stream
+Future<List<Borewell>> fetchBorewells() async {
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('borewell').get();
+
+  // Convert the snapshot into a list of Borewell objects
+  return querySnapshot.docs.map((doc) {
+    return Borewell.fromFirestore(doc.data() as Map<String, dynamic>);
+  }).toList();
+}
 
 // Functions to query BorewellRecords (as a Stream and as a Future).
+/*
+allow create: if request.auth.uid == parent;
+      allow read: if request.auth.uid == parent;
+      allow write: if request.auth.uid == parent;
+*/
 Future<int> queryBorewellRecordCount({
   DocumentReference? parent,
   Query Function(Query)? queryBuilder,
