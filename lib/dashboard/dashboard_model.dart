@@ -35,6 +35,8 @@ class DashboardModel extends FlutterFlowModel {
   dynamic? outputPravah = newCustomActionPravah(
     (currentUserDocument?.meterKeyList?.toList() ?? []).toList(),
   );
+  dynamic? waterLevelFromGround =
+      functions.getWaterLevelfromGround(FFAppState().borewellKey);
   dynamic? outputDebore = newCustomActionDebore(
     (currentUserDocument?.borewellKeyList?.toList() ?? []).toList(),
   );

@@ -266,15 +266,19 @@ Future<dynamic> getWaterLevelfromGround(String borewellKey) async {
       str2 +
       generateReadAPI(borewellKey);
   String res = await fetchData(apiUrl);
+  print("All well");
   var jsonData = json.decode(res, reviver: (key, value) {
     if (value == null) {
       return 'N/A';
     }
     return value;
   });
+  // var jsonData = json.decode(res);
   var val = jsonData['field1'];
+
   try {
     var ans = double.tryParse(val);
+    print("Went in ${ans}");
     return ans;
   } catch (e) {
     return "N/A";
@@ -300,6 +304,7 @@ Future<bool> checkActivityDebore(String key) async {
   String url = await getActivityURLDebore(key);
   String jsonData = await fetchData(url);
   List<DataEntry> data = convertDataDebore(jsonData);
+  print("${key} : Active Debore: ${isActiveDebore(data)}");
   return isActiveDebore(data);
 }
 
@@ -344,6 +349,7 @@ bool isActiveDebore(List<DataEntry> data) {
     return false;
   }
   DataEntry latestEntry = data.last;
+  // print("LAtest entry value: ${latestEntry.value}");
   if (latestEntry.value == null ||
       latestEntry.value == "No Value" ||
       latestEntry.value == "") {

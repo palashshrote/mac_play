@@ -20,10 +20,7 @@ String generateReadAPI(String key) {
 }
 
 Future<dynamic> newCustomActionDebore(List<String> keys) async {
-  if (keys.length == 0) {
-    print("No keys found");
-    return;
-  }
+  
   String str1 = "channels/";
   String FinalString = "{\"borewells\"" + ":[";
   String thingspeak = 'https://api.thingspeak.com/';

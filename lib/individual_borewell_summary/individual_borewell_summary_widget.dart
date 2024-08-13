@@ -40,7 +40,7 @@ class _IndividualBorewellSummaryWidgetState
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
   String dropdownValueDeboreTotal = 'Daily';
-  bool isActive = true;
+  bool isActive = false;
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -65,8 +65,8 @@ class _IndividualBorewellSummaryWidgetState
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.lockOrientation();
-      isActive =
-          await functions.checkActivityPravah(widget.docReference!.borewellKey!);
+      isActive = await functions
+          .checkActivityDebore(widget.docReference!.borewellKey!);
     });
   }
 

@@ -7,3 +7,9 @@ var notSelectedStyle = GF.GoogleFonts.leagueSpartan(
   fontWeight: FontWeight.w500,
   color: Colors.white,
 );
+
+var defaultDeviceNADataStyle = GF.GoogleFonts.leagueSpartan(
+  fontSize: 24,
+  color: Color(0xFF91D9E9),
+  fontWeight: FontWeight.w600,
+);

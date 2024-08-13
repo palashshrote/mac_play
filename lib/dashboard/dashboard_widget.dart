@@ -2675,117 +2675,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   ),
                                   child: Stack(
                                     children: [
-                                      /*Positioned(
-                                        child: WaveWidget(
-                                          config: CustomConfig(colors: [
-                                            Color(0xFF93DCEC),
-                                            Color(0xFF91D9E9),
-                                            Color(0xFF52B9D5)
-                                          ], durations: [
-                                            4000,
-                                            6000,
-                                            8000
-                                          ], heightPercentages: [
-                                            isActive
-                                                ? 0.87 -
-                                                    functions.tankAPI(
-                                                        functions.calculateWaterAvailable(
-                                                            containerBorewellRecord!
-                                                                .length!,
-                                                            containerBorewellRecord!
-                                                                .breadth!,
-                                                            containerBorewellRecord!
-                                                                .height!,
-                                                            containerBorewellRecord!
-                                                                .radius!,
-                                                            _model.waterLevel,
-                                                            containerBorewellRecord!
-                                                                .isCuboid!),
-                                                        functions.calculateVolume(
-                                                            containerBorewellRecord!
-                                                                .isCuboid!,
-                                                            containerBorewellRecord!
-                                                                .length!,
-                                                            containerBorewellRecord!
-                                                                .breadth!,
-                                                            containerTankRecord!
-                                                                .height!,
-                                                            containerTankRecord!
-                                                                .radius!))
-                                                : 0.87,
-                                            isActive
-                                                ? 0.87 -
-                                                    functions.tankAPI(
-                                                        functions.calculateWaterAvailable(
-                                                            containerTankRecord!
-                                                                .length!,
-                                                            containerTankRecord!
-                                                                .breadth!,
-                                                            containerTankRecord!
-                                                                .height!,
-                                                            containerTankRecord!
-                                                                .radius!,
-                                                            _model.waterLevel,
-                                                            containerTankRecord!
-                                                                .isCuboid!),
-                                                        functions.calculateVolume(
-                                                            containerTankRecord!
-                                                                .isCuboid!,
-                                                            containerTankRecord!
-                                                                .length!,
-                                                            containerTankRecord!
-                                                                .breadth!,
-                                                            containerTankRecord!
-                                                                .height!,
-                                                            containerTankRecord!
-                                                                .radius!))
-                                                : 0.87,
-                                            isActive
-                                                ? 0.87 -
-                                                    functions.tankAPI(
-                                                        functions.calculateWaterAvailable(
-                                                            containerTankRecord!
-                                                                .length!,
-                                                            containerTankRecord!
-                                                                .breadth!,
-                                                            containerTankRecord!
-                                                                .height!,
-                                                            containerTankRecord!
-                                                                .radius!,
-                                                            _model.waterLevel,
-                                                            containerTankRecord!
-                                                                .isCuboid!),
-                                                        functions.calculateVolume(
-                                                            containerTankRecord!
-                                                                .isCuboid!,
-                                                            containerTankRecord!
-                                                                .length!,
-                                                            containerTankRecord!
-                                                                .breadth!,
-                                                            containerTankRecord!
-                                                                .height!,
-                                                            containerTankRecord!
-                                                                .radius!))
-                                                : 0.87
-                                          ]
-                                              // heightPercentages: [
-                                              //   0.50,
-                                              //   0.52,
-                                              //   0.54
-                                              // ], //replace with actual tank height
-                                              // blur: MaskFilter.blur(BlurStyle.solid, 1),
-                                              ),
-                                          waveAmplitude: 3.00, //depth of curves
-                                          waveFrequency:
-                                              3, //number of curves in waves
-                                          size: Size(
-                                            double.infinity,
-                                            double.infinity,
-                                          ),
-                                        ),
-                                      ),
-                                      
-                                      */
+                                      //Image
                                       Positioned(
                                           child: Center(
                                         child: Container(
@@ -2879,30 +2769,51 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                               MainAxisAlignment
                                                                   .center,
                                                           children: [
-                                                            Text(
-                                                              // isActive
-                                                              //     ? functions
-                                                              //             .convertToInt(functions.tankAPI(
-                                                              //                 functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!),
-                                                              //                 containerTankRecord!.capacity))
-                                                              //             .toString() +
-                                                              //         " %"
-                                                              //     : 'N/A',
-                                                              "32", //replace with original data
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: GF
-                                                                      .GoogleFonts
-                                                                  .leagueSpartan(
-                                                                fontSize: 24,
-                                                                color: Color(
-                                                                    0xFF91D9E9),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            ),
+                                                            isActiveDebore
+                                                                ? FutureBuilder<
+                                                                    dynamic>(
+                                                                    future: functions
+                                                                        .getWaterLevelfromGround(
+                                                                            containerBorewellRecord.borewellKey!),
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<dynamic>
+                                                                            snapshot) {
+                                                                      if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return CircularProgressIndicator();
+                                                                      } else if (snapshot
+                                                                          .hasError) {
+                                                                        return Text(
+                                                                            'Error: ${snapshot.error}');
+                                                                      } else {
+                                                                        var value =
+                                                                            snapshot.data;
+                                                                        return Text(
+                                                                          value.toString() +
+                                                                              "L",
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style:
+                                                                              GF.GoogleFonts.leagueSpartan(
+                                                                            fontSize:
+                                                                                24,
+                                                                            color:
+                                                                                Color(0xFF91D9E9),
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                  )
+                                                                : Text(
+                                                                    "N/A",
+                                                                    style:
+                                                                        defaultDeviceNADataStyle,
+                                                                  ),
                                                           ],
                                                         ),
                                                       ],
@@ -2919,30 +2830,21 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                   children: [
                                                     ElevatedButton.icon(
                                                       // <-- ElevatedButton
-                                                      /*
+
                                                       onPressed: () async {
-                                                        isActive = await functions
-                                                            .checkActivity(
-                                                                FFAppState()
-                                                                    .tankKey);
-                                                        _model.waterLevel = await actions.callAPI(
-                                                            functions.generateChannelID(
-                                                                containerTankRecord!
-                                                                    .tankKey!),
-                                                            functions.generateReadAPI(
-                                                                containerTankRecord!
-                                                                    .tankKey!));
-                                                        _model.temperature = await callAPITemperature(
-                                                            functions.generateChannelID(
-                                                                containerTankRecord!
-                                                                    .tankKey!),
-                                                            functions.generateReadAPI(
-                                                                containerTankRecord!
-                                                                    .tankKey!));
+                                                        // isActiveDebore = await functions
+                                                        //     .checkActivity(
+                                                        //         FFAppState()
+                                                        //             .borewellKey);
+                                                        _model.waterLevelFromGround =
+                                                            await functions
+                                                                .getWaterLevelfromGround(
+                                                                    containerBorewellRecord
+                                                                        .borewellKey!);
                                                         setState(() {});
                                                       },
-                                                      */
-                                                      onPressed: () {},
+
+                                                      // onPressed: () {},
                                                       icon: Icon(
                                                         CupertinoIcons
                                                             .arrow_2_squarepath,
@@ -3104,12 +3006,12 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         //       .toList(),
                                         // );
                                         try {
-                                          if (currentUserDocument == null) {
-                                            print("Empty user");
-                                          } else {
-                                            print(currentUserDocument
-                                                ?.borewellKeyList);
-                                          }
+                                          // if (currentUserDocument == null) {
+                                          //   print("Empty user");
+                                          // } else {
+                                          //   print(currentUserDocument
+                                          //       ?.borewellKeyList);
+                                          // }
                                           _model.outputDebore =
                                               await newCustomActionDebore(
                                             (currentUserDocument
@@ -3122,12 +3024,12 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           // Check if _model.output is null or any other failure condition
                                           if (_model.outputDebore == null) {
                                             // Handle the case where the output is null
-                                            print(
-                                                'Action failed: output is null');
+                                            // print(
+                                            //     'Action failed: output is null');
                                           } else {
                                             // Handle the successful case
-                                            print(
-                                                'Action succeeded: output is ${_model.output}');
+                                            // print(
+                                            //     'Action succeeded: output is ${_model.output}');
                                           }
                                         } catch (e) {
                                           // Handle any exceptions that occur
