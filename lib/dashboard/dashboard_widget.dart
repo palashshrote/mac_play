@@ -2711,7 +2711,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                       } else {
                                                         var value =
                                                             snapshot.data;
-                                                        return Text(
+                                                        return value.toString() == "N/A" ? Text("N/A", style: defaultDeviceNADataStyle,) :  Text(
                                                           value.toString() +
                                                               "L",
                                                           textAlign:

@@ -266,14 +266,17 @@ Future<dynamic> getWaterLevelfromGround(String borewellKey) async {
       str2 +
       generateReadAPI(borewellKey);
   String res = await fetchData(apiUrl);
-  print("All well");
+  print("All well ${generateChannelID(borewellKey)}");
   var jsonData = json.decode(res, reviver: (key, value) {
-    if (value == null) {
+    if (value == null || value == -1) {
+      print("REturning NA");
       return 'N/A';
     }
+    print("Returning ${value}");
     return value;
   });
   // var jsonData = json.decode(res);
+  if(jsonData == "N/A") return "N/A";
   var val = jsonData['field1'];
 
   try {
