@@ -65,8 +65,16 @@ class _IndividualBorewellSummaryWidgetState
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.lockOrientation();
-      isActive = await functions
-          .checkActivityDebore(widget.docReference!.borewellKey!);
+    });
+
+    _initializeHelper();
+  }
+
+  void _initializeHelper() async {
+    bool isActive2 = await functions
+        .checkActivityDebore(widget.docReference!.borewellKey!);
+    setState(() {
+      isActive = isActive2;
     });
   }
 

@@ -249,6 +249,7 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
                                                     containerBorewellRecord
                                                         .borewellKey!),
                                               );
+                                              print("Water level = ${_model.outputWaterLevel}");
 
                                               context.pushNamed(
                                                 'IndividualBorewellSummary',

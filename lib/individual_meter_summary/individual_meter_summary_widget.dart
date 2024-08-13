@@ -42,7 +42,7 @@ class _IndividualMeterSummaryWidgetState
   final _unfocusNode = FocusNode();
   String dropdownValuePravahTotal = 'Daily';
   String dropdownValuePravahRate = 'Daily';
-  bool isActive = true;
+  bool isActive = false;
 
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -63,11 +63,17 @@ class _IndividualMeterSummaryWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => IndividualMeterSummaryModel());
-
+    _initializeHelper();
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.lockOrientation();
-      isActive = await functions.checkActivityPravah(widget.docReference!.meterKey!);
+    });
+  }
+
+  void _initializeHelper() async {
+    bool fetchIsActive = await functions.checkActivityPravah(widget.docReference!.meterKey!);
+    setState(() {
+      isActive = fetchIsActive;
     });
   }
 

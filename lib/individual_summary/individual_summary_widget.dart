@@ -38,7 +38,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
   String dropdownValue = 'Daily';
-  bool isActive = true;
+  bool isActive = false;
 
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(

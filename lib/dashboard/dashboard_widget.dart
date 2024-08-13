@@ -2474,9 +2474,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                     setState(() {
                                       _isLoading = true;
                                     });
-
-                                    try {
-                                      _model.outputPravah =
+                                    //Earlier I've applied try catch block with this as I've encountered some bugs
+                                    _model.outputPravah =
                                           await newCustomActionPravah(
                                         (currentUserDocument?.meterKeyList
                                                     ?.toList() ??
@@ -2484,22 +2483,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             .toList(),
                                       );
 
-                                      // Check if _model.output is null or any other failure condition
-                                      if (_model.outputPravah == null) {
-                                        // Handle the case where the output is null
-                                        // print('Action failed: output is null');
-                                      } else {
-                                        // Handle the successful case
-                                        // print(
-                                        //     'Action succeeded: output is ${_model.outputPravah}');
-                                      }
-                                    } catch (e) {
-                                      // Handle any exceptions that occur
-                                      // print('An error occurred: $e');
-                                    }
+
                                     setState(() {
                                       _isLoading = false;
-                                      // print("State is set to false");
                                     });
 
                                     context.pushNamed(
@@ -2662,228 +2648,103 @@ class _DashboardWidgetState extends State<DashboardWidget>
                           Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 30, 20, 0),
-                                child: Container(
-                                  height: 350,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFECECEC),
-                                    shape: BoxShape.rectangle,
-                                    // borderRadius: BorderRadius.circular(20),
-                                    // border: Border.all(color: Color(0xFFF7F7F8)),
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      //Image
-                                      Positioned(
-                                          child: Center(
-                                        child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.75,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.75,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xC00C0C0C),
-                                              shape: BoxShape.circle,
+                              SizedBox(height: 50,),
+                              // showAllDevicesButton("Testing", () { }),
+
+                              Stack(
+                                children: [
+                                  //Image
+                                  Positioned(
+                                      child: Center(
+                                    child: Container(
+                                        height: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                            0.75,
+                                        width: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                            0.75,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xC00C0C0C),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding:
+                                            EdgeInsetsDirectional.fromSTEB(
+                                                50, 0, 50, 0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            //device name
+                                            defaultDeviceName(
+                                                containerBorewellRecord!
+                                                    .borewellName!),
+                                            SizedBox(
+                                              height: 20,
                                             ),
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    50, 0, 50, 0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Row(
-                                                  //Row 1  name
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      child: Text(
-                                                        containerBorewellRecord!
-                                                            .borewellName!, //replace with $tankname variable
-                                                        // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                        style: GF.GoogleFonts
-                                                            .leagueSpartan(
-                                                          fontSize: 30,
-                                                          color:
-                                                              Color(0xFFFFFFFF),
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis, // new
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Row(
-                                                  //Row2
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Column(
-                                                      //row2 column1
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Row(
-                                                          //row2 column1 subrow1
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
+                                            //Text
+                                            defaultDeviceSpecsHeading(
+                                                "Waterlevel from ground"),
+                                            SizedBox(
+                                              height: 7,
+                                            ),
+                                            isActiveDebore
+                                                ? FutureBuilder<dynamic>(
+                                                    future: functions
+                                                        .getWaterLevelfromGround(
+                                                            containerBorewellRecord
+                                                                .borewellKey!),
+                                                    builder: (BuildContext
+                                                            context,
+                                                        AsyncSnapshot<
+                                                                dynamic>
+                                                            snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return CircularProgressIndicator();
+                                                      } else if (snapshot
+                                                          .hasError) {
+                                                        return Text(
+                                                            'Error: ${snapshot.error}');
+                                                      } else {
+                                                        var value =
+                                                            snapshot.data;
+                                                        return Text(
+                                                          value.toString() +
+                                                              "L",
+                                                          textAlign:
+                                                              TextAlign
                                                                   .center,
-                                                          children: [
-                                                            Text(
-                                                                'Waterlevel from ground',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 16,
-                                                                  color: Color(
-                                                                      0xFFFFFFFF),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-                                                        Row(
-                                                          //row2 column1 subrow2
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            isActiveDebore
-                                                                ? FutureBuilder<
-                                                                    dynamic>(
-                                                                    future: functions
-                                                                        .getWaterLevelfromGround(
-                                                                            containerBorewellRecord.borewellKey!),
-                                                                    builder: (BuildContext
-                                                                            context,
-                                                                        AsyncSnapshot<dynamic>
-                                                                            snapshot) {
-                                                                      if (snapshot
-                                                                              .connectionState ==
-                                                                          ConnectionState
-                                                                              .waiting) {
-                                                                        return CircularProgressIndicator();
-                                                                      } else if (snapshot
-                                                                          .hasError) {
-                                                                        return Text(
-                                                                            'Error: ${snapshot.error}');
-                                                                      } else {
-                                                                        var value =
-                                                                            snapshot.data;
-                                                                        return Text(
-                                                                          value.toString() +
-                                                                              "L",
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                          style:
-                                                                              GF.GoogleFonts.leagueSpartan(
-                                                                            fontSize:
-                                                                                24,
-                                                                            color:
-                                                                                Color(0xFF91D9E9),
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                          ),
-                                                                        );
-                                                                      }
-                                                                    },
-                                                                  )
-                                                                : Text(
-                                                                    "N/A",
-                                                                    style:
-                                                                        defaultDeviceNADataStyle,
-                                                                  ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Row(
-                                                  //Row4
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    ElevatedButton.icon(
-                                                      // <-- ElevatedButton
+                                                          style:
+                                                              defaultDeviceDataStyle,
+                                                        );
+                                                      }
+                                                    },
+                                                  )
+                                                : Text(
+                                                    "N/A",
+                                                    style:
+                                                        defaultDeviceNADataStyle,
+                                                  ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            refreshButton("Refresh", () async {
+                                              _model.waterLevelFromGround =
+                                                  await functions
+                                                  .getWaterLevelfromGround(
+                                                  containerBorewellRecord
+                                                      .borewellKey!);
+                                              setState(() {});
+                                            }),
 
-                                                      onPressed: () async {
-                                                        // isActiveDebore = await functions
-                                                        //     .checkActivity(
-                                                        //         FFAppState()
-                                                        //             .borewellKey);
-                                                        _model.waterLevelFromGround =
-                                                            await functions
-                                                                .getWaterLevelfromGround(
-                                                                    containerBorewellRecord
-                                                                        .borewellKey!);
-                                                        setState(() {});
-                                                      },
-
-                                                      // onPressed: () {},
-                                                      icon: Icon(
-                                                        CupertinoIcons
-                                                            .arrow_2_squarepath,
-                                                        size: 16.0,
-                                                        color:
-                                                            Color(0xFF0C0C0C),
-                                                      ),
-                                                      label: Text(
-                                                        'Refresh',
-                                                        style: GF.GoogleFonts
-                                                            .leagueSpartan(
-                                                          fontSize: 16,
-                                                          color:
-                                                              Color(0xFF0C0C0C),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      7.5),
-                                                        ),
-                                                        backgroundColor:
-                                                            Color(0xFFC6DDDB),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            )),
-                                      )),
-                                    ],
-                                  ),
-                                ),
+                                          ],
+                                        )),
+                                  )),
+                                ],
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
@@ -2993,81 +2854,33 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        // _model.output =
-                                        //     await actions.newCustomAction(
-                                        //   (currentUserDocument?.keyList
-                                        //               ?.toList() ??
-                                        //           [])
-                                        //       .toList(),
-                                        // );
-                                        try {
-                                          // if (currentUserDocument == null) {
-                                          //   print("Empty user");
-                                          // } else {
-                                          //   print(currentUserDocument
-                                          //       ?.borewellKeyList);
-                                          // }
-                                          _model.outputDebore =
-                                              await newCustomActionDebore(
-                                            (currentUserDocument
-                                                        ?.borewellKeyList
-                                                        ?.toList() ??
-                                                    [])
-                                                .toList(),
-                                          );
+                                    showAllDevicesButton("Show all Debore", () async {
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+                                      //Earlier I've applied try catch block with this as I've encountered some bugs
+                                      _model.outputDebore =
+                                      await newCustomActionDebore(
+                                        (currentUserDocument
+                                            ?.borewellKeyList
+                                            ?.toList() ??
+                                            [])
+                                            .toList(),
+                                      );
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
 
-                                          // Check if _model.output is null or any other failure condition
-                                          if (_model.outputDebore == null) {
-                                            // Handle the case where the output is null
-                                            // print(
-                                            //     'Action failed: output is null');
-                                          } else {
-                                            // Handle the successful case
-                                            // print(
-                                            //     'Action succeeded: output is ${_model.output}');
-                                          }
-                                        } catch (e) {
-                                          // Handle any exceptions that occur
-                                          print('An error occurred: $e');
-                                        }
-
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-
-                                        context.pushNamed(
-                                          'BorewellSummary',
-                                          queryParams: {
-                                            'reading': serializeParam(
-                                              _model.outputDebore,
-                                              ParamType.JSON,
-                                            ),
-                                          }.withoutNulls,
-                                        );
-                                      },
-                                      child: Text(
-                                        'Show All Debore',
-                                        style: GF.GoogleFonts.leagueSpartan(
-                                          fontSize: 18,
-                                          color: Color(0xFF0C0C0C),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(7.5),
+                                      context.pushNamed(
+                                        'BorewellSummary',
+                                        queryParams: {
+                                          'reading': serializeParam(
+                                            _model.outputDebore,
+                                            ParamType.JSON,
                                           ),
-                                          backgroundColor: Color(0xFFC6DDDB),
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  20, 17, 20, 17)),
-                                    ),
+                                        }.withoutNulls,
+                                      );
+                                    }),
                                   ],
                                 ),
                               ),
