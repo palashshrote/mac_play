@@ -2025,9 +2025,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                showAllDevicesButton("Pr Test", () {
-                                  context.pushNamed('MeterSummaryTesting');
-                                }),
                                 ElevatedButton(
                                   onPressed: () async {
                                     setState(() {
@@ -2073,6 +2070,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           20, 17, 20, 17)),
                                 ),
+                                showAllDevicesButton("Testing", () {
+                                  context.pushNamed('MeterSummaryTesting');
+                                }),
                               ],
                             ),
                           ),

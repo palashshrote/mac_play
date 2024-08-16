@@ -134,7 +134,7 @@ class _MeterSummaryTestingWidgetState extends State<MeterSummaryTestingWidget>
                       listViewMeterRecordList[listViewIndex];
 
                   return FutureBuilder<bool>(
-                    future: checkActivityDebore(listViewMeterRecord.meterKey!),
+                    future: checkActivityPravah(listViewMeterRecord.meterKey!),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         // Show a placeholder or loading indicator while the Future is resolving
@@ -199,8 +199,36 @@ class _MeterSummaryTestingWidgetState extends State<MeterSummaryTestingWidget>
                                 Spacer(),
                                 viewMoreBtn(
                                   "View more",
-                                  () {
-                                    print(listViewMeterRecord.meterKey!);
+                                  () async {
+                                    _model.outputIsActive =
+                                        await checkActivityPravah(
+                                            listViewMeterRecord.meterKey!);
+                                    print(listViewMeterRecord.meterKey);
+
+                                    try {
+                                      context.pushNamed(
+                                        'TwoIndividualMeterSummary',
+                                        queryParams: {
+                                          'docReference': serializeParam(
+                                                listViewMeterRecord,
+                                                ParamType.Document,
+                                              ) ??
+                                              '',
+                                          'isActive': serializeParam(
+                                                _model.outputIsActive,
+                                                ParamType.bool,
+                                              ) ??
+                                              '',
+                                        },
+                                        extra: <String, dynamic>{
+                                          'docReference': listViewMeterRecord,
+                                        },
+                                      );
+                                    } catch (e) {
+                                      print('Navigation failed: $e');
+                                    }
+
+                                    setState(() {});
                                   },
                                 ),
                                 SizedBox(width: 20.0),

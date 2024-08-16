@@ -237,6 +237,27 @@ Future<dynamic> getFlowRate(String meterKey) async {
   }
 }
 
+Future<dynamic> getFlowRateTest(String meterKey) async {
+  String str1 = 'https://api.thingspeak.com/channels/';
+  String str2 = '/fields/2/last.json?api_key=';
+  String apiUrl =
+      str1 + generateChannelID(meterKey) + str2 + generateReadAPI(meterKey);
+  String res = await fetchData(apiUrl);
+  var jsonData = json.decode(res, reviver: (key, value) {
+    if (value == null) {
+      return "N/A";
+    }
+    return value;
+  });
+  var val = jsonData['field2'];
+  try {
+    var ans = (double.tryParse(val)).toString();
+    return ans;
+  } catch (e) {
+    return "N/A";
+  }
+}
+
 Future<dynamic> getReading(String meterKey) async {
   String str1 = 'https://api.thingspeak.com/channels/';
   String str2 = '/fields/1/last.json?api_key=';
@@ -252,6 +273,28 @@ Future<dynamic> getReading(String meterKey) async {
   var val = jsonData['field1'];
   try {
     var ans = double.tryParse(val);
+
+    return ans;
+  } catch (e) {
+    return "N/A";
+  }
+}
+
+Future<dynamic> getReadingTest(String meterKey) async {
+  String str1 = 'https://api.thingspeak.com/channels/';
+  String str2 = '/fields/1/last.json?api_key=';
+  String apiUrl =
+      str1 + generateChannelID(meterKey) + str2 + generateReadAPI(meterKey);
+  String res = await fetchData(apiUrl);
+  var jsonData = json.decode(res, reviver: (key, value) {
+    if (value == null) {
+      return "N/A";
+    }
+    return value;
+  });
+  var val = jsonData['field1'];
+  try {
+    var ans = shortenNumber(double.tryParse(val)!);
     return ans;
   } catch (e) {
     return "N/A";
@@ -276,7 +319,7 @@ Future<dynamic> getWaterLevelfromGround(String borewellKey) async {
     return value;
   });
   // var jsonData = json.decode(res);
-  if(jsonData == "N/A") return "N/A";
+  if (jsonData == "N/A") return "N/A";
   var val = jsonData['field1'];
 
   try {
@@ -346,8 +389,6 @@ Future<String> getActivityURLDebore(String key) async {
     return a + generateChannelID(key) + c + generateReadAPI(key) + d;
   }
 }
-
-
 
 bool isActiveDebore(List<DataEntry> data) {
   if (data.isEmpty) {

@@ -5,7 +5,7 @@ var activeDeviceDecorationStyle = BoxDecoration(
   shape: BoxShape.rectangle,
   borderRadius: BorderRadius.circular(15),
   border: Border.all(color: Color(0xFF686868)),
-  color: Color.fromARGB(178, 249, 198, 43),
+  color: Color.fromARGB(153, 230, 246, 135),
 );
 
 var inactiveDeviceDecorationStyle = BoxDecoration(
