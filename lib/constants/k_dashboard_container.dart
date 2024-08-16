@@ -16,7 +16,6 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 
-
 var notSelectedStyle = GF.GoogleFonts.leagueSpartan(
   height: 1.5,
   fontSize: 18,
@@ -44,15 +43,10 @@ var defaultDeviceDataStyle = GF.GoogleFonts.leagueSpartan(
 
 var showAllDeviceButtonStyle = ElevatedButton.styleFrom(
     shape: RoundedRectangleBorder(
-      borderRadius:
-      BorderRadius.circular(7.5),
+      borderRadius: BorderRadius.circular(7.5),
     ),
     backgroundColor: Color(0xFFC6DDDB),
-    padding:
-    EdgeInsetsDirectional.fromSTEB(
-        20, 17, 20, 17));
-
-
+    padding: EdgeInsetsDirectional.fromSTEB(20, 17, 20, 17));
 
 Widget defaultDeviceName(String str) {
   return Text(
@@ -61,6 +55,7 @@ Widget defaultDeviceName(String str) {
     overflow: TextOverflow.ellipsis,
   );
 }
+
 /*
 Widget generalPage(BuildContext context, String date, bool isActive{
   return SingleChildScrollView(
@@ -891,7 +886,13 @@ Widget generalPage(BuildContext context, String date, bool isActive{
       );
 }
 */
-Widget genralDrawer(BuildContext context,void Function()? onTapAdd, void Function()? onTapDefault, void Function()? onTapEditPr, void Function()? onTapSettings, void Function()? onTapLogout) {
+Widget genralDrawer(
+    BuildContext context,
+    void Function()? onTapAdd,
+    void Function()? onTapDefault,
+    void Function()? onTapEditPr,
+    void Function()? onTapSettings,
+    void Function()? onTapLogout) {
   return Container(
     width: MediaQuery.of(context).size.width * 0.7,
     child: Drawer(
@@ -939,8 +940,8 @@ Widget genralDrawer(BuildContext context,void Function()? onTapAdd, void Functio
                   SvgPicture.asset(
                     'assets/images/change-icon.svg',
                     height: 20,
-                    colorFilter: ColorFilter.mode(
-                        Color(0xFF93DCEC), BlendMode.srcIn),
+                    colorFilter:
+                        ColorFilter.mode(Color(0xFF93DCEC), BlendMode.srcIn),
                   ),
                   SizedBox(
                     width: 15,
@@ -966,8 +967,8 @@ Widget genralDrawer(BuildContext context,void Function()? onTapAdd, void Functio
                   SvgPicture.asset(
                     'assets/images/edit-icon.svg',
                     height: 20,
-                    colorFilter: ColorFilter.mode(
-                        Color(0xFF93DCEC), BlendMode.srcIn),
+                    colorFilter:
+                        ColorFilter.mode(Color(0xFF93DCEC), BlendMode.srcIn),
                   ),
                   SizedBox(
                     width: 15,
@@ -993,8 +994,8 @@ Widget genralDrawer(BuildContext context,void Function()? onTapAdd, void Functio
                   SvgPicture.asset(
                     'assets/images/settings-icon.svg',
                     height: 20,
-                    colorFilter: ColorFilter.mode(
-                        Color(0xFF93DCEC), BlendMode.srcIn),
+                    colorFilter:
+                        ColorFilter.mode(Color(0xFF93DCEC), BlendMode.srcIn),
                   ),
                   SizedBox(
                     width: 15,
@@ -1045,8 +1046,7 @@ Widget genralDrawer(BuildContext context,void Function()? onTapAdd, void Functio
             onTap: () => {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const AboutWidget()),
+                MaterialPageRoute(builder: (context) => const AboutWidget()),
               )
             },
             child: Padding(
@@ -1116,8 +1116,8 @@ Widget genralDrawer(BuildContext context,void Function()? onTapAdd, void Functio
                   SvgPicture.asset(
                     'assets/images/logout-icon.svg',
                     height: 20,
-                    colorFilter: ColorFilter.mode(
-                        Color(0xFF93DCEC), BlendMode.srcIn),
+                    colorFilter:
+                        ColorFilter.mode(Color(0xFF93DCEC), BlendMode.srcIn),
                   ),
                   SizedBox(
                     width: 15,
@@ -1136,8 +1136,8 @@ Widget genralDrawer(BuildContext context,void Function()? onTapAdd, void Functio
       ),
     ),
   );
-
 }
+
 Widget defaultDeviceSpecsHeading(String str) {
   return Text(
     str,
@@ -1149,53 +1149,44 @@ Widget defaultDeviceSpecsHeading(String str) {
     ),
   );
 }
+
 Widget showAllDevicesButton(String str, void Function()? onPressFunction) {
   return ElevatedButton(
     onPressed: onPressFunction,
-    child: Text(str, style: GF.GoogleFonts.leagueSpartan(
-      fontSize: 18,
-      color: Color(0xFF0C0C0C),
-      fontWeight: FontWeight.w600,
-    )),
+    child: Text(str,
+        style: GF.GoogleFonts.leagueSpartan(
+          fontSize: 18,
+          color: Color(0xFF0C0C0C),
+          fontWeight: FontWeight.w600,
+        )),
     style: showAllDeviceButtonStyle,
   );
-
 }
-Widget refreshButton(String str, void Function()? onPressFunction) {
+
+Widget refreshButton(void Function()? onPressFunction) {
   return ElevatedButton.icon(
     onPressed: onPressFunction,
 
     // onPressed: () {},
     icon: Icon(
-      CupertinoIcons
-          .arrow_2_squarepath,
+      CupertinoIcons.arrow_2_squarepath,
       size: 16.0,
-      color:
-      Color(0xFF0C0C0C),
+      color: Color(0xFF0C0C0C),
     ),
     label: Text(
       'Refresh',
-      style: GF.GoogleFonts
-          .leagueSpartan(
+      style: GF.GoogleFonts.leagueSpartan(
         fontSize: 16,
-        color:
-        Color(0xFF0C0C0C),
-        fontWeight:
-        FontWeight.w500,
+        color: Color(0xFF0C0C0C),
+        fontWeight: FontWeight.w500,
       ),
     ),
-    style: ElevatedButton
-        .styleFrom(
-      shape:
-      RoundedRectangleBorder(
-        borderRadius:
-        BorderRadius
-            .circular(
-            7.5),
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(7.5),
       ),
-      backgroundColor:
-      Color(0xFFC6DDDB),
+      padding: EdgeInsets.all(20),
+      backgroundColor: Color(0xFFC6DDDB),
     ),
   );
-
 }

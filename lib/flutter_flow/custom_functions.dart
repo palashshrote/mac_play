@@ -218,9 +218,12 @@ String? boreWell(String? channel) {
 
 Future<dynamic> getFlowRate(String meterKey) async {
   String str1 = 'https://api.thingspeak.com/channels/';
-  String str2 = '/fields/2/last.json?api_key=';
-  String apiUrl =
-      str1 + generateChannelID(meterKey) + str2 + generateReadAPI(meterKey);
+  String str2 = '/feeds.json?api_key=';
+  String apiUrl = str1 +
+      generateChannelID(meterKey) +
+      str2 +
+      generateReadAPI(meterKey) +
+      '&results=1';
   String res = await fetchData(apiUrl);
   var jsonData = json.decode(res, reviver: (key, value) {
     if (value == null) {
@@ -228,9 +231,11 @@ Future<dynamic> getFlowRate(String meterKey) async {
     }
     return value;
   });
-  var val = jsonData['field2'];
+  var val = jsonData['feeds'][0]['field2'];
   try {
+    // if (val == null) return "N/A";
     var ans = double.tryParse(val);
+    if (ans == null) return "N/A";
     return ans;
   } catch (e) {
     return "N/A";
@@ -260,9 +265,12 @@ Future<dynamic> getFlowRateTest(String meterKey) async {
 
 Future<dynamic> getReading(String meterKey) async {
   String str1 = 'https://api.thingspeak.com/channels/';
-  String str2 = '/fields/1/last.json?api_key=';
-  String apiUrl =
-      str1 + generateChannelID(meterKey) + str2 + generateReadAPI(meterKey);
+  String str2 = '/feeds.json?api_key=';
+  String apiUrl = str1 +
+      generateChannelID(meterKey) +
+      str2 +
+      generateReadAPI(meterKey) +
+      "&results=1";
   String res = await fetchData(apiUrl);
   var jsonData = json.decode(res, reviver: (key, value) {
     if (value == null) {
@@ -270,10 +278,11 @@ Future<dynamic> getReading(String meterKey) async {
     }
     return value;
   });
-  var val = jsonData['field1'];
+  var val = jsonData['feeds'][0]['field1'];
   try {
+    // if (val == null) return "N/A";
     var ans = double.tryParse(val);
-
+    if (ans == null) return "N/A";
     return ans;
   } catch (e) {
     return "N/A";

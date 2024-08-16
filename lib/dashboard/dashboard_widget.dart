@@ -2293,7 +2293,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             SizedBox(
                                               height: 20,
                                             ),
-                                            refreshButton("Refresh", () async {
+                                            refreshButton(() async {
                                               _model.waterLevelFromGround =
                                                   await functions
                                                       .getWaterLevelfromGround(

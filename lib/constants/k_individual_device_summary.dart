@@ -57,12 +57,12 @@ Widget dataCardDecoration(List<Widget> colChildren) {
   );
 }
 
-Widget dataCard(String data, bool isDataFetched) {
+Widget dataCard(String data, bool isDeviceActive) {
   return Row(
     //container1 row2
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      isDataFetched
+      isDeviceActive
           ? Text(
               data + 'L',
               textAlign: TextAlign.center,
@@ -77,12 +77,12 @@ Widget dataCard(String data, bool isDataFetched) {
   );
 }
 
-Widget dataCardImproved(
-    bool isDataFetched, Future<dynamic>? futureFunction, bool? tellStatus) {
+Widget dataCardImproved(bool isDeviceActive, Future<dynamic>? futureFunction,
+    bool? tellStatus, String? unit) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      isDataFetched
+      isDeviceActive
           ? FutureBuilder<dynamic>(
               future: futureFunction,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -98,7 +98,14 @@ Widget dataCardImproved(
                   var value = snapshot.data;
                   if (value == true) value = "Active";
                   if (value == false) value = "Inactive";
-                  return Text(value.toString(),
+                  String ans = "";
+                  if (unit == null)
+                    ans = value;
+                  else {
+                    ans = value.toString();
+                    if (ans != "N/A") ans = ans + " " + unit;
+                  }
+                  return Text(ans,
                       textAlign: TextAlign.center,
                       style: tellStatus == null
                           ? liveDataStyle
@@ -118,7 +125,15 @@ Widget dataCardImproved(
                 }
               },
             )
-          : CircularProgressIndicator(),
+          : tellStatus == null
+              ? Text(
+                  "N/A",
+                  style: activeDeviceStatusStyle,
+                )
+              : Text(
+                  "Inactive",
+                  style: inactiveDeviceStatusStyle,
+                ),
     ],
   );
 }

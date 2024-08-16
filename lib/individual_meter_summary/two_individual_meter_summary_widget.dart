@@ -1,3 +1,4 @@
+import 'package:hydrow/constants/k_dashboard_container.dart';
 import 'package:hydrow/constants/k_individual_device_summary.dart';
 
 import '/backend/backend.dart';
@@ -34,10 +35,8 @@ class _TwoIndividualMeterSummaryWidgetState
   final _unfocusNode = FocusNode();
   String dropdownValuePravahTotal = 'Daily';
   String dropdownValuePravahRate = 'Daily';
-  bool dataFetched = false;
+  bool isDeviceActive = false;
   // bool m_active = false;
-  String m_reading = "N/A";
-  String m_flow_rate = "N/A";
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -52,33 +51,26 @@ class _TwoIndividualMeterSummaryWidgetState
       ],
     ),
   };
-  void _initializeHelper() async {
-    // bool fetchIsActive =
-    //     await functions.checkActivityPravah(widget.docReference!.meterKey!);
-    if (widget.isActive == true) {
-      var fetch_m_reading =
-          await functions.getReadingTest(widget.docReference!.meterKey!);
-      var fetch_m_flow_rate =
-          await functions.getFlowRateTest(widget.docReference!.meterKey!);
-      print("Reading TEst : ${fetch_m_reading}");
-      print("Flow TEst : ${fetch_m_flow_rate}");
-      setState(() {
-        // isActive = fetchIsActive;
-
-        m_reading = fetch_m_reading;
-        m_flow_rate = fetch_m_flow_rate;
-        dataFetched = true;
-      });
-    } else {
-      print("Inactive state");
-    }
-  }
+  // void _initializeHelper() async {
+  //   // bool fetchIsActive =
+  //   //     await functions.checkActivityPravah(widget.docReference!.meterKey!);
+  //   if (widget.isActive == true) {
+  //     setState(() {
+  //       // isActive = fetchIsActive;
+  //       isDeviceActive = true;
+  //     });
+  //   } else {
+  //     print("Inactive state");
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => IndividualMeterSummaryModel());
-    _initializeHelper();
+    isDeviceActive = widget.isActive!;
+    // _initializeHelper();
+
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.lockOrientation();
@@ -144,21 +136,22 @@ class _TwoIndividualMeterSummaryWidgetState
                       dataCardDecoration([
                         cardHeading("Reading"),
                         sbox(9, null),
-                        // dataCard(m_reading, dataFetched),
                         dataCardImproved(
-                            dataFetched,
+                            isDeviceActive,
                             functions
                                 .getReading(widget.docReference!.meterKey!),
-                            null),
+                            null,
+                            "L"),
                       ]),
                       dataCardDecoration([
                         cardHeading("Flow Rate"),
                         sbox(9, null),
                         dataCardImproved(
-                            dataFetched,
+                            isDeviceActive,
                             functions
                                 .getFlowRate(widget.docReference!.meterKey!),
-                            null),
+                            null,
+                            "ml/s"),
                       ]),
                     ],
                   ),
@@ -172,10 +165,11 @@ class _TwoIndividualMeterSummaryWidgetState
                         cardHeading("Device status"),
                         sbox(9, null),
                         dataCardImproved(
-                            dataFetched,
+                            isDeviceActive,
                             functions.checkActivityDebore(
                                 widget.docReference!.meterKey!),
-                            true),
+                            true,
+                            null),
                       ]),
                     ],
                   ),
@@ -184,9 +178,17 @@ class _TwoIndividualMeterSummaryWidgetState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    refreshButton(() async {
+                      isDeviceActive = await functions
+                          .checkActivityPravah(widget.docReference!.meterKey!);
+
+                      isDeviceActive = true;
+                      print("Check status : ${isDeviceActive}");
+                      setState(() {});
+                    })
+                    /*
                     ElevatedButton.icon(
                       onPressed: () async {
-                        print("Yes device is ${widget.isActive}");
                         setState(() {});
                       },
                       icon: Icon(
@@ -210,6 +212,7 @@ class _TwoIndividualMeterSummaryWidgetState
                         padding: EdgeInsetsDirectional.fromSTEB(20, 17, 20, 17),
                       ),
                     )
+                  */
                   ],
                 ),
                 // Total Flow Chart
