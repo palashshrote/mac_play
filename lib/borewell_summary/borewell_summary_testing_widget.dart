@@ -199,8 +199,36 @@ class _BorewellSummaryTestingWidgetState
                                 Spacer(),
                                 viewMoreBtn(
                                   "View more",
-                                  () {
+                                  () async {
+                                    _model.outputIsActive =
+                                        await checkActivityPravah(
+                                            listViewBorewellRecord
+                                                .borewellKey!);
                                     print(listViewBorewellRecord.borewellKey!);
+                                    // print(listViewBorewellRecord.borewellKey!);
+                                    try {
+                                      context.pushNamed(
+                                        'TwoIndividualBorewellSummary',
+                                        queryParams: {
+                                          'docReference': serializeParam(
+                                                listViewBorewellRecord,
+                                                ParamType.Document,
+                                              ) ??
+                                              '',
+                                          'isActive': serializeParam(
+                                                _model.outputIsActive,
+                                                ParamType.bool,
+                                              ) ??
+                                              '',
+                                        },
+                                        extra: <String, dynamic>{
+                                          'docReference': listViewBorewellRecord,
+                                        },
+                                      );
+                                    } catch (e) {
+                                      print('Navigation failed: $e');
+                                    }
+                                    setState(() {});
                                   },
                                 ),
                                 SizedBox(width: 20.0),

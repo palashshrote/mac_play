@@ -12,6 +12,7 @@ import 'package:hydrow/borewell_edit/borewell_edit_widget.dart';
 import 'package:hydrow/borewell_summary/borewell_summary_testing_widget.dart';
 import 'package:hydrow/borewell_summary/borewell_summary_widget.dart';
 import 'package:hydrow/individual_borewell_summary/individual_borewell_summary_widget.dart';
+import 'package:hydrow/individual_borewell_summary/two_individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/two_individual_meter_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
@@ -249,6 +250,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 docReference:
                     params.getParam('docReference', ParamType.Document),
                 waterLevel: params.getParam('waterLevel', ParamType.double),
+              ),
+            ),
+            FFRoute(
+              name: 'TwoIndividualBorewellSummary',
+              path: 'twoIndividualBorewellSummary',
+              asyncParams: {
+                'docReference':
+                    getDoc(['users', 'meter'], BorewellRecord.serializer),
+              },
+              builder: (context, params) => TwoIndividualBorewellSummaryWidget(
+                docReference:
+                    params.getParam('docReference', ParamType.Document),
+                isActive: params.getParam('isActive', ParamType.bool),
               ),
             ),
             FFRoute(

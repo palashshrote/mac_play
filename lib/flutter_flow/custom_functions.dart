@@ -242,26 +242,6 @@ Future<dynamic> getFlowRate(String meterKey) async {
   }
 }
 
-Future<dynamic> getFlowRateTest(String meterKey) async {
-  String str1 = 'https://api.thingspeak.com/channels/';
-  String str2 = '/fields/2/last.json?api_key=';
-  String apiUrl =
-      str1 + generateChannelID(meterKey) + str2 + generateReadAPI(meterKey);
-  String res = await fetchData(apiUrl);
-  var jsonData = json.decode(res, reviver: (key, value) {
-    if (value == null) {
-      return "N/A";
-    }
-    return value;
-  });
-  var val = jsonData['field2'];
-  try {
-    var ans = (double.tryParse(val)).toString();
-    return ans;
-  } catch (e) {
-    return "N/A";
-  }
-}
 
 Future<dynamic> getReading(String meterKey) async {
   String str1 = 'https://api.thingspeak.com/channels/';
@@ -289,51 +269,31 @@ Future<dynamic> getReading(String meterKey) async {
   }
 }
 
-Future<dynamic> getReadingTest(String meterKey) async {
-  String str1 = 'https://api.thingspeak.com/channels/';
-  String str2 = '/fields/1/last.json?api_key=';
-  String apiUrl =
-      str1 + generateChannelID(meterKey) + str2 + generateReadAPI(meterKey);
-  String res = await fetchData(apiUrl);
-  var jsonData = json.decode(res, reviver: (key, value) {
-    if (value == null) {
-      return "N/A";
-    }
-    return value;
-  });
-  var val = jsonData['field1'];
-  try {
-    var ans = shortenNumber(double.tryParse(val)!);
-    return ans;
-  } catch (e) {
-    return "N/A";
-  }
-}
 
 Future<dynamic> getWaterLevelfromGround(String borewellKey) async {
   String str1 = 'https://api.thingspeak.com/channels/';
-  String str2 = '/fields/1/last.json?api_key=';
+  String str2 = '/feeds.json?api_key=';
   String apiUrl = str1 +
       generateChannelID(borewellKey) +
       str2 +
-      generateReadAPI(borewellKey);
+      generateReadAPI(borewellKey) + "&results=1";
   String res = await fetchData(apiUrl);
-  print("All well ${generateChannelID(borewellKey)}");
+  // print("All well ${generateChannelID(borewellKey)}");
   var jsonData = json.decode(res, reviver: (key, value) {
     if (value == null || value == -1) {
-      print("REturning NA");
+      // print("REturning NA");
       return 'N/A';
     }
-    print("Returning ${value}");
+    // print("Returning ${value}");
     return value;
   });
   // var jsonData = json.decode(res);
   if (jsonData == "N/A") return "N/A";
-  var val = jsonData['field1'];
+  var val = jsonData['feeds'][0]['field1'];
 
   try {
     var ans = double.tryParse(val);
-    print("Went in ${ans}");
+    if(ans == null) return "N/A";
     return ans;
   } catch (e) {
     return "N/A";
