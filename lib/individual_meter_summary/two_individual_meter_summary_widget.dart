@@ -1,3 +1,5 @@
+import 'package:hydrow/constants/k_individual_device_summary.dart';
+
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -139,100 +141,25 @@ class _TwoIndividualMeterSummaryWidgetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        width: 140,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Color(0xFF686868)),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              //container1 //row1
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Reading',
-                                    textAlign: TextAlign.center,
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      fontSize: 16,
-                                      color: Color(0xFFFFFFFF),
-                                      fontWeight: FontWeight.normal,
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 9,
-                            ),
-                            Row(
-                              //container1 row2
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                dataFetched
-                                    ? Text(
-                                        m_reading + 'L',
-                                        textAlign: TextAlign.center,
-                                        style: GF.GoogleFonts.leagueSpartan(
-                                          fontSize: 24,
-                                          color: Color(0xFF91D9E9),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                    : CircularProgressIndicator(),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 140,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Color(0xFF686868)),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              //container1 //row1
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Flow Rate',
-                                    textAlign: TextAlign.center,
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      fontSize: 16,
-                                      color: Color(0xFFFFFFFF),
-                                      fontWeight: FontWeight.normal,
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 9,
-                            ),
-                            Row(
-                              //container1 row2
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                dataFetched
-                                    ? Text(
-                                        m_flow_rate + ' kL/s',
-                                        textAlign: TextAlign.center,
-                                        style: GF.GoogleFonts.leagueSpartan(
-                                          fontSize: 24,
-                                          color: Color(0xFF91D9E9),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                    : CircularProgressIndicator(),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
+                      dataCardDecoration([
+                        cardHeading("Reading"),
+                        sbox(9, null),
+                        // dataCard(m_reading, dataFetched),
+                        dataCardImproved(
+                            dataFetched,
+                            functions
+                                .getReading(widget.docReference!.meterKey!),
+                            null),
+                      ]),
+                      dataCardDecoration([
+                        cardHeading("Flow Rate"),
+                        sbox(9, null),
+                        dataCardImproved(
+                            dataFetched,
+                            functions
+                                .getFlowRate(widget.docReference!.meterKey!),
+                            null),
+                      ]),
                     ],
                   ),
                 ),
@@ -241,51 +168,15 @@ class _TwoIndividualMeterSummaryWidgetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        width: 140,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Color(0xFF686868)),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              //container1 //row1
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Device Status',
-                                    textAlign: TextAlign.center,
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      fontSize: 16,
-                                      color: Color(0xFFFFFFFF),
-                                      fontWeight: FontWeight.normal,
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 9,
-                            ),
-                            Row(
-                              //container1 row2
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(widget.isActive! ? 'Active' : 'Inactive',
-                                    textAlign: TextAlign.center,
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      fontSize: 24,
-                                      color: widget.isActive!
-                                          ? Color(0xFF91E995)
-                                          : Color(0xFFFB7070),
-                                      fontWeight: FontWeight.w600,
-                                    )),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
+                      dataCardDecoration([
+                        cardHeading("Device status"),
+                        sbox(9, null),
+                        dataCardImproved(
+                            dataFetched,
+                            functions.checkActivityDebore(
+                                widget.docReference!.meterKey!),
+                            true),
+                      ]),
                     ],
                   ),
                 ),

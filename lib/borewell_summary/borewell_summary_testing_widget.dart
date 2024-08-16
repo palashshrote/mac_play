@@ -1,5 +1,5 @@
 import 'package:hydrow/backend/schema/borewell_record.dart';
-import 'package:hydrow/constants/show_all_device_style.dart';
+import 'package:hydrow/constants/k_show_all_device_style.dart';
 import 'package:hydrow/flutter_flow/custom_functions.dart';
 import '/auth/auth_util.dart';
 import '/backend/backend.dart';
