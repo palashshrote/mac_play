@@ -135,6 +135,37 @@ class _DashboardWidgetState extends State<DashboardWidget>
     widget.tankKey = FFAppState().tankKey;
     List<Widget> drawers = <Widget>[
       // Starr Drawer
+      genralDrawer(
+        context,
+        () async {
+          context.pushNamed('AddDeviceQRScan');
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PrimaryTankWidget()),
+          );
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EditProfileWidget()),
+          );
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EditDeviceWidget()),
+          );
+        },
+        () async {
+          GoRouter.of(context).prepareAuthEvent();
+          await signOut();
+
+          context.goNamedAuth('LogInSignUp', mounted);
+        },
+      ),
+      /*
       Container(
         width: MediaQuery.of(context).size.width * 0.7,
         child: Drawer(
@@ -404,547 +435,72 @@ class _DashboardWidgetState extends State<DashboardWidget>
           ),
         ),
       ),
-      // Pravah Drawer
-      Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        child: Drawer(
-          backgroundColor: Color(0xFF0C0C0C),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 60),
-              // Drawer Element
-              InkWell(
-                onTap: () async {
-                  context.pushNamed('AddDeviceQRScanPravah');
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.add,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Add Device',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PrimaryMeterWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/change-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Change Defaults',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditProfileWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/edit-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Edit Profile',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditDevicePravahWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/settings-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Settings',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TermsandCondition()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.doc_text,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Terms & Conditions',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AboutWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.info_circle,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('About',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ContactUsWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.ellipses_bubble,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Contact Us',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () async {
-                  GoRouter.of(context).prepareAuthEvent();
-                  await signOut();
+      */ // Pravah Drawer
+      genralDrawer(
+        context,
+        () async {
+          context.pushNamed('AddDeviceQRScanPravah');
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PrimaryMeterWidget()),
+          );
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EditProfileWidget()),
+          );
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const EditDevicePravahWidget()),
+          );
+        },
+        () async {
+          GoRouter.of(context).prepareAuthEvent();
+          await signOut();
 
-                  context.goNamedAuth('LogInSignUp', mounted);
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/logout-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Logout',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+          context.goNamedAuth('LogInSignUp', mounted);
+        },
       ),
       //debore drawer
-      Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        child: Drawer(
-          backgroundColor: Color(0xFF0C0C0C),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 60),
-              // Drawer Element
-              InkWell(
-                onTap: () async {
-                  context.pushNamed('AddDeviceQRScanDebore');
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.add,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Add Debore',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PrimaryBorewellWidget(),
-                    ),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/change-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Change Debore',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditProfileWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/edit-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Edit Profile',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const EditDeviceDeboreWidget(),
-                    ),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/settings-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Debore Settings',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TermsandCondition()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.doc_text,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Terms & Conditions',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AboutWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.info_circle,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('About',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ContactUsWidget()),
-                  )
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.ellipses_bubble,
-                        size: 20,
-                        color: Color(0xFF93DCEC),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Contact Us',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () async {
-                  GoRouter.of(context).prepareAuthEvent();
-                  await signOut();
+      genralDrawer(
+        context,
+        () async {
+          context.pushNamed('AddDeviceQRScanDebore');
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PrimaryBorewellWidget(),
+            ),
+          );
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const EditProfileWidget()),
+          );
+        },
+        () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EditDeviceDeboreWidget(),
+            ),
+          );
+        },
+        () async {
+          GoRouter.of(context).prepareAuthEvent();
+          await signOut();
 
-                  context.goNamedAuth('LogInSignUp', mounted);
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/logout-icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            Color(0xFF93DCEC), BlendMode.srcIn),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Logout',
-                          style: GF.GoogleFonts.leagueSpartan(
-                            color: Color(0xFFFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+          context.goNamedAuth('LogInSignUp', mounted);
+        },
       ),
     ];
     List<Widget> pages = <Widget>[
@@ -1714,16 +1270,16 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           // Check if _model.output is null or any other failure condition
                                           if (_model.output == null) {
                                             // Handle the case where the output is null
-                                            // print(
-                                            //     'Action failed: output is null');
+                                            print(
+                                                'Action failed: output is null');
                                           } else {
                                             // Handle the successful case
-                                            // print(
-                                            // 'Action succeeded: output is ${_model.output}');
+                                            print(
+                                                'Action succeeded: output is ${_model.output}');
                                           }
                                         } catch (e) {
                                           // Handle any exceptions that occur
-                                          // print('An error occurred: $e');
+                                          print('An error occurred: $e');
                                         }
 
                                         setState(() {
@@ -2469,6 +2025,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                showAllDevicesButton("Pr Test", () {
+                                  context.pushNamed('MeterSummaryTesting');
+                                }),
                                 ElevatedButton(
                                   onPressed: () async {
                                     setState(() {
@@ -2476,13 +2035,12 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                     });
                                     //Earlier I've applied try catch block with this as I've encountered some bugs
                                     _model.outputPravah =
-                                          await newCustomActionPravah(
-                                        (currentUserDocument?.meterKeyList
-                                                    ?.toList() ??
-                                                [])
-                                            .toList(),
-                                      );
-
+                                        await newCustomActionPravah(
+                                      (currentUserDocument?.meterKeyList
+                                                  ?.toList() ??
+                                              [])
+                                          .toList(),
+                                    );
 
                                     setState(() {
                                       _isLoading = false;
@@ -2648,29 +2206,27 @@ class _DashboardWidgetState extends State<DashboardWidget>
                           Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              SizedBox(height: 50,),
-
+                              SizedBox(
+                                height: 50,
+                              ),
                               Stack(
                                 children: [
                                   //Image
                                   Positioned(
                                       child: Center(
                                     child: Container(
-                                        height: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                            0.75,
-                                        width: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                            0.75,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
                                         decoration: BoxDecoration(
                                           color: Color(0xC00C0C0C),
                                           shape: BoxShape.circle,
                                         ),
-                                        padding:
-                                            EdgeInsetsDirectional.fromSTEB(
-                                                50, 0, 50, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            50, 0, 50, 0),
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -2696,8 +2252,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                 .borewellKey!),
                                                     builder: (BuildContext
                                                             context,
-                                                        AsyncSnapshot<
-                                                                dynamic>
+                                                        AsyncSnapshot<dynamic>
                                                             snapshot) {
                                                       if (snapshot
                                                               .connectionState ==
@@ -2711,15 +2266,22 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                       } else {
                                                         var value =
                                                             snapshot.data;
-                                                        return value.toString() == "N/A" ? Text("N/A", style: defaultDeviceNADataStyle,) :  Text(
-                                                          value.toString() +
-                                                              "L",
-                                                          textAlign:
-                                                              TextAlign
-                                                                  .center,
-                                                          style:
-                                                              defaultDeviceDataStyle,
-                                                        );
+                                                        return value.toString() ==
+                                                                "N/A"
+                                                            ? Text(
+                                                                "N/A",
+                                                                style:
+                                                                    defaultDeviceNADataStyle,
+                                                              )
+                                                            : Text(
+                                                                value.toString() +
+                                                                    "L",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style:
+                                                                    defaultDeviceDataStyle,
+                                                              );
                                                       }
                                                     },
                                                   )
@@ -2734,12 +2296,11 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             refreshButton("Refresh", () async {
                                               _model.waterLevelFromGround =
                                                   await functions
-                                                  .getWaterLevelfromGround(
-                                                  containerBorewellRecord
-                                                      .borewellKey!);
+                                                      .getWaterLevelfromGround(
+                                                          containerBorewellRecord
+                                                              .borewellKey!);
                                               setState(() {});
                                             }),
-
                                           ],
                                         )),
                                   )),
@@ -2853,18 +2414,17 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-
-                                    showAllDevicesButton("Show all Debore", () async {
+                                    showAllDevicesButton("Show all Debore",
+                                        () async {
                                       setState(() {
                                         _isLoading = true;
                                       });
                                       //Earlier I've applied try catch block with this as I've encountered some bugs
                                       _model.outputDebore =
-                                      await newCustomActionDebore(
-                                        (currentUserDocument
-                                            ?.borewellKeyList
-                                            ?.toList() ??
-                                            [])
+                                          await newCustomActionDebore(
+                                        (currentUserDocument?.borewellKeyList
+                                                    ?.toList() ??
+                                                [])
                                             .toList(),
                                       );
                                       setState(() {
@@ -2881,8 +2441,10 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         }.withoutNulls,
                                       );
                                     }),
-                                    showAllDevicesButton("Testing", () { context.pushNamed('BorewellSummaryTesting'); }),
-
+                                    showAllDevicesButton("Testing", () {
+                                      context
+                                          .pushNamed('BorewellSummaryTesting');
+                                    }),
                                   ],
                                 ),
                               ),

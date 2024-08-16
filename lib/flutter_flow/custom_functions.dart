@@ -347,6 +347,8 @@ Future<String> getActivityURLDebore(String key) async {
   }
 }
 
+
+
 bool isActiveDebore(List<DataEntry> data) {
   if (data.isEmpty) {
     return false;

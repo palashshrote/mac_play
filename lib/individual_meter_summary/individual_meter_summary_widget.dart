@@ -43,6 +43,7 @@ class _IndividualMeterSummaryWidgetState
   String dropdownValuePravahTotal = 'Daily';
   String dropdownValuePravahRate = 'Daily';
   bool isActive = false;
+  
 
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(

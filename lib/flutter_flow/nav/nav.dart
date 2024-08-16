@@ -14,6 +14,7 @@ import 'package:hydrow/borewell_summary/borewell_summary_widget.dart';
 import 'package:hydrow/individual_borewell_summary/individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
+import 'package:hydrow/meter_summary/meter_summary_testing_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
@@ -105,6 +106,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'BorewellSummaryTesting',
               path: 'borewellSummaryTesting',
               builder: (context, params) => BorewellSummaryTestingWidget(),
+            ),
+            FFRoute(
+              name: 'MeterSummaryTesting',
+              path: 'meterSummaryTesting',
+              builder: (context, params) => MeterSummaryTestingWidget(),
             ),
             FFRoute(
               name: 'AddDeviceQRScanDebore',

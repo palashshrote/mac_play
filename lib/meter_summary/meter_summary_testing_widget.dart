@@ -13,20 +13,20 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:provider/provider.dart';
-import 'borewell_summary_testing_model.dart';
-export 'borewell_summary_testing_model.dart';
+import 'meter_summary_testing_model.dart';
+export 'meter_summary_testing_model.dart';
 
-class BorewellSummaryTestingWidget extends StatefulWidget {
-  const BorewellSummaryTestingWidget({super.key});
+class MeterSummaryTestingWidget extends StatefulWidget {
+  const MeterSummaryTestingWidget({super.key});
 
   @override
-  State<BorewellSummaryTestingWidget> createState() =>
-      _BorewellSummaryTestingWidgetState();
+  State<MeterSummaryTestingWidget> createState() =>
+      _MeterSummaryTestingWidgetState();
 }
 
-class _BorewellSummaryTestingWidgetState
-    extends State<BorewellSummaryTestingWidget> with TickerProviderStateMixin {
-  late BorewellSummaryTestingModel _model;
+class _MeterSummaryTestingWidgetState extends State<MeterSummaryTestingWidget>
+    with TickerProviderStateMixin {
+  late MeterSummaryTestingModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
   final animationsMap = {
@@ -50,11 +50,12 @@ class _BorewellSummaryTestingWidgetState
       ],
     ),
   };
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _model = createModel(context, () => BorewellSummaryTestingModel());
+    _model = createModel(context, () => MeterSummaryTestingModel());
     //On page load action
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.lockOrientation();
@@ -78,7 +79,7 @@ class _BorewellSummaryTestingWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'All debore testing',
+          'All Pravah testing',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -90,8 +91,8 @@ class _BorewellSummaryTestingWidgetState
       body: SafeArea(
           child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-        child: StreamBuilder<List<BorewellRecord>>(
-          stream: queryBorewellRecord(
+        child: StreamBuilder<List<MeterRecord>>(
+          stream: queryMeterRecord(
             parent: currentUserReference,
           ),
           builder: (context, snapshot) {
@@ -107,8 +108,8 @@ class _BorewellSummaryTestingWidgetState
                 ),
               );
             }
-            List<BorewellRecord> listViewBorewellRecordList = snapshot.data!;
-            if (listViewBorewellRecordList.isEmpty) {
+            List<MeterRecord> listViewMeterRecordList = snapshot.data!;
+            if (listViewMeterRecordList.isEmpty) {
               return Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Center(
@@ -127,14 +128,13 @@ class _BorewellSummaryTestingWidgetState
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                itemCount: listViewBorewellRecordList.length,
+                itemCount: listViewMeterRecordList.length,
                 itemBuilder: (context, listViewIndex) {
-                  final listViewBorewellRecord =
-                      listViewBorewellRecordList[listViewIndex];
+                  final listViewMeterRecord =
+                      listViewMeterRecordList[listViewIndex];
 
                   return FutureBuilder<bool>(
-                    future: checkActivityDebore(
-                        listViewBorewellRecord.borewellKey!),
+                    future: checkActivityDebore(listViewMeterRecord.meterKey!),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         // Show a placeholder or loading indicator while the Future is resolving
@@ -169,7 +169,7 @@ class _BorewellSummaryTestingWidgetState
                           ),
                         );
                       } else if (snapshot.hasData) {
-                        bool isBorewellActive = snapshot.data!;
+                        bool isMeterActive = snapshot.data!;
 
                         // Display the result once the Future has resolved
                         return Padding(
@@ -177,7 +177,7 @@ class _BorewellSummaryTestingWidgetState
                               15.0, 20.0, 15.0, 0.0),
                           child: Container(
                             height: 100,
-                            decoration: isBorewellActive
+                            decoration: isMeterActive
                                 ? activeDeviceDecorationStyle
                                 : inactiveDeviceDecorationStyle,
                             child: Row(
@@ -188,7 +188,7 @@ class _BorewellSummaryTestingWidgetState
                                 Padding(
                                   padding: const EdgeInsets.only(left: 16.0),
                                   child: Text(
-                                    listViewBorewellRecord.borewellName!,
+                                    listViewMeterRecord.meterName!,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       color: Color(0xFFFFFFFF),
                                       fontSize: 20,
@@ -200,7 +200,7 @@ class _BorewellSummaryTestingWidgetState
                                 viewMoreBtn(
                                   "View more",
                                   () {
-                                    print(listViewBorewellRecord.borewellKey!);
+                                    print(listViewMeterRecord.meterKey!);
                                   },
                                 ),
                                 SizedBox(width: 20.0),
