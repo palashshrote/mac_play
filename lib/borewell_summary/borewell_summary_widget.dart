@@ -195,49 +195,7 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: [
-                                          /*
-                                          Column(
-                                              // row2 column
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(//row2 subrow1
-                                                    children: [
-                                                  Text(
-                                                    isActive == "true"
-                                                        ? getJsonField(
-                                                                    metersItem,
-                                                                    r'''$.FlowRate''')
-                                                                .toString() +
-                                                            ' kL/s'
-                                                        : 'N/A',
-                                                    style: GF.GoogleFonts
-                                                        .leagueSpartan(
-                                                      fontSize: 28,
-                                                      color: Color(0xFF91D9E9),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ]),
-                                                SizedBox(
-                                                  height: 7,
-                                                ),
-                                                Row(//row2 subrow2
-                                                    children: [
-                                                  Text(
-                                                    'Flow Rate',
-                                                    style: GF.GoogleFonts
-                                                        .leagueSpartan(
-                                                      fontSize: 18,
-                                                      color: Color(0xFFFFFFFF),
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    ),
-                                                  ),
-                                                ]),
-                                              ]),
-                                            */
+                                          
                                           ElevatedButton(
                                             onPressed: () async {
                                               _model.outputWaterLevel =

@@ -97,8 +97,8 @@ Widget dataCardImproved(bool isDeviceActive, Future<dynamic>? futureFunction,
                 } else if (snapshot.hasData) {
                   var value = snapshot.data;
                   if (value == true) value = "Active";
-                  if (value == false) value = "Inactive";
                   String ans = "";
+                  if (value == false) value = "Inactive";
                   if (unit == null)
                     ans = value;
                   else {
@@ -109,8 +109,8 @@ Widget dataCardImproved(bool isDeviceActive, Future<dynamic>? futureFunction,
                       textAlign: TextAlign.center,
                       style: tellStatus == null
                           ? liveDataStyle
-                          : tellStatus
-                              ? activeDeviceStatusStyle
+                          : (tellStatus && value == "Active") ?
+                               activeDeviceStatusStyle
                               : inactiveDeviceStatusStyle);
                 } else {
                   return Padding(
@@ -128,7 +128,7 @@ Widget dataCardImproved(bool isDeviceActive, Future<dynamic>? futureFunction,
           : tellStatus == null
               ? Text(
                   "N/A",
-                  style: activeDeviceStatusStyle,
+                  style: liveDataStyle,
                 )
               : Text(
                   "Inactive",

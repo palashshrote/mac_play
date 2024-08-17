@@ -79,7 +79,7 @@ class _TwoIndividualBorewellSummaryWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          '(TESting) Meter Details',
+          '(TESting) Borewell Details',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -147,7 +147,7 @@ class _TwoIndividualBorewellSummaryWidgetState
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     refreshButton(() async {
-                      isDeviceActive = await functions.checkActivityPravah(
+                      isDeviceActive = await functions.checkActivityDebore(
                           widget.docReference!.borewellKey!);
 
                       isDeviceActive = true;
@@ -228,7 +228,7 @@ class _TwoIndividualBorewellSummaryWidgetState
                   child: Container(
                     height: 200,
                     child: FutureBuilder<SfCartesianChart>(
-                      future: functions.getChartPravahTotal(
+                      future: functions.getChartDebore(
                           widget.docReference!.borewellKey!,
                           dropdownValueDeboreTotal),
                       builder: (context, snapshot) {
@@ -245,7 +245,6 @@ class _TwoIndividualBorewellSummaryWidgetState
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
