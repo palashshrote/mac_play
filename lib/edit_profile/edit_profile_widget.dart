@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'edit_profile_model.dart';
 export 'edit_profile_model.dart';
@@ -241,34 +242,46 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                               0.0, 20.0, 0.0, 30.0),
                           child: ElevatedButton(
                             onPressed: () async {
-                              final usersUpdateData = createUsersRecordData(
-                                displayName: _model.textController1.text,
-                                phoneNumber: _model.textController2.text,
-                              );
-                              await currentUserReference!
-                                  .update(usersUpdateData);
-                              await showDialog(
-                                context: context,
-                                builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    title: Text('Saved'),
+                              if (!await InternetConnectionCheckerPlus()
+                                  .hasConnection) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
                                     content:
-                                        Text('Changes saved successfully.'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        child: Text('Ok'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                              // context.pushNamed('Dashboard');
-                              //THREE TIMES to reach back to the hompage
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              // Navigator.pop(context);
+                                        Text('Please connect to the internet'),
+                                  ),
+                                );
+                              } else {
+                                final usersUpdateData = createUsersRecordData(
+                                  displayName: _model.textController1.text,
+                                  phoneNumber: _model.textController2.text,
+                                );
+                                await currentUserReference!
+                                    .update(usersUpdateData);
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: Text('Saved'),
+                                      content:
+                                          Text('Changes saved successfully.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          child: Text('Ok'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                // context.pushNamed('Dashboard');
+                                //THREE TIMES to reach back to the hompage
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                // Navigator.pop(context);
+                              }
                             },
                             child: Text(
                               'Save Changes',

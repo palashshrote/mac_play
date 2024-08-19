@@ -1,5 +1,5 @@
 import 'package:hydrow/backend/schema/borewell_record.dart';
-
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '/auth/auth_util.dart';
 import '/backend/backend.dart';
 import '../backend/schema/borewell_record.dart';
@@ -86,7 +86,9 @@ class _PrimaryBorewellWidgetState extends State<PrimaryBorewellWidget>
       ),
       body: SafeArea(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+          onTap: () {
+            return FocusScope.of(context).requestFocus(_unfocusNode);
+          },
           child: StreamBuilder<List<BorewellRecord>>(
             stream: queryBorewellRecord(
               parent: currentUserReference,
@@ -138,14 +140,26 @@ class _PrimaryBorewellWidgetState extends State<PrimaryBorewellWidget>
                           ),
                           child: InkWell(
                             onTap: () async {
-                              FFAppState().update(() {
-                                FFAppState().borewellKey =
-                                    listViewBorewellRecord.borewellKey!;
-                              });
-                              // context.pushNamed('Dashboard');
-                              //TWO TIMES to reach back to the hompage
-                              Navigator.pop(context);
-                              // Navigator.pop(context);
+                              if (!await InternetConnectionCheckerPlus()
+                                  .hasConnection) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('Please connect to the internet'),
+                                  ),
+                                );
+                              } else {
+                                FFAppState().update(() {
+                                  FFAppState().borewellKey =
+                                      listViewBorewellRecord.borewellKey!;
+                                });
+                                // context.pushNamed('Dashboard');
+                                //TWO TIMES to reach back to the hompage
+                                Navigator.pop(context);
+                                // Navigator.pop(context);
+                              }
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,

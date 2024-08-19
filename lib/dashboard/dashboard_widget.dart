@@ -6,7 +6,7 @@ import 'package:hydrow/edit_device_debore/edit_device_debore_widget.dart';
 import 'package:hydrow/edit_device_pravah/edit_device_pravah_widget.dart';
 import 'package:hydrow/primary_borewell/primary_borewell_widget.dart';
 import 'package:hydrow/primary_meter/primary_meter_widget.dart';
-
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../components/TermsandCondition_widget.dart';
 import '../primary_tank/primary_tank_widget.dart';
 import '/auth/auth_util.dart';
@@ -1248,53 +1248,66 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   children: [
                                     ElevatedButton(
                                       onPressed: () async {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        // _model.output =
-                                        //     await actions.newCustomAction(
-                                        //   (currentUserDocument?.keyList
-                                        //               ?.toList() ??
-                                        //           [])
-                                        //       .toList(),
-                                        // );
-                                        try {
-                                          _model.output =
-                                              await actions.newCustomAction(
-                                            (currentUserDocument?.keyList
-                                                        ?.toList() ??
-                                                    [])
-                                                .toList(),
-                                          );
-
-                                          // Check if _model.output is null or any other failure condition
-                                          if (_model.output == null) {
-                                            // Handle the case where the output is null
-                                            print(
-                                                'Action failed: output is null');
-                                          } else {
-                                            // Handle the successful case
-                                            print(
-                                                'Action succeeded: output is ${_model.output}');
-                                          }
-                                        } catch (e) {
-                                          // Handle any exceptions that occur
-                                          print('An error occurred: $e');
-                                        }
-
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-
-                                        context.pushNamed(
-                                          'TankSummary',
-                                          queryParams: {
-                                            'water': serializeParam(
-                                              _model.output,
-                                              ParamType.JSON,
+                                        if (!await InternetConnectionCheckerPlus()
+                                            .hasConnection) {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Please connect to the internet'),
                                             ),
-                                          }.withoutNulls,
-                                        );
+                                          );
+                                        } else {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          // _model.output =
+                                          //     await actions.newCustomAction(
+                                          //   (currentUserDocument?.keyList
+                                          //               ?.toList() ??
+                                          //           [])
+                                          //       .toList(),
+                                          // );
+                                          try {
+                                            _model.output =
+                                                await actions.newCustomAction(
+                                              (currentUserDocument?.keyList
+                                                          ?.toList() ??
+                                                      [])
+                                                  .toList(),
+                                            );
+
+                                            // Check if _model.output is null or any other failure condition
+                                            if (_model.output == null) {
+                                              // Handle the case where the output is null
+                                              print(
+                                                  'Action failed: output is null');
+                                            } else {
+                                              // Handle the successful case
+                                              print(
+                                                  'Action succeeded: output is ${_model.output}');
+                                            }
+                                          } catch (e) {
+                                            // Handle any exceptions that occur
+                                            print('An error occurred: $e');
+                                          }
+
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+
+                                          context.pushNamed(
+                                            'TankSummary',
+                                            queryParams: {
+                                              'water': serializeParam(
+                                                _model.output,
+                                                ParamType.JSON,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        }
                                       },
                                       child: Text(
                                         'Show All Devices',
@@ -2027,31 +2040,44 @@ class _DashboardWidgetState extends State<DashboardWidget>
                               children: [
                                 ElevatedButton(
                                   onPressed: () async {
-                                    setState(() {
-                                      _isLoading = true;
-                                    });
-                                    //Earlier I've applied try catch block with this as I've encountered some bugs
-                                    _model.outputPravah =
-                                        await newCustomActionPravah(
-                                      (currentUserDocument?.meterKeyList
-                                                  ?.toList() ??
-                                              [])
-                                          .toList(),
-                                    );
-
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
-
-                                    context.pushNamed(
-                                      'MeterSummary',
-                                      queryParams: {
-                                        'reading': serializeParam(
-                                          _model.outputPravah,
-                                          ParamType.JSON,
+                                    if (!await InternetConnectionCheckerPlus()
+                                        .hasConnection) {
+                                      ScaffoldMessenger.of(context)
+                                          .hideCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Please connect to the internet'),
                                         ),
-                                      }.withoutNulls,
-                                    );
+                                      );
+                                    } else {
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+                                      //Earlier I've applied try catch block with this as I've encountered some bugs
+                                      _model.outputPravah =
+                                          await newCustomActionPravah(
+                                        (currentUserDocument?.meterKeyList
+                                                    ?.toList() ??
+                                                [])
+                                            .toList(),
+                                      );
+
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+
+                                      context.pushNamed(
+                                        'MeterSummary',
+                                        queryParams: {
+                                          'reading': serializeParam(
+                                            _model.outputPravah,
+                                            ParamType.JSON,
+                                          ),
+                                        }.withoutNulls,
+                                      );
+                                    }
                                   },
                                   child: Text(
                                     'Show All Devices',
@@ -2070,8 +2096,20 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           20, 17, 20, 17)),
                                 ),
-                                showAllDevicesButton("Testing", () {
-                                  context.pushNamed('MeterSummaryTesting');
+                                showAllDevicesButton("Testing", () async {
+                                  if (!await InternetConnectionCheckerPlus()
+                                      .hasConnection) {
+                                    ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Please connect to the internet'),
+                                      ),
+                                    );
+                                  } else {
+                                    context.pushNamed('MeterSummaryTesting');
+                                  }
                                 }),
                               ],
                             ),
@@ -2416,34 +2454,60 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   children: [
                                     showAllDevicesButton("Show all Debore",
                                         () async {
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
-                                      //Earlier I've applied try catch block with this as I've encountered some bugs
-                                      _model.outputDebore =
-                                          await newCustomActionDebore(
-                                        (currentUserDocument?.borewellKeyList
-                                                    ?.toList() ??
-                                                [])
-                                            .toList(),
-                                      );
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
-
-                                      context.pushNamed(
-                                        'BorewellSummary',
-                                        queryParams: {
-                                          'reading': serializeParam(
-                                            _model.outputDebore,
-                                            ParamType.JSON,
+                                      if (!await InternetConnectionCheckerPlus()
+                                          .hasConnection) {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Please connect to the internet'),
                                           ),
-                                        }.withoutNulls,
-                                      );
+                                        );
+                                      } else {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+                                        //Earlier I've applied try catch block with this as I've encountered some bugs
+                                        _model.outputDebore =
+                                            await newCustomActionDebore(
+                                          (currentUserDocument?.borewellKeyList
+                                                      ?.toList() ??
+                                                  [])
+                                              .toList(),
+                                        );
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+
+                                        context.pushNamed(
+                                          'BorewellSummary',
+                                          queryParams: {
+                                            'reading': serializeParam(
+                                              _model.outputDebore,
+                                              ParamType.JSON,
+                                            ),
+                                          }.withoutNulls,
+                                        );
+                                      }
                                     }),
-                                    showAllDevicesButton("Testing", () {
-                                      context
-                                          .pushNamed('BorewellSummaryTesting');
+                                    showAllDevicesButton("Testing", () async {
+                                      if (!await InternetConnectionCheckerPlus()
+                                          .hasConnection) {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Please connect to the internet'),
+                                          ),
+                                        );
+                                      } else {
+                                        context.pushNamed(
+                                            'BorewellSummaryTesting');
+                                      }
                                     }),
                                   ],
                                 ),

@@ -9,6 +9,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'primary_tank_model.dart';
 export 'primary_tank_model.dart';
@@ -145,16 +146,28 @@ class _PrimaryTankWidgetState extends State<PrimaryTankWidget>
                         ),
                         child: InkWell(
                           onTap: () async {
-                            //Upon clicking on the tank it changes the default tankkey saved in FFAppState() to the selected tankKey
-                            FFAppState().update(() {
-                              FFAppState().tankKey =
-                                  listViewTankRecord.tankKey!;
-                            });
+                            if (!await InternetConnectionCheckerPlus()
+                                .hasConnection) {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('Please connect to the internet'),
+                                ),
+                              );
+                            } else {
+                              FFAppState().update(() {
+                                FFAppState().tankKey =
+                                    listViewTankRecord.tankKey!;
+                              });
 
-                            // context.pushNamed('Dashboard');
-                            //TWO TIMES to reach back to the hompage
-                            // Navigator.pop(context);
-                            Navigator.pop(context);
+                              // context.pushNamed('Dashboard');
+                              //TWO TIMES to reach back to the hompage
+                              // Navigator.pop(context);
+                              Navigator.pop(context);
+                            }
+                            //Upon clicking on the tank it changes the default tankkey saved in FFAppState() to the selected tankKey
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.max,

@@ -13,6 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'cuboidal_tank_edit_model.dart';
 export 'cuboidal_tank_edit_model.dart';
@@ -449,60 +450,73 @@ class _CuboidalTankEditWidgetState extends State<CuboidalTankEditWidget>
                               0.0, 0.0, 0.0, 30.0),
                           child: ElevatedButton(
                             onPressed: () async {
-                              if (_model.formKey.currentState == null ||
-                                  !_model.formKey.currentState!.validate()) {
-                                return;
+                              if (!await InternetConnectionCheckerPlus()
+                                  .hasConnection) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('Please connect to the internet'),
+                                  ),
+                                );
+                              } else {
+                                if (_model.formKey.currentState == null ||
+                                    !_model.formKey.currentState!.validate()) {
+                                  return;
+                                }
+
+                                // Sending the updated data to backend.
+                                final tankUpdateData = createTankRecordData(
+                                  tankName: _model.textController1.text,
+                                  tankKey: widget.tankReference!.tankKey,
+                                  length: _model.textController2.text,
+                                  breadth: _model.textController3.text,
+                                  height: _model.textController4.text,
+                                  radius: _model.textController5.text,
+                                  isCuboid: widget.tankReference!.isCuboid,
+                                  capacity: functions.calculateVolume(
+                                      widget.tankReference!.isCuboid!,
+                                      _model.textController2.text,
+                                      _model.textController3.text,
+                                      _model.textController4.text,
+                                      _model.textController5.text),
+                                );
+                                await widget.tankReference!.reference
+                                    .update(tankUpdateData);
+                                await AddDeviceCall.call(
+                                  apiKey: functions.generateWrite(
+                                      widget.tankReference!.tankKey!),
+                                  field1: _model.textController1.text,
+                                  field2: _model.textController3.text,
+                                  field3: _model.textController4.text,
+                                  field4: _model.textController2.text,
+                                  field5: _model.textController5.text,
+                                );
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: Text('Succcess'),
+                                      content:
+                                          Text('Changes saved successfully'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          child: Text('Ok'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                // context.pushNamed('Dashboard');
+                                //THREE TIMES to reach back to the hompage
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
                               }
-
-                              // Sending the updated data to backend.
-                              final tankUpdateData = createTankRecordData(
-                                tankName: _model.textController1.text,
-                                tankKey: widget.tankReference!.tankKey,
-                                length: _model.textController2.text,
-                                breadth: _model.textController3.text,
-                                height: _model.textController4.text,
-                                radius: _model.textController5.text,
-                                isCuboid: widget.tankReference!.isCuboid,
-                                capacity: functions.calculateVolume(
-                                    widget.tankReference!.isCuboid!,
-                                    _model.textController2.text,
-                                    _model.textController3.text,
-                                    _model.textController4.text,
-                                    _model.textController5.text),
-                              );
-                              await widget.tankReference!.reference
-                                  .update(tankUpdateData);
-                              await AddDeviceCall.call(
-                                apiKey: functions.generateWrite(
-                                    widget.tankReference!.tankKey!),
-                                field1: _model.textController1.text,
-                                field2: _model.textController3.text,
-                                field3: _model.textController4.text,
-                                field4: _model.textController2.text,
-                                field5: _model.textController5.text,
-                              );
-                              await showDialog(
-                                context: context,
-                                builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    title: Text('Succcess'),
-                                    content: Text('Changes saved successfully'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        child: Text('Ok'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-
-                              // context.pushNamed('Dashboard');
-                              //THREE TIMES to reach back to the hompage
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
                             },
                             child: Text(
                               'Save Changes',

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
 import 'borewell_edit_model.dart';
 export 'borewell_edit_model.dart';
@@ -146,45 +147,58 @@ class _BorewellEditWidgetState extends State<BorewellEditWidget>
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
                           child: ElevatedButton(
                             onPressed: () async {
-                              if (_model.formKey.currentState == null ||
-                                  !_model.formKey.currentState!.validate()) {
-                                return;
-                              }
+                              if (!await InternetConnectionCheckerPlus()
+                                  .hasConnection) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('Please connect to the internet'),
+                                  ),
+                                );
+                              } else {
+                                if (_model.formKey.currentState == null ||
+                                    !_model.formKey.currentState!.validate()) {
+                                  return;
+                                }
 
-                              //Sending the updated data to backend
-                              final borewellUpdatedData =
-                                  createBorewellRecordData(
-                                borewellName: _model.textController1.text,
-                                borewellKey:
-                                    widget.borewellReference!.borewellKey,
-                              );
-                              await widget.borewellReference!.reference
-                                  .update(borewellUpdatedData);
-                              await AddDeviceDeboreCall.call(
-                                apiKey: functions.generateWrite(
-                                    widget.borewellReference!.borewellKey!),
-                                field2: _model.textController1.text,
-                              );
-                              await showDialog(
-                                context: context,
-                                builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    title: Text('Success'),
-                                    content: Text('Changes saved successfully'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        child: Text('Ok'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                              //THREE TIMES to reach back to the hompage
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
+                                //Sending the updated data to backend
+                                final borewellUpdatedData =
+                                    createBorewellRecordData(
+                                  borewellName: _model.textController1.text,
+                                  borewellKey:
+                                      widget.borewellReference!.borewellKey,
+                                );
+                                await widget.borewellReference!.reference
+                                    .update(borewellUpdatedData);
+                                await AddDeviceDeboreCall.call(
+                                  apiKey: functions.generateWrite(
+                                      widget.borewellReference!.borewellKey!),
+                                  field2: _model.textController1.text,
+                                );
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: Text('Success'),
+                                      content:
+                                          Text('Changes saved successfully'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          child: Text('Ok'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                //THREE TIMES to reach back to the hompage
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
                             },
                             child: Text(
                               "Save Changes",

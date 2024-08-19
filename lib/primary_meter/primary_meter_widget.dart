@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:provider/provider.dart';
 import 'primary_meter_model.dart';
@@ -141,14 +142,26 @@ class _PrimaryMeterWidgetState extends State<PrimaryMeterWidget>
                           ),
                           child: InkWell(
                             onTap: () async {
-                              FFAppState().update(() {
-                                FFAppState().meterKey =
-                                    listViewMeterRecord.meterKey!;
-                              });
-                              // context.pushNamed('Dashboard');
-                              //TWO TIMES to reach back to the hompage
-                              // Navigator.pop(context);
-                              Navigator.pop(context);
+                              if (!await InternetConnectionCheckerPlus()
+                                  .hasConnection) {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('Please connect to the internet'),
+                                  ),
+                                );
+                              } else {
+                                FFAppState().update(() {
+                                  FFAppState().meterKey =
+                                      listViewMeterRecord.meterKey!;
+                                });
+                                // context.pushNamed('Dashboard');
+                                //TWO TIMES to reach back to the hompage
+                                // Navigator.pop(context);
+                                Navigator.pop(context);
+                              }
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
