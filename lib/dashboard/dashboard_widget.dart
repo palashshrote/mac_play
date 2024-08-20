@@ -6,6 +6,7 @@ import 'package:hydrow/edit_device_debore/edit_device_debore_widget.dart';
 import 'package:hydrow/edit_device_pravah/edit_device_pravah_widget.dart';
 import 'package:hydrow/primary_borewell/primary_borewell_widget.dart';
 import 'package:hydrow/primary_meter/primary_meter_widget.dart';
+import 'package:hydrow/utils/network_connectivity_widget.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../components/TermsandCondition_widget.dart';
 import '../primary_tank/primary_tank_widget.dart';
@@ -2165,7 +2166,541 @@ class _DashboardWidgetState extends State<DashboardWidget>
                       fontSize: 18),
                 ),
               ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
+                child: StreamBuilder<InternetConnectionStatus>(
+                  stream: InternetConnectionCheckerPlus().onStatusChange,
+                  builder: (context, connectionSnapshot) {
+                    final isConnected = connectionSnapshot.data ==
+                        InternetConnectionStatus.connected;
 
+                    return Stack(
+                      children: [
+                        StreamBuilder<List<BorewellRecord>>(
+                          stream: queryBorewellRecord(
+                            parent: currentUserReference,
+                            queryBuilder: (borewellRecord) =>
+                                borewellRecord.where('BorewellKey',
+                                    isEqualTo: FFAppState().borewellKey),
+                            singleRecord: true,
+                          ),
+                          builder: (context, borewellSnapshot) {
+                            if (!borewellSnapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 75,
+                                  height: 75,
+                                  child: SpinKitRipple(
+                                    color: Color(0xFF7E8083),
+                                    size: 75,
+                                  ),
+                                ),
+                              );
+                            }
+                            List<BorewellRecord> containerBorewellRecordList =
+                                borewellSnapshot.data!;
+
+                            if (containerBorewellRecordList.isEmpty) {
+                              return Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 20, 20, 20),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PrimaryBorewellWidget(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(15),
+                                      border:
+                                          Border.all(color: Color(0xFF686868)),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Click to select a \n Default borewell.',
+                                          style: notSelectedStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            final containerBorewellRecord =
+                                containerBorewellRecordList.isNotEmpty
+                                    ? containerBorewellRecordList.first
+                                    : null;
+
+                            // return Container(
+                            //   decoration: BoxDecoration(
+                            //     color: Color.fromARGB(255, 0, 0, 0),
+                            //     borderRadius: BorderRadius.circular(25),
+                            //   ),
+                            //   child: Column(
+                            //     mainAxisSize: MainAxisSize.max,
+                            //     children: [
+                            //       // Your borewell data widget tree here
+                            //       // ...
+                            //     ],
+                            //   ),
+                            // );
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      SizedBox(
+                                        height: 50,
+                                      ),
+                                      isConnected
+                                          ? Stack(
+                                              children: [
+                                                //Image
+                                                Positioned(
+                                                  child: Center(
+                                                    child: Container(
+                                                        height: MediaQuery
+                                                                    .of(context)
+                                                                .size
+                                                                .width *
+                                                            0.75,
+                                                        width: MediaQuery
+                                                                    .of(context)
+                                                                .size
+                                                                .width *
+                                                            0.75,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Color.fromARGB(
+                                                              192, 80, 63, 63),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(50, 0,
+                                                                    50, 0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: <Widget>[
+                                                            //device name
+                                                            defaultDeviceName(
+                                                                containerBorewellRecord!
+                                                                    .borewellName!),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            //Text
+                                                            defaultDeviceSpecsHeading(
+                                                                "Waterlevel from ground"),
+                                                            SizedBox(
+                                                              height: 7,
+                                                            ),
+                                                            isActiveDebore
+                                                                ? FutureBuilder<
+                                                                    dynamic>(
+                                                                    future: functions
+                                                                        .getWaterLevelfromGround(
+                                                                            containerBorewellRecord.borewellKey!),
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<dynamic>
+                                                                            snapshot) {
+                                                                      if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return CircularProgressIndicator();
+                                                                      } else if (snapshot
+                                                                          .hasError) {
+                                                                        return Text(
+                                                                            'Error: ${snapshot.error}');
+                                                                      } else {
+                                                                        var value =
+                                                                            snapshot.data;
+                                                                        return value.toString() ==
+                                                                                "N/A"
+                                                                            ? Text(
+                                                                                "N/A",
+                                                                                style: defaultDeviceNADataStyle,
+                                                                              )
+                                                                            : Text(
+                                                                                value.toString() + "L",
+                                                                                textAlign: TextAlign.center,
+                                                                                style: defaultDeviceDataStyle,
+                                                                              );
+                                                                      }
+                                                                    },
+                                                                  )
+                                                                : Text(
+                                                                    "N/A",
+                                                                    style:
+                                                                        defaultDeviceNADataStyle,
+                                                                  ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            refreshButton(
+                                                                () async {
+                                                              _model.waterLevelFromGround =
+                                                                  await functions
+                                                                      .getWaterLevelfromGround(
+                                                                          containerBorewellRecord
+                                                                              .borewellKey!);
+                                                              setState(() {});
+                                                            }),
+                                                          ],
+                                                        )),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Stack(
+                                              children: [
+                                                //Image
+                                                Positioned(
+                                                  child: Center(
+                                                    child: Container(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.75,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.75,
+                                                      decoration: BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            192, 80, 63, 63),
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  50, 0, 50, 0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          //device name
+                                                          defaultDeviceName(
+                                                              containerBorewellRecord!
+                                                                  .borewellName!),
+                                                          Container(
+                                                            height: 40,
+                                                            width: 130,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    124,
+                                                                    118,
+                                                                    118),
+                                                          ),
+                                                          /*SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      //Text
+                                                      defaultDeviceSpecsHeading(
+                                                          "Waterlevel from ground"),
+                                                      SizedBox(
+                                                        height: 7,
+                                                      ),
+                                                      isActiveDebore
+                                                          ? FutureBuilder<
+                                                              dynamic>(
+                                                              future: functions
+                                                                  .getWaterLevelfromGround(
+                                                                      containerBorewellRecord
+                                                                          .borewellKey!),
+                                                              builder: (BuildContext
+                                                                      context,
+                                                                  AsyncSnapshot<
+                                                                          dynamic>
+                                                                      snapshot) {
+                                                                if (snapshot
+                                                                        .connectionState ==
+                                                                    ConnectionState
+                                                                        .waiting) {
+                                                                  return CircularProgressIndicator();
+                                                                } else if (snapshot
+                                                                    .hasError) {
+                                                                  return Text(
+                                                                      'Error: ${snapshot.error}');
+                                                                } else {
+                                                                  var value =
+                                                                      snapshot
+                                                                          .data;
+                                                                  return value.toString() ==
+                                                                          "N/A"
+                                                                      ? Text(
+                                                                          "N/A",
+                                                                          style:
+                                                                              defaultDeviceNADataStyle,
+                                                                        )
+                                                                      : Text(
+                                                                          value.toString() +
+                                                                              "L",
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style:
+                                                                              defaultDeviceDataStyle,
+                                                                        );
+                                                                }
+                                                              },
+                                                            )
+                                                          : Text(
+                                                              "N/A",
+                                                              style:
+                                                                  defaultDeviceNADataStyle,
+                                                            ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      refreshButton(() async {
+                                                        _model.waterLevelFromGround =
+                                                            await functions
+                                                                .getWaterLevelfromGround(
+                                                                    containerBorewellRecord
+                                                                        .borewellKey!);
+                                                        setState(() {});
+                                                      }),
+                                                    */
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            20, 40, 20, 0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Borewell Summary',
+                                              style:
+                                                  GF.GoogleFonts.leagueSpartan(
+                                                fontSize: 24,
+                                                color: Color(0xFFFFFFFF),
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                            Container(
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF1A1A1A),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                    color: Color(0xFF656565),
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(15, 0, 15, 0),
+                                                  child: DropdownButton<String>(
+                                                    value: dropdownValueDebore,
+                                                    // borderRadius: BorderRadius.circular(5),
+                                                    dropdownColor:
+                                                        Color(0xFF1A1A1A),
+                                                    focusColor:
+                                                        Color(0xFF1A1A1A),
+
+                                                    icon: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 10),
+                                                        child: Icon(
+                                                          CupertinoIcons
+                                                              .arrow_turn_right_down,
+                                                          size: 14,
+                                                        )),
+                                                    iconEnabledColor: Color(
+                                                        0xFF656565), //Icon color
+                                                    underline: Container(),
+                                                    items: <String>[
+                                                      'Daily',
+                                                      'Weekly',
+                                                      'Monthly'
+                                                    ].map<
+                                                            DropdownMenuItem<
+                                                                String>>(
+                                                        (String value) {
+                                                      return DropdownMenuItem<
+                                                          String>(
+                                                        value: value,
+                                                        child: Text(value,
+                                                            style: GF
+                                                                    .GoogleFonts
+                                                                .leagueSpartan(
+                                                              fontSize: 14,
+                                                              color: Color(
+                                                                  0xFFFFFFFF),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                            )),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged:
+                                                        (String? newValue) {
+                                                      setState(() {
+                                                        dropdownValueDebore =
+                                                            newValue!;
+                                                      });
+                                                    },
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            15, 20, 15, 0),
+                                        child: Container(
+                                          height: 200,
+                                          child:
+                                              FutureBuilder<SfCartesianChart>(
+                                            // replace with following call
+                                            future: functions.getChartDebore(
+                                                containerBorewellRecord!
+                                                    .borewellKey,
+                                                dropdownValueDebore),
+
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.waiting) {
+                                                return Center(
+                                                    child:
+                                                        CircularProgressIndicator());
+                                              } else if (snapshot.hasError) {
+                                                return Text(
+                                                    'Error occured in loading graph.');
+                                              } else {
+                                                return snapshot.data ??
+                                                    SizedBox(); // Render the chart or an empty SizedBox if data is null
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            20, 30, 20, 30),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            showAllDevicesButton(
+                                                "Show all Debore", () async {
+                                              if (!await InternetConnectionCheckerPlus()
+                                                  .hasConnection) {
+                                                ScaffoldMessenger.of(context)
+                                                    .hideCurrentSnackBar();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                        'Please connect to the internet'),
+                                                  ),
+                                                );
+                                              } else {
+                                                setState(() {
+                                                  _isLoading = true;
+                                                });
+                                                //Earlier I've applied try catch block with this as I've encountered some bugs
+                                                _model.outputDebore =
+                                                    await newCustomActionDebore(
+                                                  (currentUserDocument
+                                                              ?.borewellKeyList
+                                                              ?.toList() ??
+                                                          [])
+                                                      .toList(),
+                                                );
+                                                setState(() {
+                                                  _isLoading = false;
+                                                });
+
+                                                context.pushNamed(
+                                                  'BorewellSummary',
+                                                  queryParams: {
+                                                    'reading': serializeParam(
+                                                      _model.outputDebore,
+                                                      ParamType.JSON,
+                                                    ),
+                                                  }.withoutNulls,
+                                                );
+                                              }
+                                            }),
+                                            showAllDevicesButton("Testing",
+                                                () async {
+                                              if (!await InternetConnectionCheckerPlus()
+                                                  .hasConnection) {
+                                                ScaffoldMessenger.of(context)
+                                                    .hideCurrentSnackBar();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                        'Please connect to the internet'),
+                                                  ),
+                                                );
+                                              } else {
+                                                context.pushNamed(
+                                                    'BorewellSummaryTesting');
+                                              }
+                                            }),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        // if (!isConnected)
+                        //   Positioned(
+                        //     left: 0,
+                        //     right: 0,
+                        //     bottom: 0,
+                        //     child: NetworkConnectivityWidget(),
+                        //   ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+
+              /*
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
                 child: StreamBuilder<List<BorewellRecord>>(
@@ -2251,97 +2786,102 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 children: [
                                   //Image
                                   Positioned(
-                                      child: Center(
-                                    child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.75,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.75,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xC00C0C0C),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            50, 0, 50, 0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            //device name
-                                            defaultDeviceName(
-                                                containerBorewellRecord!
-                                                    .borewellName!),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            //Text
-                                            defaultDeviceSpecsHeading(
-                                                "Waterlevel from ground"),
-                                            SizedBox(
-                                              height: 7,
-                                            ),
-                                            isActiveDebore
-                                                ? FutureBuilder<dynamic>(
-                                                    future: functions
+                                    child: Center(
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.75,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.75,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Color.fromARGB(192, 80, 63, 63),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  50, 0, 50, 0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              //device name
+                                              defaultDeviceName(
+                                                  containerBorewellRecord!
+                                                      .borewellName!),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              //Text
+                                              defaultDeviceSpecsHeading(
+                                                  "Waterlevel from ground"),
+                                              SizedBox(
+                                                height: 7,
+                                              ),
+                                              isActiveDebore
+                                                  ? FutureBuilder<dynamic>(
+                                                      future: functions
+                                                          .getWaterLevelfromGround(
+                                                              containerBorewellRecord
+                                                                  .borewellKey!),
+                                                      builder: (BuildContext
+                                                              context,
+                                                          AsyncSnapshot<dynamic>
+                                                              snapshot) {
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return CircularProgressIndicator();
+                                                        } else if (snapshot
+                                                            .hasError) {
+                                                          return Text(
+                                                              'Error: ${snapshot.error}');
+                                                        } else {
+                                                          var value =
+                                                              snapshot.data;
+                                                          return value.toString() ==
+                                                                  "N/A"
+                                                              ? Text(
+                                                                  "N/A",
+                                                                  style:
+                                                                      defaultDeviceNADataStyle,
+                                                                )
+                                                              : Text(
+                                                                  value.toString() +
+                                                                      "L",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      defaultDeviceDataStyle,
+                                                                );
+                                                        }
+                                                      },
+                                                    )
+                                                  : Text(
+                                                      "N/A",
+                                                      style:
+                                                          defaultDeviceNADataStyle,
+                                                    ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              refreshButton(() async {
+                                                _model.waterLevelFromGround =
+                                                    await functions
                                                         .getWaterLevelfromGround(
                                                             containerBorewellRecord
-                                                                .borewellKey!),
-                                                    builder: (BuildContext
-                                                            context,
-                                                        AsyncSnapshot<dynamic>
-                                                            snapshot) {
-                                                      if (snapshot
-                                                              .connectionState ==
-                                                          ConnectionState
-                                                              .waiting) {
-                                                        return CircularProgressIndicator();
-                                                      } else if (snapshot
-                                                          .hasError) {
-                                                        return Text(
-                                                            'Error: ${snapshot.error}');
-                                                      } else {
-                                                        var value =
-                                                            snapshot.data;
-                                                        return value.toString() ==
-                                                                "N/A"
-                                                            ? Text(
-                                                                "N/A",
-                                                                style:
-                                                                    defaultDeviceNADataStyle,
-                                                              )
-                                                            : Text(
-                                                                value.toString() +
-                                                                    "L",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    defaultDeviceDataStyle,
-                                                              );
-                                                      }
-                                                    },
-                                                  )
-                                                : Text(
-                                                    "N/A",
-                                                    style:
-                                                        defaultDeviceNADataStyle,
-                                                  ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            refreshButton(() async {
-                                              _model.waterLevelFromGround =
-                                                  await functions
-                                                      .getWaterLevelfromGround(
-                                                          containerBorewellRecord
-                                                              .borewellKey!);
-                                              setState(() {});
-                                            }),
-                                          ],
-                                        )),
-                                  )),
+                                                                .borewellKey!);
+                                                setState(() {});
+                                              }),
+                                            ],
+                                          )),
+                                    ),
+                                  ),
                                 ],
                               ),
                               Padding(
@@ -2520,6 +3060,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                   },
                 ),
               ),
+              */
             ],
           ),
         ),
@@ -2543,24 +3084,50 @@ class _DashboardWidgetState extends State<DashboardWidget>
       ),
       //It will select the Starr or Pravah dashboard based of selectedindex value
       // body: pages.elementAt(selectedindex),
-      body: Stack(
-        children: [
-          pages.elementAt(selectedindex),
-          if (_isLoading)
-            const Opacity(
-              opacity: 0.5,
-              child: ModalBarrier(
-                color: Colors.black,
-                dismissible: false,
-              ),
-            ),
-          if (_isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
-        ],
+      body: StreamBuilder<bool>(
+        stream: functions.checkInternetConnection(),
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              pages.elementAt(selectedindex),
+              if (_isLoading)
+                const Opacity(
+                  opacity: 0.5,
+                  child: ModalBarrier(
+                    color: Colors.black,
+                    dismissible: false,
+                  ),
+                ),
+              if (_isLoading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              if (snapshot.hasData && !snapshot.data!)
+                NetworkConnectivityWidget(),
+            ],
+          );
+        },
       ),
-      //Bottom navigation bar of Starr and Pravah
+      // body: Stack(
+      //   children: [
+      //     pages.elementAt(selectedindex),
+      //     if (_isLoading)
+      //       const Opacity(
+      //         opacity: 0.5,
+      //         child: ModalBarrier(
+      //           color: Colors.black,
+      //           dismissible: false,
+      //         ),
+      //       ),
+      //     if (_isLoading)
+      //       const Center(
+      //         child: CircularProgressIndicator(),
+      //       ),
+      //     if (!await InternetConnectionCheckerPlus().hasConnection) NetworkConnectivityWidget(),
+
+      //   ],
+      // ),
+      //Bottom navigation bar of Debore, Starr and Pravah
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF112025),
         items: const <BottomNavigationBarItem>[

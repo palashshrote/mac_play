@@ -11,6 +11,7 @@ import '../backend/backend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../auth/auth_util.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:http/http.dart' as http;
 
 // final snackBar = SnackBar(
@@ -298,6 +299,12 @@ Future<dynamic> getWaterLevelfromGround(String borewellKey) async {
   } catch (e) {
     return "N/A";
   }
+}
+
+Stream<bool> checkInternetConnection() {
+  return InternetConnectionCheckerPlus()
+      .onStatusChange
+      .map((status) => status == InternetConnectionStatus.connected);
 }
 
 // code for checking whether device is active or not for pravah and starr
