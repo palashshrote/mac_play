@@ -1,3 +1,5 @@
+import 'package:hydrow/constants/k_generalized.dart';
+
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -40,16 +42,7 @@ class _ContactUsWidgetState extends State<ContactUsWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Contact Us',
-          style: GF.GoogleFonts.leagueSpartan(
-            textStyle: TextStyle(fontSize: 22.0),
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xFF112025), // Set app bar color
-      ),
+      appBar: genAppBar("Contact Us", centerTitle: true),
       backgroundColor: Color(0xFF0C0C0C), // Set background color
       body: Padding(
         padding: EdgeInsets.all(16.0),

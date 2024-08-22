@@ -389,7 +389,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                                       fontSize: 16,
                                       color: Color(0xFFFFFFFF),
                                       fontWeight: FontWeight.normal,
-                                    )),
+                                    )), 
                               ],
                             ),
                             SizedBox(
@@ -401,7 +401,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                               children: [
                                 Text(
                                     isActive
-                                        ? (double.tryParse(widget.docReference!
+                                        ? (double.tryParse( widget.docReference!
                                                         .height!)! -
                                                     widget.waterLevel!)
                                                 .toString() +

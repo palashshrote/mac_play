@@ -15,9 +15,11 @@ import 'package:hydrow/individual_borewell_summary/individual_borewell_summary_w
 import 'package:hydrow/individual_borewell_summary/two_individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/two_individual_meter_summary_widget.dart';
+import 'package:hydrow/individual_summary/two_individual_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_testing_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_widget.dart';
+import 'package:hydrow/tank_summary/tank_summary_testing_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
 import '../../backend/backend.dart';
@@ -108,6 +110,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'BorewellSummaryTesting',
               path: 'borewellSummaryTesting',
               builder: (context, params) => BorewellSummaryTestingWidget(),
+            ),
+            FFRoute(
+              name: 'TankSummaryTesting',
+              path: 'tankSummaryTesting',
+              builder: (context, params) => TankSummaryTestingWidget(),
             ),
             FFRoute(
               name: 'MeterSummaryTesting',
@@ -273,6 +280,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     getDoc(['users', 'meter'], MeterRecord.serializer),
               },
               builder: (context, params) => TwoIndividualMeterSummaryWidget(
+                docReference:
+                    params.getParam('docReference', ParamType.Document),
+                isActive: params.getParam('isActive', ParamType.bool),
+              ),
+            ),
+            FFRoute(
+              name: 'TwoIndividualSummary',
+              path: 'twoIndividualSummary',
+              asyncParams: {
+                'docReference':
+                    getDoc(['users', 'tank'], TankRecord.serializer),
+              },
+              builder: (context, params) => TwoIndividualSummaryWidget(
                 docReference:
                     params.getParam('docReference', ParamType.Document),
                 isActive: params.getParam('isActive', ParamType.bool),

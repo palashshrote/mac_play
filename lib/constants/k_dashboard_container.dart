@@ -15,6 +15,8 @@ import 'package:hydrow/primary_tank/primary_tank_widget.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:syncfusion_flutter_charts/src/chart/base/chart_base.dart';
 
 var notSelectedStyle = GF.GoogleFonts.leagueSpartan(
   height: 1.5,
@@ -42,11 +44,237 @@ var defaultDeviceDataStyle = GF.GoogleFonts.leagueSpartan(
 );
 
 var showAllDeviceButtonStyle = ElevatedButton.styleFrom(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(7.5),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(7.5),
+  ),
+  backgroundColor: Color(0xFFC6DDDB),
+  padding: EdgeInsetsDirectional.fromSTEB(20, 17, 20, 17),
+);
+
+Widget spinKit() {
+  return Center(
+    child: SizedBox(
+      width: 75,
+      height: 75,
+      child: SpinKitRipple(
+        color: Color(0xFF7E8083),
+        size: 75,
+      ),
     ),
-    backgroundColor: Color(0xFFC6DDDB),
-    padding: EdgeInsetsDirectional.fromSTEB(20, 17, 20, 17));
+  );
+}
+
+Widget singleChildScrollViewContainer(String date, Widget childWidget) {
+  return SingleChildScrollView(
+    child: Container(
+      // color: Colors.black,
+      color: Color(0xFF0C0C0C),
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //Hi
+            hi(),
+            //Name
+            userName(),
+            //Date
+            displayDate(date),
+            childWidget,
+          ]),
+    ),
+  );
+}
+
+Widget generalizedGraph(Future<SfCartesianChart>? futureFunction) {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
+    child: Container(
+      height: 200,
+      child: FutureBuilder<SfCartesianChart>(
+        // replace with following call
+        // future: functions.getChartDebore(
+        //     containerBorewellRecord!.borewellKey, dropdownValueDebore),
+        future: futureFunction,
+
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error occured in loading graph.');
+          } else {
+            return snapshot.data ??
+                SizedBox(); // Render the chart or an empty SizedBox if data is null
+          }
+        },
+      ),
+    ),
+  );
+}
+
+Widget summaryDropDownBtnGeneralized(String summaryTextValue, String itsValue,
+    void Function(String?)? onchangeFunction) {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(20, 40, 20, 0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        summaryText(summaryTextValue),
+        Container(
+            height: 40,
+            decoration: BoxDecoration(
+              color: Color(0xFF1A1A1A),
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(
+                color: Color(0xFF656565),
+                width: 1,
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
+              child: DropdownButton<String>(
+                value: itsValue,
+                // borderRadius: BorderRadius.circular(5),
+                dropdownColor: Color(0xFF1A1A1A),
+                focusColor: Color(0xFF1A1A1A),
+
+                icon: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Icon(
+                      CupertinoIcons.arrow_turn_right_down,
+                      size: 14,
+                    )),
+                iconEnabledColor: Color(0xFF656565), //Icon color
+                underline: Container(),
+                items: <String>['Daily', 'Weekly', 'Monthly']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value,
+                        style: GF.GoogleFonts.leagueSpartan(
+                          fontSize: 14,
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.normal,
+                        )),
+                  );
+                }).toList(),
+                onChanged: onchangeFunction,
+              ),
+            )),
+      ],
+    ),
+  );
+}
+
+Widget summaryText(String text) {
+  return Text(
+    text,
+    style: GF.GoogleFonts.leagueSpartan(
+      fontSize: 24,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.normal,
+    ),
+  );
+}
+
+Widget badNetworkCircle(BuildContext context, String deviceName) {
+  return Positioned(
+    child: Center(
+      child: Container(
+        height: MediaQuery.of(context).size.width * 0.75,
+        width: MediaQuery.of(context).size.width * 0.75,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(192, 80, 63, 63),
+          shape: BoxShape.circle,
+        ),
+        padding: EdgeInsetsDirectional.fromSTEB(50, 0, 50, 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //device name
+            defaultDeviceName(deviceName),
+            emptyBox(),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget selectDefaultAfterSpinkit(
+    String data, void Function()? onPressFunction) {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+    child: InkWell(
+      onTap: onPressFunction,
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Color(0xFF686868)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              data,
+              style: GF.GoogleFonts.leagueSpartan(
+                height: 1.5,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget displayDate(String date) {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
+    child: Text(
+      '$date',
+      style: GF.GoogleFonts.leagueSpartan(
+          color: Color(0xFFFFFFFF),
+          fontWeight: FontWeight.normal,
+          fontSize: 18),
+    ),
+  );
+}
+
+Widget userName() {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
+    child: Text(
+      currentUserDisplayName, //replace with $username
+      style: GF.GoogleFonts.leagueSpartan(
+          color: Color(0xFF2F9DC1), fontWeight: FontWeight.w600, fontSize: 40),
+    ),
+  );
+}
+
+Widget hi() {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(20, 25, 20, 0),
+    child: Text(
+      'Hi,',
+      style: GF.GoogleFonts.leagueSpartan(
+          color: Color(0xFFFFFFFF), fontWeight: FontWeight.w600, fontSize: 40),
+    ),
+  );
+}
+
+Widget emptyBox() {
+  return Container(
+    height: 40,
+    width: 130,
+    color: Color.fromARGB(255, 124, 118, 118),
+  );
+}
 
 Widget defaultDeviceName(String str) {
   return Text(

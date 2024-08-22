@@ -1,3 +1,4 @@
+import 'package:hydrow/constants/k_generalized.dart';
 import 'package:hydrow/custom_code/actions/call_a_p_i.dart';
 
 import '/auth/auth_util.dart';
@@ -60,18 +61,7 @@ class _TankSummaryWidgetState extends State<TankSummaryWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF112025),
-        title: Text(
-          'All Tanks',
-          style: GF.GoogleFonts.leagueSpartan(
-            color: Color(0xFFFFFFFF),
-            fontWeight: FontWeight.normal,
-            fontSize: 22,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: genAppBar("All Tanks", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),

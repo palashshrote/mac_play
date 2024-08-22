@@ -1,3 +1,5 @@
+import 'package:hydrow/constants/k_generalized.dart';
+
 import '/auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -76,18 +78,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF112025),
-        title: Text(
-          'Edit Profile',
-          style: GF.GoogleFonts.leagueSpartan(
-            color: Color(0xFFFFFFFF),
-            fontWeight: FontWeight.normal,
-            fontSize: 22, //edited
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: genAppBar("Edit Profile", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),

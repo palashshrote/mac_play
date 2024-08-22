@@ -1,3 +1,5 @@
+import 'package:hydrow/constants/k_generalized.dart';
+
 import '/auth/auth_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -81,18 +83,7 @@ class _MeterEditWidgetState extends State<MeterEditWidget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF112025),
-        title: Text(
-          'Edit Device',
-          style: GF.GoogleFonts.leagueSpartan(
-            color: Color(0xFFFFFFFF),
-            fontWeight: FontWeight.normal,
-            fontSize: 22, //edited
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: genAppBar("Edit Devices", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),

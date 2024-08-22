@@ -19,7 +19,7 @@ class NetworkConnectivityWidget extends StatelessWidget {
             SizedBox(width: 8),
             Expanded(
               child: Text(
-                'Low internet. Check your internet connection.',
+                'No internet. Check your internet connection.',
                 style: TextStyle(color: Colors.white, fontSize: 19),
               ),
             ),

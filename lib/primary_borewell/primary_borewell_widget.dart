@@ -1,4 +1,5 @@
 import 'package:hydrow/backend/schema/borewell_record.dart';
+import 'package:hydrow/constants/k_generalized.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '/auth/auth_util.dart';
 import '/backend/backend.dart';
@@ -76,14 +77,7 @@ class _PrimaryBorewellWidgetState extends State<PrimaryBorewellWidget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF112025),
-        title: Text(
-          'Set primary borewell',
-          style: appBarTextStyle,
-        ),
-        centerTitle: true,
-      ),
+      appBar: genAppBar('Set primary borewell', centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () {

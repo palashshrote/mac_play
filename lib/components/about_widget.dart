@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:provider/provider.dart';
+import '../constants/k_generalized.dart';
 import 'about_model.dart';
 export 'about_model.dart';
 
@@ -40,18 +41,7 @@ class _AboutWidgetState extends State<AboutWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'About',
-            style: GF.GoogleFonts.leagueSpartan(
-              textStyle: TextStyle(
-                fontSize: 22.0,
-              ),
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Color(0xFF112025), // Set app bar color
-        ),
+        appBar: genAppBar("About", centerTitle: true),
         backgroundColor: Color(0xFF0C0C0C), // Set background color
         body: SingleChildScrollView(
           child: Padding(

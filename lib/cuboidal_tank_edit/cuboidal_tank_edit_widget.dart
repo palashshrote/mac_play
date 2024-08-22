@@ -1,3 +1,5 @@
+import 'package:hydrow/constants/k_generalized.dart';
+
 import '/auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
@@ -91,18 +93,7 @@ class _CuboidalTankEditWidgetState extends State<CuboidalTankEditWidget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF112025),
-        title: Text(
-          'Edit Device',
-          style: GF.GoogleFonts.leagueSpartan(
-            color: Color(0xFFFFFFFF),
-            fontWeight: FontWeight.normal,
-            fontSize: 22, //edited
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: genAppBar("Edit Devices", centerTitle: true),
 
       // Main body of the page.
       body: SafeArea(

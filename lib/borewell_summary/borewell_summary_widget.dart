@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hydrow/auth/auth_util.dart';
 import 'package:hydrow/backend/backend.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
+import 'package:hydrow/constants/k_generalized.dart';
 import 'package:hydrow/custom_code/actions/call_a_p_i.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -53,18 +54,7 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF112025),
-        title: Text(
-          'All Borewells',
-          style: GF.GoogleFonts.leagueSpartan(
-            color: Color(0xFFFFFFFF),
-            fontWeight: FontWeight.normal,
-            fontSize: 22,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: genAppBar("All Borewells", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
@@ -179,7 +169,8 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
                                                 ]),
                                               ]),
                                           Text(
-                                            containerBorewellRecord!.borewellName!,
+                                            containerBorewellRecord!
+                                                .borewellName!,
                                             style: GF.GoogleFonts.leagueSpartan(
                                               fontSize: 30,
                                               color: Color(0xFFFFFFFF),
@@ -195,7 +186,6 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: [
-                                          
                                           ElevatedButton(
                                             onPressed: () async {
                                               _model.outputWaterLevel =
@@ -207,7 +197,8 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
                                                     containerBorewellRecord
                                                         .borewellKey!),
                                               );
-                                              print("Water level = ${_model.outputWaterLevel}");
+                                              print(
+                                                  "Water level = ${_model.outputWaterLevel}");
 
                                               context.pushNamed(
                                                 'IndividualBorewellSummary',
@@ -221,7 +212,6 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
                                                     _model.outputWaterLevel,
                                                     ParamType.double,
                                                   ),
-                                                  
                                                 }.withoutNulls,
                                                 extra: <String, dynamic>{
                                                   'docReference':

@@ -1,5 +1,6 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:hydrow/constants/k_generalized.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -41,18 +42,7 @@ class _TermsandConditionState extends State<TermsandCondition> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Terms and Conditions',
-          style: GF.GoogleFonts.leagueSpartan(
-            textStyle: TextStyle(
-              fontSize: 22.0,
-            ),
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Color(0xFF112025), // Set app bar color
-      ),
+      appBar: genAppBar("Terms and Conditions", centerTitle: true),
       backgroundColor: Color(0xFF0C0C0C), // Set background color
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),

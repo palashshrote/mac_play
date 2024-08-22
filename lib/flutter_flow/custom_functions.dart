@@ -217,6 +217,70 @@ String? boreWell(String? channel) {
   }
 }
 
+Future<dynamic> getTemp(String tankKey) async {
+  String str1 = 'https://api.thingspeak.com/channels/';
+  String str2 = '/feeds.json?api_key=';
+  String apiUrl = str1 +
+      generateChannelID(tankKey) +
+      str2 +
+      generateReadAPI(tankKey) +
+      "&results=1";
+  String res = await fetchData(apiUrl);
+  // print("All well ${generateChannelID(borewellKey)}");
+  var jsonData = json.decode(res, reviver: (key, value) {
+    if (value == null || value == -1) {
+      // print("REturning NA");
+      return 'N/A';
+    }
+    // print("Returning ${value}");
+    return value;
+  });
+  // var jsonData = json.decode(res);
+  if (jsonData == "N/A") return "N/A/B";
+  var val = jsonData['feeds'][0]['field7'];
+  // print("Null value : ${val}");
+
+  try {
+    var ans = (double.tryParse(val)).toString();
+    if (ans == null) return "N/A";
+    return ans;
+  } catch (e) {
+    return "N/A";
+  }
+}
+
+Future<dynamic> getStarrWaterLevel(String tankKey) async {
+  String str1 = 'https://api.thingspeak.com/channels/';
+  String str2 = '/feeds.json?api_key=';
+  String apiUrl = str1 +
+      generateChannelID(tankKey) +
+      str2 +
+      generateReadAPI(tankKey) +
+      "&results=1";
+  String res = await fetchData(apiUrl);
+  // print("All well ${generateChannelID(borewellKey)}");
+  var jsonData = json.decode(res, reviver: (key, value) {
+    if (value == null || value == -1) {
+      // print("REturning NA");
+      return 'N/A';
+    }
+    // print("Returning ${value}");
+    return value;
+  });
+  // var jsonData = json.decode(res);
+  if (jsonData == "N/A") return "N/A/B";
+  var val = jsonData['feeds'][0]['field6'];
+  // print("Null value : ${val}");
+
+  try {
+    var ans = (double.tryParse(val)).toString();
+    if (ans == null) return "N/A";
+    return ans;
+  } catch (e) {
+    return "N/A";
+  }
+}
+
 Future<dynamic> getFlowRate(String meterKey) async {
   String str1 = 'https://api.thingspeak.com/channels/';
   String str2 = '/feeds.json?api_key=';
@@ -335,7 +399,7 @@ Future<String> getActivityURL(String key) async {
   if (key == "NA") {
     return "https://thingspeak.com/";
   } else {
-    String a = "https://thingspeak.com/channels/";
+    String a = "https://api.thingspeak.com/channels/";
     String c = "/fields/6.json?api_key=";
     String d = "&results=5&timezone=Asia/Kolkata";
     return a + generateChannelID(key) + c + generateReadAPI(key) + d;

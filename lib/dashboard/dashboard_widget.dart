@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/constants/k_dashboard_container.dart';
+import 'package:hydrow/constants/k_generalized.dart';
 import 'package:hydrow/custom_code/actions/call_a_p_i.dart';
 import 'package:hydrow/edit_device_debore/edit_device_debore_widget.dart';
 import 'package:hydrow/edit_device_pravah/edit_device_pravah_widget.dart';
@@ -83,21 +84,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
   bool isActivePravah = true;
   bool isActiveDebore = true;
   // double _waterlevel = 0.5;
-
-  final animationsMap = {
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-      ],
-    ),
-  };
 
   @override
   void initState() {
@@ -505,859 +491,867 @@ class _DashboardWidgetState extends State<DashboardWidget>
       ),
     ];
     List<Widget> pages = <Widget>[
-      SingleChildScrollView(
-        child: Container(
-          // color: Colors.black,
-          color: Color(0xFF0C0C0C),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 25, 20, 0),
-                child: Text(
-                  'Hi,',
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 40),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
-                child: Text(
-                  currentUserDisplayName, //replace with $username
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFF2F9DC1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 40),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
-                child: Text(
-                  '$date',
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.normal,
-                      fontSize: 18),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
-                child: StreamBuilder<InternetConnectionStatus>(
-                  stream: InternetConnectionCheckerPlus().onStatusChange,
-                  builder: (context, connectionSnapshot) {
-                    final isConnected = connectionSnapshot.data ==
-                        InternetConnectionStatus.connected;
+      //starr container
+      singleChildScrollViewContainer(
+        date,
+        Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
+          child: StreamBuilder<InternetConnectionStatus>(
+            stream: InternetConnectionCheckerPlus().onStatusChange,
+            builder: (context, connectionSnapshot) {
+              final isConnected =
+                  connectionSnapshot.data == InternetConnectionStatus.connected;
 
-                    return Stack(
-                      children: [
-                        StreamBuilder<List<TankRecord>>(
-                          stream: queryTankRecord(
-                            parent: currentUserReference,
-                            queryBuilder: (tankRecord) => tankRecord.where(
-                                'TankKey',
-                                isEqualTo: FFAppState().tankKey),
-                            singleRecord: true,
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 75,
-                                  height: 75,
-                                  child: SpinKitRipple(
-                                    color: Color(0xFF7E8083),
-                                    size: 75,
-                                  ),
-                                ),
-                              );
-                            }
-                            List<TankRecord> containerTankRecordList =
-                                snapshot.data!;
-                            // Return an empty Container when the item does not exist.
-                            if (snapshot.data!.isEmpty) {
-                              return Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 20, 20, 20),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const PrimaryTankWidget()));
-                                    },
-                                    child: Container(
-                                      height: 100,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(
-                                            color: Color(0xFF686868)),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Default Tank is not selected. \nClick to select a Default Tank.',
-                                            style: GF.GoogleFonts.leagueSpartan(
-                                              height: 1.5,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ));
-                            }
-                            final containerTankRecord =
-                                containerTankRecordList.isNotEmpty
-                                    ? containerTankRecordList.first
-                                    : null;
-                            //If data found return the Water tank container
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            20, 30, 20, 0),
-                                        child: Container(
-                                          height: 350,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFECECEC),
-                                            shape: BoxShape.rectangle,
-                                            // borderRadius: BorderRadius.circular(20),
-                                            // border: Border.all(color: Color(0xFFF7F7F8)),
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              Positioned(
-                                                child: WaveWidget(
-                                                  config: CustomConfig(colors: [
-                                                    Color(0xFF93DCEC),
-                                                    Color(0xFF91D9E9),
-                                                    Color(0xFF52B9D5)
-                                                  ], durations: [
-                                                    4000,
-                                                    6000,
-                                                    8000
-                                                  ], heightPercentages: [
-                                                    isActive
-                                                        ? 0.87 -
-                                                            functions.tankAPI(
-                                                                functions.calculateWaterAvailable(
-                                                                    containerTankRecord!
-                                                                        .length!,
-                                                                    containerTankRecord!
-                                                                        .breadth!,
-                                                                    containerTankRecord!
-                                                                        .height!,
-                                                                    containerTankRecord!
-                                                                        .radius!,
-                                                                    _model
-                                                                        .waterLevel,
-                                                                    containerTankRecord!
-                                                                        .isCuboid!),
-                                                                functions.calculateVolume(
-                                                                    containerTankRecord!
-                                                                        .isCuboid!,
-                                                                    containerTankRecord!
-                                                                        .length!,
-                                                                    containerTankRecord!
-                                                                        .breadth!,
-                                                                    containerTankRecord!
-                                                                        .height!,
-                                                                    containerTankRecord!
-                                                                        .radius!))
-                                                        : 0.87,
-                                                    isActive
-                                                        ? 0.87 -
-                                                            functions.tankAPI(
-                                                                functions.calculateWaterAvailable(
-                                                                    containerTankRecord!
-                                                                        .length!,
-                                                                    containerTankRecord!
-                                                                        .breadth!,
-                                                                    containerTankRecord!
-                                                                        .height!,
-                                                                    containerTankRecord!
-                                                                        .radius!,
-                                                                    _model
-                                                                        .waterLevel,
-                                                                    containerTankRecord!
-                                                                        .isCuboid!),
-                                                                functions.calculateVolume(
-                                                                    containerTankRecord!
-                                                                        .isCuboid!,
-                                                                    containerTankRecord!
-                                                                        .length!,
-                                                                    containerTankRecord!
-                                                                        .breadth!,
-                                                                    containerTankRecord!
-                                                                        .height!,
-                                                                    containerTankRecord!
-                                                                        .radius!))
-                                                        : 0.87,
-                                                    isActive
-                                                        ? 0.87 -
-                                                            functions.tankAPI(
-                                                                functions.calculateWaterAvailable(
-                                                                    containerTankRecord!
-                                                                        .length!,
-                                                                    containerTankRecord!
-                                                                        .breadth!,
-                                                                    containerTankRecord!
-                                                                        .height!,
-                                                                    containerTankRecord!
-                                                                        .radius!,
-                                                                    _model
-                                                                        .waterLevel,
-                                                                    containerTankRecord!
-                                                                        .isCuboid!),
-                                                                functions.calculateVolume(
-                                                                    containerTankRecord!
-                                                                        .isCuboid!,
-                                                                    containerTankRecord!
-                                                                        .length!,
-                                                                    containerTankRecord!
-                                                                        .breadth!,
-                                                                    containerTankRecord!
-                                                                        .height!,
-                                                                    containerTankRecord!
-                                                                        .radius!))
-                                                        : 0.87
-                                                  ]
-                                                      // heightPercentages: [
-                                                      //   0.50,
-                                                      //   0.52,
-                                                      //   0.54
-                                                      // ], //replace with actual tank height
-                                                      // blur: MaskFilter.blur(BlurStyle.solid, 1),
-                                                      ),
-                                                  waveAmplitude:
-                                                      3.00, //depth of curves
-                                                  waveFrequency:
-                                                      3, //number of curves in waves
-                                                  size: Size(
-                                                    double.infinity,
-                                                    double.infinity,
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                  child: Center(
-                                                child: Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  decoration: BoxDecoration(
-                                                    color: Color(0xC00C0C0C),
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(50, 0, 50, 0),
-                                                  child: isConnected
-                                                      ? Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Row(
-                                                              //Row 1
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                  child: Text(
-                                                                    containerTankRecord!
-                                                                        .tankName!, //replace with $tankname variable
-                                                                    // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                                    style: GF
-                                                                            .GoogleFonts
-                                                                        .leagueSpartan(
-                                                                      fontSize:
-                                                                          30,
-                                                                      color: Color(
-                                                                          0xFFFFFFFF),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                    ),
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis, // new
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            Row(
-                                                              //Row2
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: <Widget>[
-                                                                Column(
-                                                                  //row2 column1
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: <Widget>[
-                                                                    Row(
-                                                                      //row2 column1 subrow1
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            'Tank Filled',
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 16,
-                                                                              color: Color(0xFFFFFFFF),
-                                                                              fontWeight: FontWeight.normal,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 7,
-                                                                    ),
-                                                                    Row(
-                                                                      //row2 column1 subrow2
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            isActive
-                                                                                ? functions.convertToInt(functions.tankAPI(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!), containerTankRecord!.capacity)).toString() + " %"
-                                                                                : 'N/A', //replace with original data
-                                                                            textAlign: TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 24,
-                                                                              color: Color(0xFF91D9E9),
-                                                                              fontWeight: FontWeight.w600,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Column(
-                                                                  //row2 column2
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: <Widget>[
-                                                                    Row(
-                                                                      //row2 column2 subrow1
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            'Available for use',
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 16,
-                                                                              color: Color(0xFFFFFFFF),
-                                                                              fontWeight: FontWeight.normal,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 7,
-                                                                    ),
-                                                                    Row(
-                                                                      //row2 column2 subrow2
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            isActive
-                                                                                ? functions.shortenNumber(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!)) + "L"
-                                                                                : 'N/A', //replace with oririginal data
-                                                                            textAlign: TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 24,
-                                                                              color: Color(0xFF91D9E9),
-                                                                              fontWeight: FontWeight.w600,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            Row(
-                                                              //Row3
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: <Widget>[
-                                                                Column(
-                                                                  //row3 column1
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: <Widget>[
-                                                                    Row(
-                                                                      //row3 column1 subrow1
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            'Total Volume',
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 16,
-                                                                              color: Color(0xFFFFFFFF),
-                                                                              fontWeight: FontWeight.normal,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 7,
-                                                                    ),
-                                                                    Row(
-                                                                      //row3 column1 subrow2
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            isActive
-                                                                                ? functions.shortenNumber(containerTankRecord!.capacity!) + 'L'
-                                                                                : 'N/A', //replace with oririginal data
-                                                                            textAlign: TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 24,
-                                                                              color: Color(0xFF91D9E9),
-                                                                              fontWeight: FontWeight.w600,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Column(
-                                                                  //row3 column2
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: <Widget>[
-                                                                    Row(
-                                                                      //row3 column2 subrow1
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            'Temperature',
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 16,
-                                                                              color: Color(0xFFFFFFFF),
-                                                                              fontWeight: FontWeight.normal,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 7,
-                                                                    ),
-                                                                    Row(
-                                                                      //row3 column2 subrow2
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Text(
-                                                                            isActive
-                                                                                ? _model.temperature.toString() + ' \u00B0C'
-                                                                                : 'N/A', //replace with original data
-                                                                            textAlign: TextAlign.center,
-                                                                            style: GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 24,
-                                                                              color: Color(0xFF91D9E9),
-                                                                              fontWeight: FontWeight.w600,
-                                                                            )),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            Row(
-                                                              //Row4
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                ElevatedButton
-                                                                    .icon(
-                                                                  // <-- ElevatedButton
-                                                                  onPressed:
-                                                                      () async {
-                                                                    isActive = await functions
-                                                                        .checkActivity(
-                                                                            FFAppState().tankKey);
-                                                                    _model.waterLevel = await actions.callAPI(
-                                                                        functions.generateChannelID(containerTankRecord!
-                                                                            .tankKey!),
-                                                                        functions
-                                                                            .generateReadAPI(containerTankRecord!.tankKey!));
-                                                                    _model.temperature = await callAPITemperature(
-                                                                        functions.generateChannelID(containerTankRecord!
-                                                                            .tankKey!),
-                                                                        functions
-                                                                            .generateReadAPI(containerTankRecord!.tankKey!));
-                                                                    setState(
-                                                                        () {});
-                                                                  },
-                                                                  icon: Icon(
-                                                                    CupertinoIcons
-                                                                        .arrow_2_squarepath,
-                                                                    size: 16.0,
-                                                                    color: Color(
-                                                                        0xFF0C0C0C),
-                                                                  ),
-                                                                  label: Text(
-                                                                    'Refresh',
-                                                                    style: GF
-                                                                            .GoogleFonts
-                                                                        .leagueSpartan(
-                                                                      fontSize:
-                                                                          16,
-                                                                      color: Color(
-                                                                          0xFF0C0C0C),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                    ),
-                                                                  ),
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              7.5),
-                                                                    ),
-                                                                    backgroundColor:
-                                                                        Color(
-                                                                            0xFFC6DDDB),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        )
-                                                      : Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Row(
-                                                              //Row 1
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                  child: Text(
-                                                                    containerTankRecord!
-                                                                        .tankName!, //replace with $tankname variable
-                                                                    // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                                    style: GF
-                                                                            .GoogleFonts
-                                                                        .leagueSpartan(
-                                                                      fontSize:
-                                                                          30,
-                                                                      color: Color(
-                                                                          0xFFFFFFFF),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                    ),
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis, // new
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                ),
-                                              )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            20, 40, 20, 0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Tank Summary',
-                                              style:
-                                                  GF.GoogleFonts.leagueSpartan(
-                                                fontSize: 24,
-                                                color: Color(0xFFFFFFFF),
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                            Container(
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFF1A1A1A),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                    color: Color(0xFF656565),
-                                                    width: 1,
-                                                  ),
-                                                ),
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(15, 0, 15, 0),
-                                                  child: DropdownButton<String>(
-                                                    value: dropdownValueStarr,
-                                                    // borderRadius: BorderRadius.circular(5),
-                                                    dropdownColor:
-                                                        Color(0xFF1A1A1A),
-                                                    focusColor:
-                                                        Color(0xFF1A1A1A),
-
-                                                    icon: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 10),
-                                                        child: Icon(
-                                                          CupertinoIcons
-                                                              .arrow_turn_right_down,
-                                                          size: 14,
-                                                        )),
-                                                    iconEnabledColor: Color(
-                                                        0xFF656565), //Icon color
-                                                    underline: Container(),
-                                                    items: <String>[
-                                                      'Daily',
-                                                      'Weekly',
-                                                      'Monthly'
-                                                    ].map<
-                                                            DropdownMenuItem<
-                                                                String>>(
-                                                        (String value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value,
-                                                        child: Text(value,
-                                                            style: GF
-                                                                    .GoogleFonts
-                                                                .leagueSpartan(
-                                                              fontSize: 14,
-                                                              color: Color(
-                                                                  0xFFFFFFFF),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                            )),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      setState(() {
-                                                        dropdownValueStarr =
-                                                            newValue!;
-                                                      });
-                                                    },
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            15, 20, 15, 0),
-                                        child: Container(
-                                          height: 200,
-                                          child:
-                                              FutureBuilder<SfCartesianChart>(
-                                            // replace with following call
-                                            future: functions.getChartStarr(
-                                                containerTankRecord!.tankKey,
-                                                dropdownValueStarr,
-                                                containerTankRecord!.length!,
-                                                containerTankRecord!.breadth!,
-                                                containerTankRecord!.height!,
-                                                containerTankRecord!.radius!,
-                                                containerTankRecord!.capacity!,
-                                                containerTankRecord!.isCuboid!),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Center(
-                                                    child:
-                                                        CircularProgressIndicator());
-                                              } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Error occured in loading graph.');
-                                              } else {
-                                                return snapshot.data ??
-                                                    SizedBox(); // Render the chart or an empty SizedBox if data is null
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            20, 30, 20, 30),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () async {
-                                                if (!await InternetConnectionCheckerPlus()
-                                                    .hasConnection) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .hideCurrentSnackBar();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                          'Please connect to the internet'),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  setState(() {
-                                                    _isLoading = true;
-                                                  });
-                                                  // _model.output =
-                                                  //     await actions.newCustomAction(
-                                                  //   (currentUserDocument?.keyList
-                                                  //               ?.toList() ??
-                                                  //           [])
-                                                  //       .toList(),
-                                                  // );
-                                                  try {
-                                                    _model.output =
-                                                        await actions
-                                                            .newCustomAction(
-                                                      (currentUserDocument
-                                                                  ?.keyList
-                                                                  ?.toList() ??
-                                                              [])
-                                                          .toList(),
-                                                    );
-
-                                                    // Check if _model.output is null or any other failure condition
-                                                    if (_model.output == null) {
-                                                      // Handle the case where the output is null
-                                                      print(
-                                                          'Action failed: output is null');
-                                                    } else {
-                                                      // Handle the successful case
-                                                      print(
-                                                          'Action succeeded: output is ${_model.output}');
-                                                    }
-                                                  } catch (e) {
-                                                    // Handle any exceptions that occur
-                                                    print(
-                                                        'An error occurred: $e');
-                                                  }
-
-                                                  setState(() {
-                                                    _isLoading = false;
-                                                  });
-
-                                                  context.pushNamed(
-                                                    'TankSummary',
-                                                    queryParams: {
-                                                      'water': serializeParam(
-                                                        _model.output,
-                                                        ParamType.JSON,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
-                                                }
-                                              },
-                                              child: Text(
-                                                'Show All Devices',
-                                                style: GF.GoogleFonts
-                                                    .leagueSpartan(
-                                                  fontSize: 18,
-                                                  color: Color(0xFF0C0C0C),
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7.5),
-                                                  ),
-                                                  backgroundColor:
-                                                      Color(0xFFC6DDDB),
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          20, 17, 20, 17)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+              return Stack(
+                children: [
+                  StreamBuilder<List<TankRecord>>(
+                    stream: queryTankRecord(
+                      parent: currentUserReference,
+                      queryBuilder: (tankRecord) => tankRecord.where('TankKey',
+                          isEqualTo: FFAppState().tankKey),
+                      singleRecord: true,
+                    ),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return spinKit();
+                      }
+                      List<TankRecord> containerTankRecordList = snapshot.data!;
+                      // Return an empty Container when the item does not exist.
+                      if (snapshot.data!.isEmpty) {
+                        return selectDefaultAfterSpinkit(
+                          "Default Tank is not selected. \nTap to select a default tank.",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PrimaryTankWidget(),
                               ),
                             );
                           },
+                        );
+                      }
+                      final containerTankRecord =
+                          containerTankRecordList.isNotEmpty
+                              ? containerTankRecordList.first
+                              : null;
+                      //If data found return the Water tank container
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                      ],
-                    );
-                  },
-                ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 30, 20, 0),
+                                  child: Container(
+                                    height: 350,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFECECEC),
+                                      shape: BoxShape.rectangle,
+                                      // borderRadius: BorderRadius.circular(20),
+                                      // border: Border.all(color: Color(0xFFF7F7F8)),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                          child: WaveWidget(
+                                            config: CustomConfig(colors: [
+                                              Color(0xFF93DCEC),
+                                              Color(0xFF91D9E9),
+                                              Color(0xFF52B9D5)
+                                            ], durations: [
+                                              4000,
+                                              6000,
+                                              8000
+                                            ], heightPercentages: [
+                                              isActive
+                                                  ? 0.87 -
+                                                      functions.tankAPI(
+                                                          functions.calculateWaterAvailable(
+                                                              containerTankRecord!
+                                                                  .length!,
+                                                              containerTankRecord!
+                                                                  .breadth!,
+                                                              containerTankRecord!
+                                                                  .height!,
+                                                              containerTankRecord!
+                                                                  .radius!,
+                                                              _model.waterLevel,
+                                                              containerTankRecord!
+                                                                  .isCuboid!),
+                                                          functions.calculateVolume(
+                                                              containerTankRecord!
+                                                                  .isCuboid!,
+                                                              containerTankRecord!
+                                                                  .length!,
+                                                              containerTankRecord!
+                                                                  .breadth!,
+                                                              containerTankRecord!
+                                                                  .height!,
+                                                              containerTankRecord!
+                                                                  .radius!))
+                                                  : 0.87,
+                                              isActive
+                                                  ? 0.87 -
+                                                      functions.tankAPI(
+                                                          functions.calculateWaterAvailable(
+                                                              containerTankRecord!
+                                                                  .length!,
+                                                              containerTankRecord!
+                                                                  .breadth!,
+                                                              containerTankRecord!
+                                                                  .height!,
+                                                              containerTankRecord!
+                                                                  .radius!,
+                                                              _model.waterLevel,
+                                                              containerTankRecord!
+                                                                  .isCuboid!),
+                                                          functions.calculateVolume(
+                                                              containerTankRecord!
+                                                                  .isCuboid!,
+                                                              containerTankRecord!
+                                                                  .length!,
+                                                              containerTankRecord!
+                                                                  .breadth!,
+                                                              containerTankRecord!
+                                                                  .height!,
+                                                              containerTankRecord!
+                                                                  .radius!))
+                                                  : 0.87,
+                                              isActive
+                                                  ? 0.87 -
+                                                      functions.tankAPI(
+                                                          functions.calculateWaterAvailable(
+                                                              containerTankRecord!
+                                                                  .length!,
+                                                              containerTankRecord!
+                                                                  .breadth!,
+                                                              containerTankRecord!
+                                                                  .height!,
+                                                              containerTankRecord!
+                                                                  .radius!,
+                                                              _model.waterLevel,
+                                                              containerTankRecord!
+                                                                  .isCuboid!),
+                                                          functions.calculateVolume(
+                                                              containerTankRecord!
+                                                                  .isCuboid!,
+                                                              containerTankRecord!
+                                                                  .length!,
+                                                              containerTankRecord!
+                                                                  .breadth!,
+                                                              containerTankRecord!
+                                                                  .height!,
+                                                              containerTankRecord!
+                                                                  .radius!))
+                                                  : 0.87
+                                            ]
+                                                // heightPercentages: [
+                                                //   0.50,
+                                                //   0.52,
+                                                //   0.54
+                                                // ], //replace with actual tank height
+                                                // blur: MaskFilter.blur(BlurStyle.solid, 1),
+                                                ),
+                                            waveAmplitude:
+                                                3.00, //depth of curves
+                                            waveFrequency:
+                                                3, //number of curves in waves
+                                            size: Size(
+                                              double.infinity,
+                                              double.infinity,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                            child: Center(
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.75,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.75,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xC00C0C0C),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    50, 0, 50, 0),
+                                            child: isConnected
+                                                ? Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Row(
+                                                        //Row 1
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            child: Text(
+                                                              containerTankRecord!
+                                                                  .tankName!, //replace with $tankname variable
+                                                              // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
+                                                              style: GF
+                                                                      .GoogleFonts
+                                                                  .leagueSpartan(
+                                                                fontSize: 30,
+                                                                color: Color(
+                                                                    0xFFFFFFFF),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                              overflow: TextOverflow
+                                                                  .ellipsis, // new
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Row(
+                                                        //Row2
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Column(
+                                                            //row2 column1
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              Row(
+                                                                //row2 column1 subrow1
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      'Tank Filled',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color(
+                                                                            0xFFFFFFFF),
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 7,
+                                                              ),
+                                                              Row(
+                                                                //row2 column1 subrow2
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      isActive
+                                                                          ? functions.convertToInt(functions.tankAPI(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!), containerTankRecord!.capacity)).toString() +
+                                                                              " %"
+                                                                          : 'N/A', //replace with original data
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            24,
+                                                                        color: Color(
+                                                                            0xFF91D9E9),
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Column(
+                                                            //row2 column2
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              Row(
+                                                                //row2 column2 subrow1
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      'Available for use',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color(
+                                                                            0xFFFFFFFF),
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 7,
+                                                              ),
+                                                              Row(
+                                                                //row2 column2 subrow2
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      isActive
+                                                                          ? functions.shortenNumber(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!)) +
+                                                                              "L"
+                                                                          : 'N/A', //replace with oririginal data
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            24,
+                                                                        color: Color(
+                                                                            0xFF91D9E9),
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Row(
+                                                        //Row3
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Column(
+                                                            //row3 column1
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              Row(
+                                                                //row3 column1 subrow1
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      'Total Volume',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color(
+                                                                            0xFFFFFFFF),
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 7,
+                                                              ),
+                                                              Row(
+                                                                //row3 column1 subrow2
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      isActive
+                                                                          ? functions.shortenNumber(containerTankRecord!.capacity!) +
+                                                                              'L'
+                                                                          : 'N/A', //replace with oririginal data
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            24,
+                                                                        color: Color(
+                                                                            0xFF91D9E9),
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Column(
+                                                            //row3 column2
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              Row(
+                                                                //row3 column2 subrow1
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      'Temperature',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color(
+                                                                            0xFFFFFFFF),
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 7,
+                                                              ),
+                                                              Row(
+                                                                //row3 column2 subrow2
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                      isActive
+                                                                          ? _model.temperature.toString() +
+                                                                              ' \u00B0C'
+                                                                          : 'N/A', //replace with original data
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            24,
+                                                                        color: Color(
+                                                                            0xFF91D9E9),
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Row(
+                                                        //Row4
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ElevatedButton.icon(
+                                                            // <-- ElevatedButton
+                                                            onPressed:
+                                                                () async {
+                                                              isActive = await functions
+                                                                  .checkActivity(
+                                                                      FFAppState()
+                                                                          .tankKey);
+                                                              _model.waterLevel = await actions.callAPI(
+                                                                  functions.generateChannelID(
+                                                                      containerTankRecord!
+                                                                          .tankKey!),
+                                                                  functions.generateReadAPI(
+                                                                      containerTankRecord!
+                                                                          .tankKey!));
+                                                              _model.temperature = await callAPITemperature(
+                                                                  functions.generateChannelID(
+                                                                      containerTankRecord!
+                                                                          .tankKey!),
+                                                                  functions.generateReadAPI(
+                                                                      containerTankRecord!
+                                                                          .tankKey!));
+                                                              setState(() {});
+                                                            },
+                                                            icon: Icon(
+                                                              CupertinoIcons
+                                                                  .arrow_2_squarepath,
+                                                              size: 16.0,
+                                                              color: Color(
+                                                                  0xFF0C0C0C),
+                                                            ),
+                                                            label: Text(
+                                                              'Refresh',
+                                                              style: GF
+                                                                      .GoogleFonts
+                                                                  .leagueSpartan(
+                                                                fontSize: 16,
+                                                                color: Color(
+                                                                    0xFF0C0C0C),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            7.5),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xFFC6DDDB),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Row(
+                                                        //Row 1
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            child: Text(
+                                                              containerTankRecord!
+                                                                  .tankName!, //replace with $tankname variable
+                                                              // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
+                                                              style: GF
+                                                                      .GoogleFonts
+                                                                  .leagueSpartan(
+                                                                fontSize: 30,
+                                                                color: Color(
+                                                                    0xFFFFFFFF),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                              overflow: TextOverflow
+                                                                  .ellipsis, // new
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      emptyBox(),
+                                                    ],
+                                                  ),
+                                          ),
+                                        )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                /*Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 40, 20, 0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Tank Summary',
+                                        style: GF.GoogleFonts.leagueSpartan(
+                                          fontSize: 24,
+                                          color: Color(0xFFFFFFFF),
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      Container(
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFF1A1A1A),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: Color(0xFF656565),
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    15, 0, 15, 0),
+                                            child: DropdownButton<String>(
+                                              value: dropdownValueStarr,
+                                              // borderRadius: BorderRadius.circular(5),
+                                              dropdownColor: Color(0xFF1A1A1A),
+                                              focusColor: Color(0xFF1A1A1A),
 
-                /*child: StreamBuilder<List<TankRecord>>(
+                                              icon: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 10),
+                                                  child: Icon(
+                                                    CupertinoIcons
+                                                        .arrow_turn_right_down,
+                                                    size: 14,
+                                                  )),
+                                              iconEnabledColor: Color(
+                                                  0xFF656565), //Icon color
+                                              underline: Container(),
+                                              items: <String>[
+                                                'Daily',
+                                                'Weekly',
+                                                'Monthly'
+                                              ].map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value,
+                                                      style: GF.GoogleFonts
+                                                          .leagueSpartan(
+                                                        fontSize: 14,
+                                                        color:
+                                                            Color(0xFFFFFFFF),
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                      )),
+                                                );
+                                              }).toList(),
+                                              onChanged: (String? newValue) {
+                                                setState(() {
+                                                  dropdownValueStarr =
+                                                      newValue!;
+                                                });
+                                              },
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                                */
+                                summaryDropDownBtnGeneralized(
+                                  "Tank Summary",
+                                  dropdownValueStarr,
+                                  (String? newValue) {
+                                    setState(() {
+                                      dropdownValueStarr = newValue!;
+                                    });
+                                  },
+                                ),
+                                // graph - library to be updated as per the data
+                                generalizedGraph(
+                                  functions.getChartStarr(
+                                      containerTankRecord!.tankKey,
+                                      dropdownValueStarr,
+                                      containerTankRecord!.length!,
+                                      containerTankRecord!.breadth!,
+                                      containerTankRecord!.height!,
+                                      containerTankRecord!.radius!,
+                                      containerTankRecord!.capacity!,
+                                      containerTankRecord!.isCuboid!),
+                                ),
+                                /*Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      15, 20, 15, 0),
+                                  child: Container(
+                                    height: 200,
+                                    child: FutureBuilder<SfCartesianChart>(
+                                      // replace with following call
+                                      future: functions.getChartStarr(
+                                          containerTankRecord!.tankKey,
+                                          dropdownValueStarr,
+                                          containerTankRecord!.length!,
+                                          containerTankRecord!.breadth!,
+                                          containerTankRecord!.height!,
+                                          containerTankRecord!.radius!,
+                                          containerTankRecord!.capacity!,
+                                          containerTankRecord!.isCuboid!),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else if (snapshot.hasError) {
+                                          return Text(
+                                              'Error occured in loading graph.');
+                                        } else {
+                                          return snapshot.data ??
+                                              SizedBox(); // Render the chart or an empty SizedBox if data is null
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                */
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 30, 20, 30),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          if (!await InternetConnectionCheckerPlus()
+                                              .hasConnection) {
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Please connect to the internet'),
+                                              ),
+                                            );
+                                          } else {
+                                            setState(() {
+                                              _isLoading = true;
+                                            });
+                                            // _model.output =
+                                            //     await actions.newCustomAction(
+                                            //   (currentUserDocument?.keyList
+                                            //               ?.toList() ??
+                                            //           [])
+                                            //       .toList(),
+                                            // );
+                                            try {
+                                              _model.output =
+                                                  await actions.newCustomAction(
+                                                (currentUserDocument?.keyList
+                                                            ?.toList() ??
+                                                        [])
+                                                    .toList(),
+                                              );
+
+                                              // Check if _model.output is null or any other failure condition
+                                              if (_model.output == null) {
+                                                // Handle the case where the output is null
+                                                print(
+                                                    'Action failed: output is null');
+                                              } else {
+                                                // Handle the successful case
+                                                print(
+                                                    'Action succeeded: output is ${_model.output}');
+                                              }
+                                            } catch (e) {
+                                              // Handle any exceptions that occur
+                                              print('An error occurred: $e');
+                                            }
+
+                                            setState(() {
+                                              _isLoading = false;
+                                            });
+
+                                            context.pushNamed(
+                                              'TankSummary',
+                                              queryParams: {
+                                                'water': serializeParam(
+                                                  _model.output,
+                                                  ParamType.JSON,
+                                                ),
+                                              }.withoutNulls,
+                                            );
+                                          }
+                                        },
+                                        child: Text(
+                                          'Show All Devices',
+                                          style: GF.GoogleFonts.leagueSpartan(
+                                            fontSize: 18,
+                                            color: Color(0xFF0C0C0C),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(7.5),
+                                            ),
+                                            backgroundColor: Color(0xFFC6DDDB),
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    20, 17, 20, 17)),
+                                      ),
+                                      showAllDevicesButton(
+                                        "Tes STr",
+                                        () async {
+                                          if (!await InternetConnectionCheckerPlus()
+                                              .hasConnection) {
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Please connect to the internet'),
+                                              ),
+                                            );
+                                          } else {
+                                            context.pushNamed(
+                                                'TankSummaryTesting');
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+
+          /*child: StreamBuilder<List<TankRecord>>(
                   //Fetching the tank record of the default tank
                   stream: queryTankRecord(
                     parent: currentUserReference,
@@ -2150,795 +2144,534 @@ class _DashboardWidgetState extends State<DashboardWidget>
                     );
                   },
                 ),*/
-              ),
-            ],
-          ),
         ),
-        // ),
       ),
-      SingleChildScrollView(
-        child: Container(
-          color: Color(0xFF0C0C0C),
-          // color: Colors.black,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 25, 20, 0),
-                child: Text(
-                  'Hi,',
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 40),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
-                child: Text(
-                  currentUserDisplayName, //replace with $username
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFF2F9DC1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 40),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
-                child: Text(
-                  '$date',
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.normal,
-                      fontSize: 18),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
-                child: StreamBuilder<InternetConnectionStatus>(
-                  stream: InternetConnectionCheckerPlus().onStatusChange,
-                  builder: (context, connectionSnapshot) {
-                    final isConnected = connectionSnapshot.data ==
-                        InternetConnectionStatus.connected;
-                    return Stack(
-                      children: [
-                        StreamBuilder<List<MeterRecord>>(
-                            stream: queryMeterRecord(
-                              parent: currentUserReference,
-                              queryBuilder: (meterRecord) => meterRecord.where(
-                                  'MeterKey',
-                                  isEqualTo: FFAppState().meterKey),
-                              singleRecord: true,
-                            ),
-                            builder: (context, meterSnapshot) {
-                              if (!meterSnapshot.hasData) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: 75,
-                                    height: 75,
-                                    child: SpinKitRipple(
-                                      color: Color(0xFF7E8083),
-                                      size: 75,
-                                    ),
-                                  ),
-                                );
-                              }
-                              List<MeterRecord> meterRecordList =
-                                  meterSnapshot.data!;
-                              if (meterSnapshot.data!.isEmpty) {
-                                return Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        20, 20, 20, 20),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const PrimaryMeterWidget()));
-                                      },
-                                      child: Container(
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border: Border.all(
-                                              color: Color(0xFF686868)),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Default Meter is not selected. \nClick to select a Default Meter.',
-                                              style:
-                                                  GF.GoogleFonts.leagueSpartan(
-                                                height: 1.5,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ));
-                              }
-                              final meterRecord = meterRecordList.isNotEmpty
-                                  ? meterRecordList.first
-                                  : null;
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: Column(
+      //pravah container
+      singleChildScrollViewContainer(
+        date,
+        Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
+          child: StreamBuilder<InternetConnectionStatus>(
+            stream: InternetConnectionCheckerPlus().onStatusChange,
+            builder: (context, connectionSnapshot) {
+              final isConnected =
+                  connectionSnapshot.data == InternetConnectionStatus.connected;
+              return Stack(
+                children: [
+                  StreamBuilder<List<MeterRecord>>(
+                      stream: queryMeterRecord(
+                        parent: currentUserReference,
+                        queryBuilder: (meterRecord) => meterRecord.where(
+                            'MeterKey',
+                            isEqualTo: FFAppState().meterKey),
+                        singleRecord: true,
+                      ),
+                      builder: (context, meterSnapshot) {
+                        if (!meterSnapshot.hasData) {
+                          return spinKit();
+                        }
+                        List<MeterRecord> meterRecordList = meterSnapshot.data!;
+                        if (meterSnapshot.data!.isEmpty) {
+                          return selectDefaultAfterSpinkit(
+                            "Default meter is not selected. \nTap to select a Default meter.",
+                            () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PrimaryMeterWidget()));
+                            },
+                          );
+                        }
+                        final meterRecord = meterRecordList.isNotEmpty
+                            ? meterRecordList.first
+                            : null;
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(15, 20, 15, 0),
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xded2ecf2),
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: Stack(
-                                                  alignment:
-                                                      AlignmentDirectional
-                                                          .center,
-                                                  children: [
-                                                    Positioned(
-                                                      child: Center(
-                                                        child: gauges
-                                                            .SfRadialGauge(
-                                                          animationDuration:
-                                                              2000,
-                                                          enableLoadingAnimation:
-                                                              true,
-                                                          axes: <gauges
-                                                              .RadialAxis>[
-                                                            gauges.RadialAxis(
-                                                              minimum: 0,
-                                                              maximum: 100,
-                                                              radiusFactor: 1,
-                                                              minorTicksPerInterval:
-                                                                  5,
-                                                              startAngle: 110,
-                                                              endAngle: 70,
-                                                              showLabels: false,
-                                                              axisLineStyle: gauges
-                                                                  .AxisLineStyle(
-                                                                thickness: 0.1,
-                                                                thicknessUnit:
-                                                                    gauges
-                                                                        .GaugeSizeUnit
-                                                                        .factor,
-                                                                cornerStyle: gauges
-                                                                    .CornerStyle
-                                                                    .bothCurve,
-                                                                color: Color(
-                                                                    0xFF0C0C0C),
-                                                              ),
-                                                              majorTickStyle: gauges.MajorTickStyle(
-                                                                  length: 0.075,
-                                                                  lengthUnit: gauges
-                                                                      .GaugeSizeUnit
-                                                                      .factor,
-                                                                  color: Color(
-                                                                      0xFF0c0c0c)
-                                                                  // color: Color(0xb1bbe5ef),
-                                                                  ),
-                                                              minorTickStyle: gauges
-                                                                  .MinorTickStyle(
-                                                                // color: Color(0x7bbbe5ef),
-                                                                color: Color(
-                                                                    0xFF0c0c0c),
-                                                                length: 0.05,
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            15, 20, 15, 0),
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xded2ecf2),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Stack(
+                                            alignment:
+                                                AlignmentDirectional.center,
+                                            children: [
+                                              Positioned(
+                                                child: Center(
+                                                  child: gauges.SfRadialGauge(
+                                                    animationDuration: 2000,
+                                                    enableLoadingAnimation:
+                                                        true,
+                                                    axes: <gauges.RadialAxis>[
+                                                      gauges.RadialAxis(
+                                                        minimum: 0,
+                                                        maximum: 100,
+                                                        radiusFactor: 1,
+                                                        minorTicksPerInterval:
+                                                            5,
+                                                        startAngle: 110,
+                                                        endAngle: 70,
+                                                        showLabels: false,
+                                                        axisLineStyle: gauges
+                                                            .AxisLineStyle(
+                                                          thickness: 0.1,
+                                                          thicknessUnit: gauges
+                                                              .GaugeSizeUnit
+                                                              .factor,
+                                                          cornerStyle: gauges
+                                                              .CornerStyle
+                                                              .bothCurve,
+                                                          color:
+                                                              Color(0xFF0C0C0C),
+                                                        ),
+                                                        majorTickStyle: gauges
+                                                            .MajorTickStyle(
+                                                                length: 0.075,
                                                                 lengthUnit: gauges
                                                                     .GaugeSizeUnit
                                                                     .factor,
-                                                              ),
-                                                              pointers: [
-                                                                gauges
-                                                                    .RangePointer(
-                                                                  width: 0.087,
-                                                                  sizeUnit: gauges
-                                                                      .GaugeSizeUnit
-                                                                      .factor,
-                                                                  value:
-                                                                      _pointerValue,
-                                                                  cornerStyle: gauges
-                                                                      .CornerStyle
-                                                                      .bothCurve,
-                                                                  color: Color(
-                                                                      0xff37a8d4),
+                                                                color: Color(
+                                                                    0xFF0c0c0c)
+                                                                // color: Color(0xb1bbe5ef),
                                                                 ),
-                                                                gauges
-                                                                    .NeedlePointer(
-                                                                  value:
-                                                                      _pointerValue,
-                                                                  needleStartWidth:
-                                                                      1,
-                                                                  needleEndWidth:
-                                                                      5,
-                                                                  needleLength:
-                                                                      8,
-                                                                  needleColor:
-                                                                      Color(
-                                                                          0x770c0c0c),
-                                                                  knobStyle: gauges
-                                                                      .KnobStyle(
-                                                                    knobRadius:
-                                                                        5,
-                                                                    sizeUnit: gauges
-                                                                        .GaugeSizeUnit
-                                                                        .logicalPixel,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            )
-                                                          ],
+                                                        minorTickStyle: gauges
+                                                            .MinorTickStyle(
+                                                          // color: Color(0x7bbbe5ef),
+                                                          color:
+                                                              Color(0xFF0c0c0c),
+                                                          length: 0.05,
+                                                          lengthUnit: gauges
+                                                              .GaugeSizeUnit
+                                                              .factor,
                                                         ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      child: Center(
-                                                        child: Container(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              0.7,
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              0.7,
-                                                          decoration:
-                                                              BoxDecoration(
+                                                        pointers: [
+                                                          gauges.RangePointer(
+                                                            width: 0.087,
+                                                            sizeUnit: gauges
+                                                                .GaugeSizeUnit
+                                                                .factor,
+                                                            value:
+                                                                _pointerValue,
+                                                            cornerStyle: gauges
+                                                                .CornerStyle
+                                                                .bothCurve,
                                                             color: Color(
-                                                                0xd80c0c0c),
-                                                            shape:
-                                                                BoxShape.circle,
+                                                                0xff37a8d4),
                                                           ),
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(50,
-                                                                      0, 50, 0),
-                                                          child: isConnected
-                                                              ? Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: <Widget>[
-                                                                    Row(
-                                                                      //Row 1
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Container(
-                                                                          child:
-                                                                              Text(
-                                                                            meterRecord!.meterName!,
-                                                                            // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                                            style:
-                                                                                GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 30,
-                                                                              color: Color(0xFFFFFFFF),
-                                                                              fontWeight: FontWeight.w600,
-                                                                            ),
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis, // new
-                                                                          ),
-                                                                        ),
-                                                                      ],
+                                                          gauges.NeedlePointer(
+                                                            value:
+                                                                _pointerValue,
+                                                            needleStartWidth: 1,
+                                                            needleEndWidth: 5,
+                                                            needleLength: 8,
+                                                            needleColor: Color(
+                                                                0x770c0c0c),
+                                                            knobStyle: gauges
+                                                                .KnobStyle(
+                                                              knobRadius: 5,
+                                                              sizeUnit: gauges
+                                                                  .GaugeSizeUnit
+                                                                  .logicalPixel,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                child: Center(
+                                                  child: Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xd80c0c0c),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                50, 0, 50, 0),
+                                                    child: isConnected
+                                                        ? Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              Row(
+                                                                //Row 1
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                    child: Text(
+                                                                      meterRecord!
+                                                                          .meterName!,
+                                                                      // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            30,
+                                                                        color: Color(
+                                                                            0xFFFFFFFF),
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      ),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis, // new
                                                                     ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          20,
-                                                                    ),
-                                                                    Row(
-                                                                      //Row2
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: <Widget>[
-                                                                        Column(
-                                                                          //row2 column1
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: <Widget>[
-                                                                            Row(
-                                                                              //row2 column1 subrow1
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                Text('Reading',
-                                                                                    textAlign: TextAlign.center,
-                                                                                    style: GF.GoogleFonts.leagueSpartan(
-                                                                                      fontSize: 16,
-                                                                                      color: Color(0xFFFFFFFF),
-                                                                                      fontWeight: FontWeight.normal,
-                                                                                    )),
-                                                                              ],
-                                                                            ),
-                                                                            SizedBox(
-                                                                              height: 7,
-                                                                            ),
-                                                                            Row(
-                                                                              //row2 column1 subrow2
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                isActivePravah
-                                                                                    ? FutureBuilder<dynamic>(
-                                                                                        future: functions.getReading(meterRecord.meterKey!),
-                                                                                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                                                                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                            return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                                                          } else if (snapshot.hasError) {
-                                                                                            return Text('Error: ${snapshot.error}');
-                                                                                          } else {
-                                                                                            var value = snapshot.data;
-                                                                                            return Text(
-                                                                                                // value
-                                                                                                //     .toString(),
-                                                                                                functions.shortenNumber(value) + "L",
-                                                                                                textAlign: TextAlign.center,
-                                                                                                style: GF.GoogleFonts.leagueSpartan(
-                                                                                                  fontSize: 24,
-                                                                                                  color: Color(0xFF91D9E9),
-                                                                                                  fontWeight: FontWeight.w600,
-                                                                                                ));
-                                                                                          }
-                                                                                        },
-                                                                                      )
-                                                                                    : Text('N/A',
-                                                                                        textAlign: TextAlign.center,
-                                                                                        style: GF.GoogleFonts.leagueSpartan(
-                                                                                          fontSize: 24,
-                                                                                          color: Color(0xFF91D9E9),
-                                                                                          fontWeight: FontWeight.w600,
-                                                                                        ))
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        Column(
-                                                                          //row2 column2
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: <Widget>[
-                                                                            Row(
-                                                                              //row2 column2 subrow1
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                Text('Flow Rate',
-                                                                                    textAlign: TextAlign.center,
-                                                                                    style: GF.GoogleFonts.leagueSpartan(
-                                                                                      fontSize: 16,
-                                                                                      color: Color(0xFFFFFFFF),
-                                                                                      fontWeight: FontWeight.normal,
-                                                                                    )),
-                                                                              ],
-                                                                            ),
-                                                                            SizedBox(
-                                                                              height: 7,
-                                                                            ),
-                                                                            Row(
-                                                                              //row2 column2 subrow2
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                isActivePravah
-                                                                                    ? FutureBuilder<dynamic>(
-                                                                                        future: functions.getFlowRate(meterRecord.meterKey!),
-                                                                                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                                                                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                            return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                                                          } else if (snapshot.hasError) {
-                                                                                            return Text('Error: ${snapshot.error}');
-                                                                                          } else {
-                                                                                            var value = snapshot.data;
-                                                                                            return Text(value.toString(),
-                                                                                                textAlign: TextAlign.center,
-                                                                                                style: GF.GoogleFonts.leagueSpartan(
-                                                                                                  fontSize: 24,
-                                                                                                  color: Color(0xFF91D9E9),
-                                                                                                  fontWeight: FontWeight.w600,
-                                                                                                ));
-                                                                                          }
-                                                                                        },
-                                                                                      )
-                                                                                    : Text('N/A',
-                                                                                        textAlign: TextAlign.center,
-                                                                                        style: GF.GoogleFonts.leagueSpartan(
-                                                                                          fontSize: 24,
-                                                                                          color: Color(0xFF91D9E9),
-                                                                                          fontWeight: FontWeight.w600,
-                                                                                        ))
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          20,
-                                                                    ),
-                                                                    Row(
-                                                                      //Row4
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        ElevatedButton
-                                                                            .icon(
-                                                                          // <-- ElevatedButton
-                                                                          onPressed:
-                                                                              () async {
-                                                                            _model.totalFlow =
-                                                                                await functions.getReading(meterRecord.meterKey!);
-                                                                            _model.waterLevel =
-                                                                                await functions.getFlowRate(meterRecord.meterKey!);
-                                                                            setState(() {});
-                                                                          },
-                                                                          icon:
-                                                                              Icon(
-                                                                            CupertinoIcons.arrow_2_squarepath,
-                                                                            size:
-                                                                                16.0,
-                                                                            color:
-                                                                                Color(0xFF0C0C0C),
-                                                                          ),
-                                                                          label:
-                                                                              Text(
-                                                                            'Refresh',
-                                                                            style:
-                                                                                GF.GoogleFonts.leagueSpartan(
-                                                                              fontSize: 16,
-                                                                              color: Color(0xFF0C0C0C),
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                          ),
-                                                                          style:
-                                                                              ElevatedButton.styleFrom(
-                                                                            shape:
-                                                                                RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(7.5),
-                                                                            ),
-                                                                            backgroundColor:
-                                                                                Color(0xFFC6DDDB),
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              : Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Container(
-                                                                      child:
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              Row(
+                                                                //Row2
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: <Widget>[
+                                                                  Column(
+                                                                    //row2 column1
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: <Widget>[
+                                                                      Row(
+                                                                        //row2 column1 subrow1
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
                                                                           Text(
-                                                                        meterRecord!
-                                                                            .meterName!,
-                                                                        // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                                        style: GF.GoogleFonts
-                                                                            .leagueSpartan(
-                                                                          fontSize:
-                                                                              30,
-                                                                          color:
-                                                                              Color(0xFFFFFFFF),
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                        ),
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis, // new
+                                                                              'Reading',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: GF.GoogleFonts.leagueSpartan(
+                                                                                fontSize: 16,
+                                                                                color: Color(0xFFFFFFFF),
+                                                                                fontWeight: FontWeight.normal,
+                                                                              )),
+                                                                        ],
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            7,
+                                                                      ),
+                                                                      Row(
+                                                                        //row2 column1 subrow2
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          isActivePravah
+                                                                              ? FutureBuilder<dynamic>(
+                                                                                  future: functions.getReading(meterRecord.meterKey!),
+                                                                                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                      return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                                    } else if (snapshot.hasError) {
+                                                                                      return Text('Error: ${snapshot.error}');
+                                                                                    } else {
+                                                                                      var value = snapshot.data;
+                                                                                      return Text(
+                                                                                          // value
+                                                                                          //     .toString(),
+                                                                                          functions.shortenNumber(value) + "L",
+                                                                                          textAlign: TextAlign.center,
+                                                                                          style: GF.GoogleFonts.leagueSpartan(
+                                                                                            fontSize: 24,
+                                                                                            color: Color(0xFF91D9E9),
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                          ));
+                                                                                    }
+                                                                                  },
+                                                                                )
+                                                                              : Text('N/A',
+                                                                                  textAlign: TextAlign.center,
+                                                                                  style: GF.GoogleFonts.leagueSpartan(
+                                                                                    fontSize: 24,
+                                                                                    color: Color(0xFF91D9E9),
+                                                                                    fontWeight: FontWeight.w600,
+                                                                                  ))
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Column(
+                                                                    //row2 column2
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: <Widget>[
+                                                                      Row(
+                                                                        //row2 column2 subrow1
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(
+                                                                              'Flow Rate',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: GF.GoogleFonts.leagueSpartan(
+                                                                                fontSize: 16,
+                                                                                color: Color(0xFFFFFFFF),
+                                                                                fontWeight: FontWeight.normal,
+                                                                              )),
+                                                                        ],
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            7,
+                                                                      ),
+                                                                      Row(
+                                                                        //row2 column2 subrow2
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          isActivePravah
+                                                                              ? FutureBuilder<dynamic>(
+                                                                                  future: functions.getFlowRate(meterRecord.meterKey!),
+                                                                                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                      return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                                    } else if (snapshot.hasError) {
+                                                                                      return Text('Error: ${snapshot.error}');
+                                                                                    } else {
+                                                                                      var value = snapshot.data;
+                                                                                      return Text(value.toString(),
+                                                                                          textAlign: TextAlign.center,
+                                                                                          style: GF.GoogleFonts.leagueSpartan(
+                                                                                            fontSize: 24,
+                                                                                            color: Color(0xFF91D9E9),
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                          ));
+                                                                                    }
+                                                                                  },
+                                                                                )
+                                                                              : Text('N/A',
+                                                                                  textAlign: TextAlign.center,
+                                                                                  style: GF.GoogleFonts.leagueSpartan(
+                                                                                    fontSize: 24,
+                                                                                    color: Color(0xFF91D9E9),
+                                                                                    fontWeight: FontWeight.w600,
+                                                                                  ))
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              Row(
+                                                                //Row4
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  ElevatedButton
+                                                                      .icon(
+                                                                    // <-- ElevatedButton
+                                                                    onPressed:
+                                                                        () async {
+                                                                      _model.totalFlow =
+                                                                          await functions
+                                                                              .getReading(meterRecord.meterKey!);
+                                                                      _model.waterLevel =
+                                                                          await functions
+                                                                              .getFlowRate(meterRecord.meterKey!);
+                                                                      setState(
+                                                                          () {});
+                                                                    },
+                                                                    icon: Icon(
+                                                                      CupertinoIcons
+                                                                          .arrow_2_squarepath,
+                                                                      size:
+                                                                          16.0,
+                                                                      color: Color(
+                                                                          0xFF0C0C0C),
+                                                                    ),
+                                                                    label: Text(
+                                                                      'Refresh',
+                                                                      style: GF
+                                                                              .GoogleFonts
+                                                                          .leagueSpartan(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color(
+                                                                            0xFF0C0C0C),
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
                                                                       ),
                                                                     ),
-                                                                    Container(
-                                                                      height:
-                                                                          40,
-                                                                      width:
-                                                                          130,
-                                                                      color: Color.fromARGB(
-                                                                          255,
-                                                                          124,
-                                                                          118,
-                                                                          118),
+                                                                    style: ElevatedButton
+                                                                        .styleFrom(
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(7.5),
+                                                                      ),
+                                                                      backgroundColor:
+                                                                          Color(
+                                                                              0xFFC6DDDB),
                                                                     ),
-                                                                  ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                child: Text(
+                                                                  meterRecord!
+                                                                      .meterName!,
+                                                                  // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
+                                                                  style: GF
+                                                                          .GoogleFonts
+                                                                      .leagueSpartan(
+                                                                    fontSize:
+                                                                        30,
+                                                                    color: Color(
+                                                                        0xFFFFFFFF),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis, // new
                                                                 ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-
-                                            // Total Flow Chart
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(20, 40, 20, 0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    'Total Flow Summary',
-                                                    style: GF.GoogleFonts
-                                                        .leagueSpartan(
-                                                      fontSize: 24,
-                                                      color: Color(0xFFFFFFFF),
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    ),
+                                                              ),
+                                                              emptyBox(),
+                                                            ],
+                                                          ),
                                                   ),
-                                                  Container(
-                                                      height: 40,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0xFF1A1A1A),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                          color:
-                                                              Color(0xFF656565),
-                                                          width: 1,
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(15, 0,
-                                                                    15, 0),
-                                                        child: DropdownButton<
-                                                            String>(
-                                                          value:
-                                                              dropdownValuePravahTotal,
-                                                          // borderRadius: BorderRadius.circular(5),
-                                                          dropdownColor:
-                                                              Color(0xFF1A1A1A),
-                                                          focusColor:
-                                                              Color(0xFF1A1A1A),
-
-                                                          icon: Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left: 10),
-                                                              child: Icon(
-                                                                CupertinoIcons
-                                                                    .arrow_turn_right_down,
-                                                                size: 14,
-                                                              )),
-                                                          iconEnabledColor: Color(
-                                                              0xFF656565), //Icon color
-                                                          underline:
-                                                              Container(),
-                                                          items: <String>[
-                                                            'Daily',
-                                                            'Weekly',
-                                                            'Monthly'
-                                                          ].map<
-                                                              DropdownMenuItem<
-                                                                  String>>((String
-                                                              value) {
-                                                            return DropdownMenuItem<
-                                                                String>(
-                                                              value: value,
-                                                              child: Text(value,
-                                                                  style: GF
-                                                                          .GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Color(
-                                                                        0xFFFFFFFF),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  )),
-                                                            );
-                                                          }).toList(),
-                                                          onChanged: (String?
-                                                              newValue) {
-                                                            setState(() {
-                                                              dropdownValuePravahTotal =
-                                                                  newValue!;
-                                                            });
-                                                          },
-                                                        ),
-                                                      )),
-                                                ],
-                                              ),
-                                            ),
-                                            // graph - library to be updated as per the data
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(15, 20, 15, 0),
-                                              child: Container(
-                                                height: 200,
-                                                child: FutureBuilder<
-                                                    SfCartesianChart>(
-                                                  future: functions
-                                                      .getChartPravahTotal(
-                                                          meterRecord!
-                                                              .meterKey!,
-                                                          dropdownValuePravahTotal),
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState
-                                                            .waiting) {
-                                                      return Center(
-                                                          child:
-                                                              CircularProgressIndicator());
-                                                    } else if (snapshot
-                                                        .hasError) {
-                                                      return Text(
-                                                          'Error occured in loading graph.');
-                                                    } else {
-                                                      return snapshot.data ??
-                                                          SizedBox(); // Render the chart or an empty SizedBox if data is null
-                                                    }
-                                                  },
                                                 ),
                                               ),
-                                            ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
 
-                                            // Flow Rate Chart
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(20, 40, 20, 0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    'Flow Rate Summary',
-                                                    style: GF.GoogleFonts
-                                                        .leagueSpartan(
-                                                      fontSize: 24,
-                                                      color: Color(0xFFFFFFFF),
-                                                      fontWeight:
-                                                          FontWeight.normal,
+                                      // Total Flow Chart
+                                      summaryDropDownBtnGeneralized(
+                                        "Total Flow Summary",
+                                        dropdownValuePravahTotal,
+                                        (String? newValue) {
+                                          setState(() {
+                                            dropdownValuePravahTotal =
+                                                newValue!;
+                                          });
+                                        },
+                                      ),
+                                      // graph - library to be updated as per the data
+                                      generalizedGraph(
+                                        functions.getChartPravahTotal(
+                                            meterRecord!.meterKey!,
+                                            dropdownValuePravahTotal),
+                                      ),
+
+                                      // Flow Rate Chart
+                                      summaryDropDownBtnGeneralized(
+                                        "Flow Rate Summary",
+                                        dropdownValuePravahRate,
+                                        (String? newValue) {
+                                          setState(() {
+                                            dropdownValuePravahRate = newValue!;
+                                          });
+                                        },
+                                      ),
+
+                                      // graph - library to be updated as per the data
+                                      generalizedGraph(
+                                        functions.getChartPravahRate(
+                                            meterRecord.meterKey!,
+                                            dropdownValuePravahRate),
+                                      ),
+
+                                      //Show all pravah dev. btn
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            20, 30, 20, 30),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            showAllDevicesButton(
+                                              "Show all pravah",
+                                              () async {
+                                                if (!await InternetConnectionCheckerPlus()
+                                                    .hasConnection) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .hideCurrentSnackBar();
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'Please connect to the internet'),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                      height: 40,
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0xFF1A1A1A),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                        border: Border.all(
-                                                          color:
-                                                              Color(0xFF656565),
-                                                          width: 1,
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(15, 0,
-                                                                    15, 0),
-                                                        child: DropdownButton<
-                                                            String>(
-                                                          value:
-                                                              dropdownValuePravahRate,
-                                                          // borderRadius: BorderRadius.circular(5),
-                                                          dropdownColor:
-                                                              Color(0xFF1A1A1A),
-                                                          focusColor:
-                                                              Color(0xFF1A1A1A),
+                                                  );
+                                                } else {
+                                                  setState(() {
+                                                    _isLoading = true;
+                                                  });
+                                                  //Earlier I've applied try catch block with this as I've encountered some bugs
+                                                  _model.outputPravah =
+                                                      await newCustomActionPravah(
+                                                    (currentUserDocument
+                                                                ?.meterKeyList
+                                                                ?.toList() ??
+                                                            [])
+                                                        .toList(),
+                                                  );
 
-                                                          icon: Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left: 10),
-                                                              child: Icon(
-                                                                CupertinoIcons
-                                                                    .arrow_turn_right_down,
-                                                                size: 14,
-                                                              )),
-                                                          iconEnabledColor: Color(
-                                                              0xFF656565), //Icon color
-                                                          underline:
-                                                              Container(),
-                                                          items: <String>[
-                                                            'Daily',
-                                                            'Weekly',
-                                                            'Monthly'
-                                                          ].map<
-                                                              DropdownMenuItem<
-                                                                  String>>((String
-                                                              value) {
-                                                            return DropdownMenuItem<
-                                                                String>(
-                                                              value: value,
-                                                              child: Text(value,
-                                                                  style: GF
-                                                                          .GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Color(
-                                                                        0xFFFFFFFF),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                  )),
-                                                            );
-                                                          }).toList(),
-                                                          onChanged: (String?
-                                                              newValue) {
-                                                            setState(() {
-                                                              dropdownValuePravahRate =
-                                                                  newValue!;
-                                                            });
-                                                          },
-                                                        ),
-                                                      )),
-                                                ],
-                                              ),
+                                                  setState(() {
+                                                    _isLoading = false;
+                                                  });
+
+                                                  context.pushNamed(
+                                                    'MeterSummary',
+                                                    queryParams: {
+                                                      'reading': serializeParam(
+                                                        _model.outputPravah,
+                                                        ParamType.JSON,
+                                                      ),
+                                                    }.withoutNulls,
+                                                  );
+                                                }
+                                              },
                                             ),
-                                            // graph - library to be updated as per the data
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(15, 20, 15, 0),
-                                              child: Container(
-                                                height: 200,
-                                                child: FutureBuilder<
-                                                    SfCartesianChart>(
-                                                  future: functions
-                                                      .getChartPravahRate(
-                                                          meterRecord.meterKey!,
-                                                          dropdownValuePravahRate),
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState
-                                                            .waiting) {
-                                                      return Center(
-                                                          child:
-                                                              CircularProgressIndicator());
-                                                    } else if (snapshot
-                                                        .hasError) {
-                                                      return Text(
-                                                          'Error occured in loading graph.');
-                                                    } else {
-                                                      return snapshot.data ??
-                                                          SizedBox(); // Render the chart or an empty SizedBox if data is null
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(20, 30, 20, 30),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
+                                            /*
                                                   ElevatedButton(
                                                     onPressed: () async {
                                                       if (!await InternetConnectionCheckerPlus()
@@ -3015,1074 +2748,131 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                         17,
                                                                         20,
                                                                         17)),
+                                                  ),*/
+                                            showAllDevicesButton("Testing",
+                                                () async {
+                                              if (!await InternetConnectionCheckerPlus()
+                                                  .hasConnection) {
+                                                ScaffoldMessenger.of(context)
+                                                    .hideCurrentSnackBar();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                        'Please connect to the internet'),
                                                   ),
-                                                  showAllDevicesButton(
-                                                      "Testing", () async {
-                                                    if (!await InternetConnectionCheckerPlus()
-                                                        .hasConnection) {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .hideCurrentSnackBar();
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                          content: Text(
-                                                              'Please connect to the internet'),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      context.pushNamed(
-                                                          'MeterSummaryTesting');
-                                                    }
-                                                  }),
-                                                ],
-                                              ),
-                                            ),
-                                          ]),
-                                    ]),
-                              );
-                            }),
-                      ],
-                    );
-                  },
-                ),
-                /*child: StreamBuilder<List<MeterRecord>>(
-                  stream: queryMeterRecord(
-                    parent: currentUserReference,
-                    queryBuilder: (meterRecord) => meterRecord.where('MeterKey',
-                        isEqualTo: FFAppState().meterKey),
-                    singleRecord: true,
-                  ),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 75,
-                          height: 75,
-                          child: SpinKitRipple(
-                            color: Color(0xFF7E8083),
-                            size: 75,
-                          ),
-                        ),
-                      );
-                    }
-                    List<MeterRecord> meterRecordList = snapshot.data!;
-                    if (snapshot.data!.isEmpty) {
-                      return Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PrimaryMeterWidget()));
-                            },
-                            child: Container(
-                              height: 100,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Color(0xFF686868)),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Default Meter is not selected. \nClick to select a Default Meter.',
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      height: 1.5,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ));
-                    }
-                    final meterRecord = meterRecordList.isNotEmpty
-                        ? meterRecordList.first
-                        : null;
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Column(mainAxisSize: MainAxisSize.max, children: [
-                        Column(mainAxisSize: MainAxisSize.max, children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Color(0xded2ecf2),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Stack(
-                                alignment: AlignmentDirectional.center,
-                                children: [
-                                  Positioned(
-                                    child: Center(
-                                      child: gauges.SfRadialGauge(
-                                        animationDuration: 2000,
-                                        enableLoadingAnimation: true,
-                                        axes: <gauges.RadialAxis>[
-                                          gauges.RadialAxis(
-                                            minimum: 0,
-                                            maximum: 100,
-                                            radiusFactor: 1,
-                                            minorTicksPerInterval: 5,
-                                            startAngle: 110,
-                                            endAngle: 70,
-                                            showLabels: false,
-                                            axisLineStyle: gauges.AxisLineStyle(
-                                              thickness: 0.1,
-                                              thicknessUnit:
-                                                  gauges.GaugeSizeUnit.factor,
-                                              cornerStyle:
-                                                  gauges.CornerStyle.bothCurve,
-                                              color: Color(0xFF0C0C0C),
-                                            ),
-                                            majorTickStyle:
-                                                gauges.MajorTickStyle(
-                                                    length: 0.075,
-                                                    lengthUnit: gauges
-                                                        .GaugeSizeUnit.factor,
-                                                    color: Color(0xFF0c0c0c)
-                                                    // color: Color(0xb1bbe5ef),
-                                                    ),
-                                            minorTickStyle:
-                                                gauges.MinorTickStyle(
-                                              // color: Color(0x7bbbe5ef),
-                                              color: Color(0xFF0c0c0c),
-                                              length: 0.05,
-                                              lengthUnit:
-                                                  gauges.GaugeSizeUnit.factor,
-                                            ),
-                                            pointers: [
-                                              gauges.RangePointer(
-                                                width: 0.087,
-                                                sizeUnit:
-                                                    gauges.GaugeSizeUnit.factor,
-                                                value: _pointerValue,
-                                                cornerStyle: gauges
-                                                    .CornerStyle.bothCurve,
-                                                color: Color(0xff37a8d4),
-                                              ),
-                                              gauges.NeedlePointer(
-                                                value: _pointerValue,
-                                                needleStartWidth: 1,
-                                                needleEndWidth: 5,
-                                                needleLength: 8,
-                                                needleColor: Color(0x770c0c0c),
-                                                knobStyle: gauges.KnobStyle(
-                                                  knobRadius: 5,
-                                                  sizeUnit: gauges.GaugeSizeUnit
-                                                      .logicalPixel,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                      child: Center(
-                                    child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.7,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.7,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xd80c0c0c),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            50, 0, 50, 0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Row(
-                                              //Row 1
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  child: Text(
-                                                    meterRecord!.meterName!,
-                                                    // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                    style: GF.GoogleFonts
-                                                        .leagueSpartan(
-                                                      fontSize: 30,
-                                                      color: Color(0xFFFFFFFF),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                    overflow: TextOverflow
-                                                        .ellipsis, // new
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Row(
-                                              //Row2
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Column(
-                                                  //row2 column1
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Row(
-                                                      //row2 column1 subrow1
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text('Reading',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: GF
-                                                                    .GoogleFonts
-                                                                .leagueSpartan(
-                                                              fontSize: 16,
-                                                              color: Color(
-                                                                  0xFFFFFFFF),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                            )),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 7,
-                                                    ),
-                                                    Row(
-                                                      //row2 column1 subrow2
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        isActivePravah
-                                                            ? FutureBuilder<
-                                                                dynamic>(
-                                                                future: functions
-                                                                    .getReading(
-                                                                        meterRecord
-                                                                            .meterKey!),
-                                                                builder: (BuildContext
-                                                                        context,
-                                                                    AsyncSnapshot<
-                                                                            dynamic>
-                                                                        snapshot) {
-                                                                  if (snapshot
-                                                                          .connectionState ==
-                                                                      ConnectionState
-                                                                          .waiting) {
-                                                                    return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                                  } else if (snapshot
-                                                                      .hasError) {
-                                                                    return Text(
-                                                                        'Error: ${snapshot.error}');
-                                                                  } else {
-                                                                    var value =
-                                                                        snapshot
-                                                                            .data;
-                                                                    return Text(
-                                                                        // value
-                                                                        //     .toString(),
-                                                                        functions.shortenNumber(value) +
-                                                                            "L",
-                                                                        textAlign:
-                                                                            TextAlign
-                                                                                .center,
-                                                                        style: GF.GoogleFonts
-                                                                            .leagueSpartan(
-                                                                          fontSize:
-                                                                              24,
-                                                                          color:
-                                                                              Color(0xFF91D9E9),
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                        ));
-                                                                  }
-                                                                },
-                                                              )
-                                                            : Text('N/A',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 24,
-                                                                  color: Color(
-                                                                      0xFF91D9E9),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                Column(
-                                                  //row2 column2
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Row(
-                                                      //row2 column2 subrow1
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text('Flow Rate',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: GF
-                                                                    .GoogleFonts
-                                                                .leagueSpartan(
-                                                              fontSize: 16,
-                                                              color: Color(
-                                                                  0xFFFFFFFF),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                            )),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 7,
-                                                    ),
-                                                    Row(
-                                                      //row2 column2 subrow2
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        isActivePravah
-                                                            ? FutureBuilder<
-                                                                dynamic>(
-                                                                future: functions
-                                                                    .getFlowRate(
-                                                                        meterRecord
-                                                                            .meterKey!),
-                                                                builder: (BuildContext
-                                                                        context,
-                                                                    AsyncSnapshot<
-                                                                            dynamic>
-                                                                        snapshot) {
-                                                                  if (snapshot
-                                                                          .connectionState ==
-                                                                      ConnectionState
-                                                                          .waiting) {
-                                                                    return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                                  } else if (snapshot
-                                                                      .hasError) {
-                                                                    return Text(
-                                                                        'Error: ${snapshot.error}');
-                                                                  } else {
-                                                                    var value =
-                                                                        snapshot
-                                                                            .data;
-                                                                    return Text(
-                                                                        value
-                                                                            .toString(),
-                                                                        textAlign:
-                                                                            TextAlign
-                                                                                .center,
-                                                                        style: GF.GoogleFonts
-                                                                            .leagueSpartan(
-                                                                          fontSize:
-                                                                              24,
-                                                                          color:
-                                                                              Color(0xFF91D9E9),
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                        ));
-                                                                  }
-                                                                },
-                                                              )
-                                                            : Text('N/A',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: GF
-                                                                        .GoogleFonts
-                                                                    .leagueSpartan(
-                                                                  fontSize: 24,
-                                                                  color: Color(
-                                                                      0xFF91D9E9),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                ))
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Row(
-                                              //Row4
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                ElevatedButton.icon(
-                                                  // <-- ElevatedButton
-                                                  onPressed: () async {
-                                                    _model.totalFlow =
-                                                        await functions
-                                                            .getReading(
-                                                                meterRecord
-                                                                    .meterKey!);
-                                                    _model.waterLevel =
-                                                        await functions
-                                                            .getFlowRate(
-                                                                meterRecord
-                                                                    .meterKey!);
-                                                    setState(() {});
-                                                  },
-                                                  icon: Icon(
-                                                    CupertinoIcons
-                                                        .arrow_2_squarepath,
-                                                    size: 16.0,
-                                                    color: Color(0xFF0C0C0C),
-                                                  ),
-                                                  label: Text(
-                                                    'Refresh',
-                                                    style: GF.GoogleFonts
-                                                        .leagueSpartan(
-                                                      fontSize: 16,
-                                                      color: Color(0xFF0C0C0C),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7.5),
-                                                    ),
-                                                    backgroundColor:
-                                                        Color(0xFFC6DDDB),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
+                                                );
+                                              } else {
+                                                context.pushNamed(
+                                                    'MeterSummaryTesting');
+                                              }
+                                            }),
                                           ],
-                                        )),
-                                  )),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                          // Total Flow Chart
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(20, 40, 20, 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Total Flow Summary',
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    fontSize: 24,
-                                    color: Color(0xFFFFFFFF),
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                                Container(
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF1A1A1A),
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: Color(0xFF656565),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          15, 0, 15, 0),
-                                      child: DropdownButton<String>(
-                                        value: dropdownValuePravahTotal,
-                                        // borderRadius: BorderRadius.circular(5),
-                                        dropdownColor: Color(0xFF1A1A1A),
-                                        focusColor: Color(0xFF1A1A1A),
-
-                                        icon: Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Icon(
-                                              CupertinoIcons
-                                                  .arrow_turn_right_down,
-                                              size: 14,
-                                            )),
-                                        iconEnabledColor:
-                                            Color(0xFF656565), //Icon color
-                                        underline: Container(),
-                                        items: <String>[
-                                          'Daily',
-                                          'Weekly',
-                                          'Monthly'
-                                        ].map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value,
-                                                style: GF.GoogleFonts
-                                                    .leagueSpartan(
-                                                  fontSize: 14,
-                                                  color: Color(0xFFFFFFFF),
-                                                  fontWeight: FontWeight.normal,
-                                                )),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            dropdownValuePravahTotal =
-                                                newValue!;
-                                          });
-                                        },
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-                          // graph - library to be updated as per the data
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
-                            child: Container(
-                              height: 200,
-                              child: FutureBuilder<SfCartesianChart>(
-                                future: functions.getChartPravahTotal(
-                                    meterRecord.meterKey!,
-                                    dropdownValuePravahTotal),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return Center(
-                                        child: CircularProgressIndicator());
-                                  } else if (snapshot.hasError) {
-                                    return Text(
-                                        'Error occured in loading graph.');
-                                  } else {
-                                    return snapshot.data ??
-                                        SizedBox(); // Render the chart or an empty SizedBox if data is null
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-
-                          // Flow Rate Chart
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(20, 40, 20, 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Flow Rate Summary',
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    fontSize: 24,
-                                    color: Color(0xFFFFFFFF),
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                                Container(
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF1A1A1A),
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                        color: Color(0xFF656565),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          15, 0, 15, 0),
-                                      child: DropdownButton<String>(
-                                        value: dropdownValuePravahRate,
-                                        // borderRadius: BorderRadius.circular(5),
-                                        dropdownColor: Color(0xFF1A1A1A),
-                                        focusColor: Color(0xFF1A1A1A),
-
-                                        icon: Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Icon(
-                                              CupertinoIcons
-                                                  .arrow_turn_right_down,
-                                              size: 14,
-                                            )),
-                                        iconEnabledColor:
-                                            Color(0xFF656565), //Icon color
-                                        underline: Container(),
-                                        items: <String>[
-                                          'Daily',
-                                          'Weekly',
-                                          'Monthly'
-                                        ].map<DropdownMenuItem<String>>(
-                                            (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value,
-                                                style: GF.GoogleFonts
-                                                    .leagueSpartan(
-                                                  fontSize: 14,
-                                                  color: Color(0xFFFFFFFF),
-                                                  fontWeight: FontWeight.normal,
-                                                )),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String? newValue) {
-                                          setState(() {
-                                            dropdownValuePravahRate = newValue!;
-                                          });
-                                        },
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-                          // graph - library to be updated as per the data
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
-                            child: Container(
-                              height: 200,
-                              child: FutureBuilder<SfCartesianChart>(
-                                future: functions.getChartPravahRate(
-                                    meterRecord.meterKey!,
-                                    dropdownValuePravahRate),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return Center(
-                                        child: CircularProgressIndicator());
-                                  } else if (snapshot.hasError) {
-                                    return Text(
-                                        'Error occured in loading graph.');
-                                  } else {
-                                    return snapshot.data ??
-                                        SizedBox(); // Render the chart or an empty SizedBox if data is null
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(20, 30, 20, 30),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (!await InternetConnectionCheckerPlus()
-                                        .hasConnection) {
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'Please connect to the internet'),
                                         ),
-                                      );
-                                    } else {
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
-                                      //Earlier I've applied try catch block with this as I've encountered some bugs
-                                      _model.outputPravah =
-                                          await newCustomActionPravah(
-                                        (currentUserDocument?.meterKeyList
-                                                    ?.toList() ??
-                                                [])
-                                            .toList(),
-                                      );
-
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
-
-                                      context.pushNamed(
-                                        'MeterSummary',
-                                        queryParams: {
-                                          'reading': serializeParam(
-                                            _model.outputPravah,
-                                            ParamType.JSON,
-                                          ),
-                                        }.withoutNulls,
-                                      );
-                                    }
-                                  },
-                                  child: Text(
-                                    'Show All Devices',
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      fontSize: 18,
-                                      color: Color(0xFF0C0C0C),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(7.5),
                                       ),
-                                      backgroundColor: Color(0xFFC6DDDB),
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          20, 17, 20, 17)),
-                                ),
-                                showAllDevicesButton("Testing", () async {
-                                  if (!await InternetConnectionCheckerPlus()
-                                      .hasConnection) {
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Please connect to the internet'),
-                                      ),
-                                    );
-                                  } else {
-                                    context.pushNamed('MeterSummaryTesting');
-                                  }
-                                }),
-                              ],
-                            ),
-                          ),
-                        ]),
-                      ]),
-                    );
-                  },
-                ),*/
-              ),
-            ],
+                                    ]),
+                              ]),
+                        );
+                      }),
+                ],
+              );
+            },
           ),
         ),
       ),
-      SingleChildScrollView(
-        child: Container(
-          // color: Colors.black,
-          color: Color(0xFF0C0C0C),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Hi
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 25, 20, 0),
-                child: Text(
-                  'Hi,',
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 40),
-                ),
-              ),
-              //Name
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
-                child: Text(
-                  currentUserDisplayName, //replace with $username
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFF2F9DC1),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 40),
-                ),
-              ),
-              //date
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
-                child: Text(
-                  '$date',
-                  style: GF.GoogleFonts.leagueSpartan(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.normal,
-                      fontSize: 18),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
-                child: StreamBuilder<InternetConnectionStatus>(
-                  stream: InternetConnectionCheckerPlus().onStatusChange,
-                  builder: (context, connectionSnapshot) {
-                    final isConnected = connectionSnapshot.data ==
-                        InternetConnectionStatus.connected;
+      //debore container
+      singleChildScrollViewContainer(
+        date,
+        Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
+          child: StreamBuilder<InternetConnectionStatus>(
+            stream: InternetConnectionCheckerPlus().onStatusChange,
+            builder: (context, connectionSnapshot) {
+              final isConnected =
+                  connectionSnapshot.data == InternetConnectionStatus.connected;
 
-                    return Stack(
-                      children: [
-                        StreamBuilder<List<BorewellRecord>>(
-                          stream: queryBorewellRecord(
-                            parent: currentUserReference,
-                            queryBuilder: (borewellRecord) =>
-                                borewellRecord.where('BorewellKey',
-                                    isEqualTo: FFAppState().borewellKey),
-                            singleRecord: true,
-                          ),
-                          builder: (context, borewellSnapshot) {
-                            if (!borewellSnapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 75,
-                                  height: 75,
-                                  child: SpinKitRipple(
-                                    color: Color(0xFF7E8083),
-                                    size: 75,
-                                  ),
-                                ),
-                              );
-                            }
-                            List<BorewellRecord> containerBorewellRecordList =
-                                borewellSnapshot.data!;
+              return Stack(
+                children: [
+                  StreamBuilder<List<BorewellRecord>>(
+                    stream: queryBorewellRecord(
+                      parent: currentUserReference,
+                      queryBuilder: (borewellRecord) => borewellRecord.where(
+                          'BorewellKey',
+                          isEqualTo: FFAppState().borewellKey),
+                      singleRecord: true,
+                    ),
+                    builder: (context, borewellSnapshot) {
+                      if (!borewellSnapshot.hasData) {
+                        return spinKit();
+                      }
+                      List<BorewellRecord> containerBorewellRecordList =
+                          borewellSnapshot.data!;
 
-                            if (containerBorewellRecordList.isEmpty) {
-                              return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 20, 20, 20),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const PrimaryBorewellWidget(),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(15),
-                                      border:
-                                          Border.all(color: Color(0xFF686868)),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Click to select a \n Default borewell.',
-                                          style: notSelectedStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                            final containerBorewellRecord =
-                                containerBorewellRecordList.isNotEmpty
-                                    ? containerBorewellRecordList.first
-                                    : null;
-
-                            // return Container(
-                            //   decoration: BoxDecoration(
-                            //     color: Color.fromARGB(255, 0, 0, 0),
-                            //     borderRadius: BorderRadius.circular(25),
-                            //   ),
-                            //   child: Column(
-                            //     mainAxisSize: MainAxisSize.max,
-                            //     children: [
-                            //       // Your borewell data widget tree here
-                            //       // ...
-                            //     ],
-                            //   ),
-                            // );
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                borderRadius: BorderRadius.circular(25),
+                      if (borewellSnapshot.data!.isEmpty) {
+                        return selectDefaultAfterSpinkit(
+                          "Click to select a \n Default borewell.",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const PrimaryBorewellWidget(),
                               ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      SizedBox(
-                                        height: 50,
-                                      ),
-                                      isConnected
-                                          ? Stack(
-                                              children: [
-                                                //Image
-                                                Positioned(
-                                                  child: Center(
-                                                    child: Container(
-                                                        height: MediaQuery
-                                                                    .of(context)
-                                                                .size
-                                                                .width *
-                                                            0.75,
-                                                        width: MediaQuery
-                                                                    .of(context)
-                                                                .size
-                                                                .width *
-                                                            0.75,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Color.fromARGB(
-                                                              192, 80, 63, 63),
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(50, 0,
-                                                                    50, 0),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: <Widget>[
-                                                            //device name
-                                                            defaultDeviceName(
-                                                                containerBorewellRecord!
-                                                                    .borewellName!),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            //Text
-                                                            defaultDeviceSpecsHeading(
-                                                                "Waterlevel from ground"),
-                                                            SizedBox(
-                                                              height: 7,
-                                                            ),
-                                                            isActiveDebore
-                                                                ? FutureBuilder<
-                                                                    dynamic>(
-                                                                    future: functions
-                                                                        .getWaterLevelfromGround(
-                                                                            containerBorewellRecord.borewellKey!),
-                                                                    builder: (BuildContext
-                                                                            context,
-                                                                        AsyncSnapshot<dynamic>
-                                                                            snapshot) {
-                                                                      if (snapshot
-                                                                              .connectionState ==
-                                                                          ConnectionState
-                                                                              .waiting) {
-                                                                        return CircularProgressIndicator();
-                                                                      } else if (snapshot
-                                                                          .hasError) {
-                                                                        return Text(
-                                                                            'Error: ${snapshot.error}');
-                                                                      } else {
-                                                                        var value =
-                                                                            snapshot.data;
-                                                                        return value.toString() ==
-                                                                                "N/A"
-                                                                            ? Text(
-                                                                                "N/A",
-                                                                                style: defaultDeviceNADataStyle,
-                                                                              )
-                                                                            : Text(
-                                                                                value.toString() + "L",
-                                                                                textAlign: TextAlign.center,
-                                                                                style: defaultDeviceDataStyle,
-                                                                              );
-                                                                      }
-                                                                    },
-                                                                  )
-                                                                : Text(
-                                                                    "N/A",
-                                                                    style:
-                                                                        defaultDeviceNADataStyle,
-                                                                  ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            refreshButton(
-                                                                () async {
-                                                              _model.waterLevelFromGround =
-                                                                  await functions
-                                                                      .getWaterLevelfromGround(
-                                                                          containerBorewellRecord
-                                                                              .borewellKey!);
-                                                              setState(() {});
-                                                            }),
-                                                          ],
-                                                        )),
+                            );
+                          },
+                        );
+                      }
+                      final containerBorewellRecord =
+                          containerBorewellRecordList.isNotEmpty
+                              ? containerBorewellRecordList.first
+                              : null;
+
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                ),
+                                isConnected
+                                    ? Stack(
+                                        children: [
+                                          //Image
+                                          Positioned(
+                                            child: Center(
+                                              child: Container(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.75,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.75,
+                                                  decoration: BoxDecoration(
+                                                    color: Color.fromARGB(
+                                                        192, 80, 63, 63),
+                                                    shape: BoxShape.circle,
                                                   ),
-                                                ),
-                                              ],
-                                            )
-                                          : Stack(
-                                              children: [
-                                                //Image
-                                                Positioned(
-                                                  child: Center(
-                                                    child: Container(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.75,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.75,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromARGB(
-                                                            192, 80, 63, 63),
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  50, 0, 50, 0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: <Widget>[
-                                                          //device name
-                                                          defaultDeviceName(
-                                                              containerBorewellRecord!
-                                                                  .borewellName!),
-                                                          Container(
-                                                            height: 40,
-                                                            width: 130,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    124,
-                                                                    118,
-                                                                    118),
-                                                          ),
-                                                          /*SizedBox(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(50, 0, 50, 0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      //device name
+                                                      defaultDeviceName(
+                                                          containerBorewellRecord!
+                                                              .borewellName!),
+                                                      SizedBox(
                                                         height: 20,
                                                       ),
                                                       //Text
@@ -4150,605 +2940,133 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                         .borewellKey!);
                                                         setState(() {});
                                                       }),
-                                                    */
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                                    ],
+                                                  )),
                                             ),
-
-                                      //Graph filter selector
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            20, 40, 20, 0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Borewell Summary',
-                                              style:
-                                                  GF.GoogleFonts.leagueSpartan(
-                                                fontSize: 24,
-                                                color: Color(0xFFFFFFFF),
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                            Container(
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFF1A1A1A),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                    color: Color(0xFF656565),
-                                                    width: 1,
-                                                  ),
-                                                ),
-                                                child: Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(15, 0, 15, 0),
-                                                  child: DropdownButton<String>(
-                                                    value: dropdownValueDebore,
-                                                    // borderRadius: BorderRadius.circular(5),
-                                                    dropdownColor:
-                                                        Color(0xFF1A1A1A),
-                                                    focusColor:
-                                                        Color(0xFF1A1A1A),
-
-                                                    icon: Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 10),
-                                                        child: Icon(
-                                                          CupertinoIcons
-                                                              .arrow_turn_right_down,
-                                                          size: 14,
-                                                        )),
-                                                    iconEnabledColor: Color(
-                                                        0xFF656565), //Icon color
-                                                    underline: Container(),
-                                                    items: <String>[
-                                                      'Daily',
-                                                      'Weekly',
-                                                      'Monthly'
-                                                    ].map<
-                                                            DropdownMenuItem<
-                                                                String>>(
-                                                        (String value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value,
-                                                        child: Text(value,
-                                                            style: GF
-                                                                    .GoogleFonts
-                                                                .leagueSpartan(
-                                                              fontSize: 14,
-                                                              color: Color(
-                                                                  0xFFFFFFFF),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                            )),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      setState(() {
-                                                        dropdownValueDebore =
-                                                            newValue!;
-                                                      });
-                                                    },
-                                                  ),
-                                                )),
-                                          ],
-                                        ),
-                                      ),
-                                      //Graph
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            15, 20, 15, 0),
-                                        child: Container(
-                                          height: 200,
-                                          child:
-                                              FutureBuilder<SfCartesianChart>(
-                                            // replace with following call
-                                            future: functions.getChartDebore(
-                                                containerBorewellRecord!
-                                                    .borewellKey,
-                                                dropdownValueDebore),
-
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Center(
-                                                    child:
-                                                        CircularProgressIndicator());
-                                              } else if (snapshot.hasError) {
-                                                return Text(
-                                                    'Error occured in loading graph.');
-                                              } else {
-                                                return snapshot.data ??
-                                                    SizedBox(); // Render the chart or an empty SizedBox if data is null
-                                              }
-                                            },
                                           ),
-                                        ),
+                                        ],
+                                      )
+                                    : Stack(
+                                        children: [
+                                          //Image
+                                          badNetworkCircle(
+                                              context,
+                                              containerBorewellRecord!
+                                                  .borewellName!),
+                                        ],
                                       ),
-                                      //show all devices btn
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            20, 30, 20, 30),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            showAllDevicesButton(
-                                                "Show all Debore", () async {
-                                              if (!await InternetConnectionCheckerPlus()
-                                                  .hasConnection) {
-                                                ScaffoldMessenger.of(context)
-                                                    .hideCurrentSnackBar();
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                        'Please connect to the internet'),
-                                                  ),
-                                                );
-                                              } else {
-                                                setState(() {
-                                                  _isLoading = true;
-                                                });
-                                                //Earlier I've applied try catch block with this as I've encountered some bugs
-                                                _model.outputDebore =
-                                                    await newCustomActionDebore(
-                                                  (currentUserDocument
-                                                              ?.borewellKeyList
-                                                              ?.toList() ??
-                                                          [])
-                                                      .toList(),
-                                                );
-                                                setState(() {
-                                                  _isLoading = false;
-                                                });
 
-                                                context.pushNamed(
-                                                  'BorewellSummary',
-                                                  queryParams: {
-                                                    'reading': serializeParam(
-                                                      _model.outputDebore,
-                                                      ParamType.JSON,
-                                                    ),
-                                                  }.withoutNulls,
-                                                );
-                                              }
-                                            }),
-                                            showAllDevicesButton("Testing",
-                                                () async {
-                                              if (!await InternetConnectionCheckerPlus()
-                                                  .hasConnection) {
-                                                ScaffoldMessenger.of(context)
-                                                    .hideCurrentSnackBar();
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                        'Please connect to the internet'),
-                                                  ),
-                                                );
-                                              } else {
-                                                context.pushNamed(
-                                                    'BorewellSummaryTesting');
-                                              }
-                                            }),
-                                          ],
-                                        ),
-                                      ),
+                                //Graph filter selector
+                                summaryDropDownBtnGeneralized(
+                                  "Borewell summary",
+                                  dropdownValueDebore,
+                                  (String? newValue) {
+                                    setState(() {
+                                      dropdownValueDebore = newValue!;
+                                    });
+                                  },
+                                ),
+                                //Generalized graph
+                                generalizedGraph(
+                                  functions.getChartDebore(
+                                      containerBorewellRecord!.borewellKey,
+                                      dropdownValueDebore),
+                                ),
+
+                                //show all devices btn
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20, 30, 20, 30),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      showAllDevicesButton("Show all Debore",
+                                          () async {
+                                        if (!await InternetConnectionCheckerPlus()
+                                            .hasConnection) {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Please connect to the internet'),
+                                            ),
+                                          );
+                                        } else {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          //Earlier I've applied try catch block with this as I've encountered some bugs
+                                          _model.outputDebore =
+                                              await newCustomActionDebore(
+                                            (currentUserDocument
+                                                        ?.borewellKeyList
+                                                        ?.toList() ??
+                                                    [])
+                                                .toList(),
+                                          );
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+
+                                          context.pushNamed(
+                                            'BorewellSummary',
+                                            queryParams: {
+                                              'reading': serializeParam(
+                                                _model.outputDebore,
+                                                ParamType.JSON,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        }
+                                      }),
+                                      showAllDevicesButton("Testing", () async {
+                                        if (!await InternetConnectionCheckerPlus()
+                                            .hasConnection) {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Please connect to the internet'),
+                                            ),
+                                          );
+                                        } else {
+                                          context.pushNamed(
+                                              'BorewellSummaryTesting');
+                                        }
+                                      }),
                                     ],
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                        // if (!isConnected)
-                        //   Positioned(
-                        //     left: 0,
-                        //     right: 0,
-                        //     bottom: 0,
-                        //     child: NetworkConnectivityWidget(),
-                        //   ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-
-              /*
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
-                child: StreamBuilder<List<BorewellRecord>>(
-                  //Fetching the tank record of the default tank
-                  stream: queryBorewellRecord(
-                    parent: currentUserReference,
-                    queryBuilder: (borewellRecord) => borewellRecord.where(
-                        'BorewellKey',
-                        isEqualTo: FFAppState().borewellKey),
-                    singleRecord: true,
-                  ),
-                  builder: (context, snapshot) {
-                    // Customize what your widget looks like when it's loading.
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 75,
-                          height: 75,
-                          child: SpinKitRipple(
-                            color: Color(0xFF7E8083),
-                            size: 75,
-                          ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       );
-                    }
-                    List<BorewellRecord> containerBorewellRecordList =
-                        snapshot.data!;
-                    // Return an empty Container when the item does not exist.
-                    if (snapshot.data!.isEmpty) {
-                      return Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PrimaryBorewellWidget(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              height: 100,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: Color(0xFF686868)),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Click to select a \n Default borewell.',
-                                    style: notSelectedStyle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ));
-                    }
-                    final containerBorewellRecord =
-                        containerBorewellRecordList.isNotEmpty
-                            ? containerBorewellRecordList.first
-                            : null;
-                    //If data found return the Water tank container
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              SizedBox(
-                                height: 50,
-                              ),
-                              Stack(
-                                children: [
-                                  //Image
-                                  Positioned(
-                                    child: Center(
-                                      child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.75,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.75,
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Color.fromARGB(192, 80, 63, 63),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  50, 0, 50, 0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              //device name
-                                              defaultDeviceName(
-                                                  containerBorewellRecord!
-                                                      .borewellName!),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              //Text
-                                              defaultDeviceSpecsHeading(
-                                                  "Waterlevel from ground"),
-                                              SizedBox(
-                                                height: 7,
-                                              ),
-                                              isActiveDebore
-                                                  ? FutureBuilder<dynamic>(
-                                                      future: functions
-                                                          .getWaterLevelfromGround(
-                                                              containerBorewellRecord
-                                                                  .borewellKey!),
-                                                      builder: (BuildContext
-                                                              context,
-                                                          AsyncSnapshot<dynamic>
-                                                              snapshot) {
-                                                        if (snapshot
-                                                                .connectionState ==
-                                                            ConnectionState
-                                                                .waiting) {
-                                                          return CircularProgressIndicator();
-                                                        } else if (snapshot
-                                                            .hasError) {
-                                                          return Text(
-                                                              'Error: ${snapshot.error}');
-                                                        } else {
-                                                          var value =
-                                                              snapshot.data;
-                                                          return value.toString() ==
-                                                                  "N/A"
-                                                              ? Text(
-                                                                  "N/A",
-                                                                  style:
-                                                                      defaultDeviceNADataStyle,
-                                                                )
-                                                              : Text(
-                                                                  value.toString() +
-                                                                      "L",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style:
-                                                                      defaultDeviceDataStyle,
-                                                                );
-                                                        }
-                                                      },
-                                                    )
-                                                  : Text(
-                                                      "N/A",
-                                                      style:
-                                                          defaultDeviceNADataStyle,
-                                                    ),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              refreshButton(() async {
-                                                _model.waterLevelFromGround =
-                                                    await functions
-                                                        .getWaterLevelfromGround(
-                                                            containerBorewellRecord
-                                                                .borewellKey!);
-                                                setState(() {});
-                                              }),
-                                            ],
-                                          )),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 40, 20, 0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Borewell Summary',
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        fontSize: 24,
-                                        color: Color(0xFFFFFFFF),
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                    Container(
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFF1A1A1A),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: Color(0xFF656565),
-                                            width: 1,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  15, 0, 15, 0),
-                                          child: DropdownButton<String>(
-                                            value: dropdownValueDebore,
-                                            // borderRadius: BorderRadius.circular(5),
-                                            dropdownColor: Color(0xFF1A1A1A),
-                                            focusColor: Color(0xFF1A1A1A),
-
-                                            icon: Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 10),
-                                                child: Icon(
-                                                  CupertinoIcons
-                                                      .arrow_turn_right_down,
-                                                  size: 14,
-                                                )),
-                                            iconEnabledColor:
-                                                Color(0xFF656565), //Icon color
-                                            underline: Container(),
-                                            items: <String>[
-                                              'Daily',
-                                              'Weekly',
-                                              'Monthly'
-                                            ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value,
-                                                    style: GF.GoogleFonts
-                                                        .leagueSpartan(
-                                                      fontSize: 14,
-                                                      color: Color(0xFFFFFFFF),
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                    )),
-                                              );
-                                            }).toList(),
-                                            onChanged: (String? newValue) {
-                                              setState(() {
-                                                dropdownValueDebore = newValue!;
-                                              });
-                                            },
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    15, 20, 15, 0),
-                                child: Container(
-                                  height: 200,
-                                  child: FutureBuilder<SfCartesianChart>(
-                                    // replace with following call
-                                    future: functions.getChartDebore(
-                                        containerBorewellRecord!.borewellKey,
-                                        dropdownValueDebore),
-
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      } else if (snapshot.hasError) {
-                                        return Text(
-                                            'Error occured in loading graph.');
-                                      } else {
-                                        return snapshot.data ??
-                                            SizedBox(); // Render the chart or an empty SizedBox if data is null
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 30, 20, 30),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    showAllDevicesButton("Show all Debore",
-                                        () async {
-                                      if (!await InternetConnectionCheckerPlus()
-                                          .hasConnection) {
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentSnackBar();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Please connect to the internet'),
-                                          ),
-                                        );
-                                      } else {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        //Earlier I've applied try catch block with this as I've encountered some bugs
-                                        _model.outputDebore =
-                                            await newCustomActionDebore(
-                                          (currentUserDocument?.borewellKeyList
-                                                      ?.toList() ??
-                                                  [])
-                                              .toList(),
-                                        );
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-
-                                        context.pushNamed(
-                                          'BorewellSummary',
-                                          queryParams: {
-                                            'reading': serializeParam(
-                                              _model.outputDebore,
-                                              ParamType.JSON,
-                                            ),
-                                          }.withoutNulls,
-                                        );
-                                      }
-                                    }),
-                                    showAllDevicesButton("Testing", () async {
-                                      if (!await InternetConnectionCheckerPlus()
-                                          .hasConnection) {
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentSnackBar();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Please connect to the internet'),
-                                          ),
-                                        );
-                                      } else {
-                                        context.pushNamed(
-                                            'BorewellSummaryTesting');
-                                      }
-                                    }),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              */
-            ],
+                    },
+                  ),
+                  // if (!isConnected)
+                  //   Positioned(
+                  //     left: 0,
+                  //     right: 0,
+                  //     bottom: 0,
+                  //     child: NetworkConnectivityWidget(),
+                  //   ),
+                ],
+              );
+            },
           ),
         ),
-        // ),
       ),
     ];
 
     return Scaffold(
       backgroundColor: Color(0xFF0C0C0C),
       endDrawer: drawers.elementAt(selectedindex),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF112025),
-        title: Text(
-          'Hydrow Verse',
-          style: GF.GoogleFonts.leagueSpartan(
-            color: Color(0xFFFFFFFF),
-            fontWeight: FontWeight.normal,
-            fontSize: 22,
-          ),
-        ),
-      ),
+      appBar: genAppBar("Hydrow Verse"),
       //It will select the Starr or Pravah dashboard based of selectedindex value
       // body: pages.elementAt(selectedindex),
       body: StreamBuilder<bool>(
@@ -4775,25 +3093,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
           );
         },
       ),
-      // body: Stack(
-      //   children: [
-      //     pages.elementAt(selectedindex),
-      //     if (_isLoading)
-      //       const Opacity(
-      //         opacity: 0.5,
-      //         child: ModalBarrier(
-      //           color: Colors.black,
-      //           dismissible: false,
-      //         ),
-      //       ),
-      //     if (_isLoading)
-      //       const Center(
-      //         child: CircularProgressIndicator(),
-      //       ),
-      //     if (!await InternetConnectionCheckerPlus().hasConnection) NetworkConnectivityWidget(),
 
-      //   ],
-      // ),
       //Bottom navigation bar of Debore, Starr and Pravah
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF112025),
