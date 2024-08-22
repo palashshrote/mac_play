@@ -1,4 +1,5 @@
 import 'package:hydrow/backend/schema/borewell_record.dart';
+import 'package:hydrow/constants/k_showPravahCard.dart';
 import 'package:hydrow/constants/k_show_all_device_style.dart';
 import 'package:hydrow/flutter_flow/custom_functions.dart';
 import '/auth/auth_util.dart';
@@ -79,7 +80,7 @@ class _MeterSummaryTestingWidgetState extends State<MeterSummaryTestingWidget>
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'All Pravah testing',
+          'All Pravah testig',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -114,7 +115,7 @@ class _MeterSummaryTestingWidgetState extends State<MeterSummaryTestingWidget>
                 padding: const EdgeInsets.all(18.0),
                 child: Center(
                   child: Text(
-                    "No Debore devices has been added.",
+                    "No Pravah devices has been added.",
                     style: GF.GoogleFonts.leagueSpartan(
                       color: Color(0xFF91D9E9),
                       fontSize: 23,
@@ -124,138 +125,8 @@ class _MeterSummaryTestingWidgetState extends State<MeterSummaryTestingWidget>
                 ),
               );
             } else {
-              return ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: listViewMeterRecordList.length,
-                itemBuilder: (context, listViewIndex) {
-                  final listViewMeterRecord =
-                      listViewMeterRecordList[listViewIndex];
-
-                  return FutureBuilder<bool>(
-                    future: checkActivityPravah(listViewMeterRecord.meterKey!),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // Show a placeholder or loading indicator while the Future is resolving
-                        return Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              15.0, 20.0, 15.0, 0.0),
-                          child: Container(
-                            height: 100,
-                            decoration:
-                                inactiveDeviceDecorationStyle, // Use a default style
-                            child: Center(
-                              child:
-                                  CircularProgressIndicator(), // Loading indicator
-                            ),
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        // Handle any errors that might occur during the Future
-                        return Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              15.0, 20.0, 15.0, 0.0),
-                          child: Container(
-                            height: 100,
-                            decoration:
-                                inactiveDeviceDecorationStyle, // Use a default style
-                            child: Center(
-                              child: Text(
-                                'Error loading data',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else if (snapshot.hasData) {
-                        bool isMeterActive = snapshot.data!;
-
-                        // Display the result once the Future has resolved
-                        return Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              15.0, 20.0, 15.0, 0.0),
-                          child: Container(
-                            height: 100,
-                            decoration: isMeterActive
-                                ? activeDeviceDecorationStyle
-                                : inactiveDeviceDecorationStyle,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    listViewMeterRecord.meterName!,
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                Spacer(),
-                                viewMoreBtn(
-                                  "View more",
-                                  () async {
-                                    _model.outputIsActive =
-                                        await checkActivityPravah(
-                                            listViewMeterRecord.meterKey!);
-                                    print(listViewMeterRecord.meterKey);
-
-                                    try {
-                                      context.pushNamed(
-                                        'TwoIndividualMeterSummary',
-                                        queryParams: {
-                                          'docReference': serializeParam(
-                                                listViewMeterRecord,
-                                                ParamType.Document,
-                                              ) ??
-                                              '',
-                                          'isActive': serializeParam(
-                                                _model.outputIsActive,
-                                                ParamType.bool,
-                                              ) ??
-                                              '',
-                                        },
-                                        extra: <String, dynamic>{
-                                          'docReference': listViewMeterRecord,
-                                        },
-                                      );
-                                    } catch (e) {
-                                      print('Navigation failed: $e');
-                                    }
-
-                                    setState(() {});
-                                  },
-                                ),
-                                SizedBox(width: 20.0),
-                              ],
-                            ),
-                          ).animateOnPageLoad(
-                              animationsMap['containerOnPageLoadAnimation']!),
-                        );
-                      } else {
-                        // Optional: Handle cases where snapshot has no data
-                        return Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              15.0, 20.0, 15.0, 0.0),
-                          child: Container(
-                            height: 100,
-                            decoration:
-                                inactiveDeviceDecorationStyle, // Use a default style
-                            child: Center(
-                              child: Text('No data available'),
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                  );
-                },
-              );
+              return showPravahCard(listViewMeterRecordList, _model,
+                  animationsMap['containerOnPageLoadAnimation']!);
             }
           },
         ),

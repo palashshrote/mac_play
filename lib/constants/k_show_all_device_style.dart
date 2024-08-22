@@ -21,7 +21,7 @@ var inactiveDeviceDecorationStyle = BoxDecoration(
   color: Color.fromARGB(88, 248, 73, 73),
 );
 
-Widget showAllDeviceBtnTesting(List<BorewellRecord> listViewBorewellRecordList,
+Widget showDeboreCard(List<BorewellRecord> listViewBorewellRecordList,
     BorewellSummaryTestingModel _model, AnimationInfo animationsMap) {
   Future<List<dynamic>> combinedFuture(String borewellKey) {
     return Future.wait([
@@ -78,166 +78,169 @@ Widget showAllDeviceBtnTesting(List<BorewellRecord> listViewBorewellRecordList,
             return Padding(
               padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
               child: Container(
-                height: 100,
+                height: 160,
                 decoration: isBorewellActive
                     ? activeDeviceDecorationStyle
                     : inactiveDeviceDecorationStyle,
-                child: Column(
-                    // mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    ans,
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
+                child: Padding(
+                  padding: const EdgeInsets.all(22.0),
+                  child: Column(
+                      // mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      ans,
+                                      style: GF.GoogleFonts.leagueSpartan(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              sbox(7, null),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Reading',
-                                    style: GF.GoogleFonts.leagueSpartan(
-                                      fontSize: 18,
-                                      color: Color(0xFFFFFFFF),
-                                      fontWeight: FontWeight.normal,
+                                  ],
+                                ),
+                                sbox(7, null),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Reading',
+                                      style: GF.GoogleFonts.leagueSpartan(
+                                        fontSize: 18,
+                                        color: Color(0xFFFFFFFF),
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Text(
-                            listViewBorewellRecord.borewellName!,
-                            style: GF.GoogleFonts.leagueSpartan(
-                              color: Color(0xFFFFFFFF),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                          /*
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 16.0),
-                        //   child: Text(
-                        //     ans,
-                        //     style: GF.GoogleFonts.leagueSpartan(
-                        //       color: Color(0xFFFFFFFF),
-                        //       fontSize: 20,
-                        //       fontWeight: FontWeight.w500,
-                        //     ),
-                        //   ),
-                        // ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Text(
-                            listViewBorewellRecord.borewellName!,
-                            style: GF.GoogleFonts.leagueSpartan(
-                              color: Color(0xFFFFFFFF),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      'Reading',
-                      style: GF.GoogleFonts.leagueSpartan(
-                        fontSize: 18,
-                        color: Color(0xFFFFFFFF),
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    // Spacer(),
-                    viewMoreBtn(
-                      "View more",
-                      () async {
-                        _model.outputIsActive = await checkActivityPravah(
-                            listViewBorewellRecord.borewellKey!);
-                        print(listViewBorewellRecord.borewellKey!);
-                        // print(listViewBorewellRecord.borewellKey!);
-                        try {
-                          context.pushNamed(
-                            'TwoIndividualBorewellSummary',
-                            queryParams: {
-                              'docReference': serializeParam(
-                                    listViewBorewellRecord,
-                                    ParamType.Document,
-                                  ) ??
-                                  '',
-                              'isActive': serializeParam(
-                                    _model.outputIsActive,
-                                    ParamType.bool,
-                                  ) ??
-                                  '',
-                            },
-                            extra: <String, dynamic>{
-                              'docReference': listViewBorewellRecord,
-                            },
-                          );
-                        } catch (e) {
-                          print('Navigation failed: $e');
-                        }
-                        // setState(() {});
-                      },
-                    ),
-                    SizedBox(width: 20.0),*/
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              viewMoreBtn(
-                                "View more",
-                                () async {
-                                  _model.outputIsActive =
-                                      await checkActivityPravah(
-                                          listViewBorewellRecord.borewellKey!);
-                                  print(listViewBorewellRecord.borewellKey!);
-                                  // print(listViewBorewellRecord.borewellKey!);
-                                  try {
-                                    context.pushNamed(
-                                      'TwoIndividualBorewellSummary',
-                                      queryParams: {
-                                        'docReference': serializeParam(
-                                              listViewBorewellRecord,
-                                              ParamType.Document,
-                                            ) ??
-                                            '',
-                                        'isActive': serializeParam(
-                                              _model.outputIsActive,
-                                              ParamType.bool,
-                                            ) ??
-                                            '',
-                                      },
-                                      extra: <String, dynamic>{
-                                        'docReference': listViewBorewellRecord,
-                                      },
-                                    );
-                                  } catch (e) {
-                                    print('Navigation failed: $e');
-                                  }
-                                  // setState(() {});
-                                },
+                            Text(
+                              listViewBorewellRecord.borewellName!,
+                              style: GF.GoogleFonts.leagueSpartan(
+                                color: Color(0xFFFFFFFF),
+                                fontSize: 30,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ],
+                            ),
+                            /*
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 16.0),
+                          //   child: Text(
+                          //     ans,
+                          //     style: GF.GoogleFonts.leagueSpartan(
+                          //       color: Color(0xFFFFFFFF),
+                          //       fontSize: 20,
+                          //       fontWeight: FontWeight.w500,
+                          //     ),
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              listViewBorewellRecord.borewellName!,
+                              style: GF.GoogleFonts.leagueSpartan(
+                                color: Color(0xFFFFFFFF),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                    ]),
+                      Text(
+                        'Reading',
+                        style: GF.GoogleFonts.leagueSpartan(
+                          fontSize: 18,
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      // Spacer(),
+                      viewMoreBtn(
+                        "View more",
+                        () async {
+                          _model.outputIsActive = await checkActivityPravah(
+                              listViewBorewellRecord.borewellKey!);
+                          print(listViewBorewellRecord.borewellKey!);
+                          // print(listViewBorewellRecord.borewellKey!);
+                          try {
+                            context.pushNamed(
+                              'TwoIndividualBorewellSummary',
+                              queryParams: {
+                                'docReference': serializeParam(
+                                      listViewBorewellRecord,
+                                      ParamType.Document,
+                                    ) ??
+                                    '',
+                                'isActive': serializeParam(
+                                      _model.outputIsActive,
+                                      ParamType.bool,
+                                    ) ??
+                                    '',
+                              },
+                              extra: <String, dynamic>{
+                                'docReference': listViewBorewellRecord,
+                              },
+                            );
+                          } catch (e) {
+                            print('Navigation failed: $e');
+                          }
+                          // setState(() {});
+                        },
+                      ),
+                      SizedBox(width: 20.0),*/
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            viewMoreBtn(
+                              "View more",
+                              () async {
+                                _model.outputIsActive =
+                                    await checkActivityPravah(
+                                        listViewBorewellRecord.borewellKey!);
+                                print(listViewBorewellRecord.borewellKey!);
+                                // print(listViewBorewellRecord.borewellKey!);
+                                try {
+                                  context.pushNamed(
+                                    'TwoIndividualBorewellSummary',
+                                    queryParams: {
+                                      'docReference': serializeParam(
+                                            listViewBorewellRecord,
+                                            ParamType.Document,
+                                          ) ??
+                                          '',
+                                      'isActive': serializeParam(
+                                            _model.outputIsActive,
+                                            ParamType.bool,
+                                          ) ??
+                                          '',
+                                    },
+                                    extra: <String, dynamic>{
+                                      'docReference': listViewBorewellRecord,
+                                    },
+                                  );
+                                } catch (e) {
+                                  print('Navigation failed: $e');
+                                }
+                                // setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
+                      ]),
+                ),
               ),
             );
           } else {

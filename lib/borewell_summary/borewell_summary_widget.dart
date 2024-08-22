@@ -54,7 +54,7 @@ class _BorewellSummaryWidgetState extends State<BorewellSummaryWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: genAppBar("All Borewells", centerTitle: true),
+      appBar: genAppBar("All Borewellss", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),

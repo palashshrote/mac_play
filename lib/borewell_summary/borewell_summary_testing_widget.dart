@@ -123,7 +123,7 @@ class _BorewellSummaryTestingWidgetState
                 ),
               );
             } else {
-              return showAllDeviceBtnTesting(listViewBorewellRecordList, _model,
+              return showDeboreCard(listViewBorewellRecordList, _model,
                   animationsMap['containerOnPageLoadAnimation']!);
 
               

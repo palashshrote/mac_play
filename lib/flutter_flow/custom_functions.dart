@@ -333,6 +333,59 @@ Future<dynamic> getReading(String meterKey) async {
   }
 }
 
+Future<dynamic> getReadingStr(String meterKey) async {
+  String str1 = 'https://api.thingspeak.com/channels/';
+  String str2 = '/feeds.json?api_key=';
+  String apiUrl = str1 +
+      generateChannelID(meterKey) +
+      str2 +
+      generateReadAPI(meterKey) +
+      "&results=1";
+  String res = await fetchData(apiUrl);
+  var jsonData = json.decode(res, reviver: (key, value) {
+    if (value == null) {
+      return "N/A";
+    }
+    return value;
+  });
+  if (jsonData == "N/A") return "N/A/B";
+  var val = jsonData['feeds'][0]['field1'];
+  try {
+    // if (val == null) return "N/A";
+    var ans = (double.tryParse(val)).toString();
+    if (ans == null) return "N/A";
+    return ans;
+  } catch (e) {
+    return "N/A";
+  }
+}
+
+Future<dynamic> getFlowRateStr(String meterKey) async {
+  String str1 = 'https://api.thingspeak.com/channels/';
+  String str2 = '/feeds.json?api_key=';
+  String apiUrl = str1 +
+      generateChannelID(meterKey) +
+      str2 +
+      generateReadAPI(meterKey) +
+      '&results=1';
+  String res = await fetchData(apiUrl);
+  var jsonData = json.decode(res, reviver: (key, value) {
+    if (value == null) {
+      return "N/A";
+    }
+    return value;
+  });
+  var val = jsonData['feeds'][0]['field2'];
+  try {
+    // if (val == null) return "N/A";
+    var ans = (double.tryParse(val)).toString();
+    if (ans == null) return "N/A";
+    return ans;
+  } catch (e) {
+    return "N/A";
+  }
+}
+
 Future<dynamic> getWaterLevelfromGround(String borewellKey) async {
   String str1 = 'https://api.thingspeak.com/channels/';
   String str2 = '/feeds.json?api_key=';
