@@ -129,7 +129,7 @@ class _TwoIndividualMeterSummaryWidgetState
                             functions
                                 .getReading(widget.docReference!.meterKey!),
                             null,
-                            "L"),
+                            "L", null, null),
                       ]),
                       dataCardDecoration([
                         cardHeading("Flow Rate"),
@@ -139,7 +139,7 @@ class _TwoIndividualMeterSummaryWidgetState
                             functions
                                 .getFlowRate(widget.docReference!.meterKey!),
                             null,
-                            "ml/s"),
+                            "ml/s", null, null),
                       ]),
                     ],
                   ),
@@ -157,7 +157,7 @@ class _TwoIndividualMeterSummaryWidgetState
                             functions.checkActivityDebore(
                                 widget.docReference!.meterKey!),
                             true,
-                            null),
+                            null, null, null),
                       ]),
                     ],
                   ),

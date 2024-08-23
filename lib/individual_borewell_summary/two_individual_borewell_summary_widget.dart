@@ -126,7 +126,9 @@ class _TwoIndividualBorewellSummaryWidgetState
                             functions.getWaterLevelfromGround(
                                 widget.docReference!.borewellKey!),
                             null,
-                            "L"),
+                            "L",
+                            null,
+                            null),
                       ]),
                       dataCardDecoration([
                         cardHeading("Device status"),
@@ -136,6 +138,8 @@ class _TwoIndividualBorewellSummaryWidgetState
                             functions.checkActivityDebore(
                                 widget.docReference!.borewellKey!),
                             true,
+                            null,
+                            null,
                             null),
                       ]),
                     ],

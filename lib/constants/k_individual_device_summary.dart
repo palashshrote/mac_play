@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
+import '/flutter_flow/custom_functions.dart' as functions;
 
 var liveDataStyle = GF.GoogleFonts.leagueSpartan(
   fontSize: 24,
@@ -77,8 +78,17 @@ Widget dataCard(String data, bool isDeviceActive) {
   );
 }
 
-Widget dataCardImproved(bool isDeviceActive, Future<dynamic>? futureFunction,
-    bool? tellStatus, String? unit) {
+String calculateHeadSpace(String ans, String height) {
+  return (double.parse(height) - double.parse(ans)).toString();
+}
+
+Widget dataCardImproved(
+    bool isDeviceActive,
+    Future<dynamic>? futureFunction,
+    bool? tellStatus,
+    String? unit,
+    String? subFunction,
+    List<dynamic>? subdata) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -103,14 +113,42 @@ Widget dataCardImproved(bool isDeviceActive, Future<dynamic>? futureFunction,
                     ans = value;
                   else {
                     ans = value.toString();
+                    if (subFunction == "headSpace") {
+                      ans = calculateHeadSpace(ans, subdata![0]);
+                    }
+                    if (subFunction == "availForUse") {
+                      String waterLevel = ans;
+                      ans = functions.shortenNumber(
+                          functions.calculateWaterAvailable(
+                              subdata![0],
+                              subdata[1],
+                              subdata[2],
+                              subdata[3],
+                              double.parse(waterLevel),
+                              subdata[4]));
+                    }
+                    if (subFunction == "tankFilled") {
+                      String waterLevel = ans;
+                      ans = functions
+                          .convertToInt(functions.tankAPI(
+                              functions.calculateWaterAvailable(
+                                  subdata![0],
+                                  subdata[1],
+                                  subdata[2],
+                                  subdata[3],
+                                  double.parse(waterLevel),
+                                  subdata[4]),
+                              subdata[5]))
+                          .toString();
+                    }
                     if (ans != "N/A") ans = ans + " " + unit;
                   }
                   return Text(ans,
                       textAlign: TextAlign.center,
                       style: tellStatus == null
                           ? liveDataStyle
-                          : (tellStatus && value == "Active") ?
-                               activeDeviceStatusStyle
+                          : (tellStatus && value == "Active")
+                              ? activeDeviceStatusStyle
                               : inactiveDeviceStatusStyle);
                 } else {
                   return Padding(

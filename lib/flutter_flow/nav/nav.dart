@@ -296,6 +296,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 docReference:
                     params.getParam('docReference', ParamType.Document),
                 isActive: params.getParam('isActive', ParamType.bool),
+                capacity: params.getParam('capacity', ParamType.double),
+                height: params.getParam('height', ParamType.String),
+                length: params.getParam('length', ParamType.String),
+                breadth: params.getParam('breadth', ParamType.String),
+                radius: params.getParam('radius', ParamType.String),
+                isCuboid: params.getParam('isCuboid', ParamType.bool),
               ),
             ),
             FFRoute(

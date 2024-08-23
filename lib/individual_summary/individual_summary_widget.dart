@@ -556,6 +556,8 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                     )
                   ],
                 ),
+                
+                //dropdrown selector
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 40, 20, 0),
                   child: Row(
@@ -621,6 +623,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                     ],
                   ),
                 ),
+                //graph
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 0),
                   child: Container(
@@ -650,6 +653,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                     ),
                   ),
                 ),
+                //Insights
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 40, 20, 0),
                   child: Text(
@@ -661,6 +665,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                     ),
                   ),
                 ),
+                //today h20 consumption
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                   child: Container(
@@ -725,6 +730,7 @@ class _IndividualSummaryWidgetState extends State<IndividualSummaryWidget>
                     ),
                   ),
                 ),
+                //av daily h20 consumption
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                   child: Container(

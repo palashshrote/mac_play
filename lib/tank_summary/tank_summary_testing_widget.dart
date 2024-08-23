@@ -1,4 +1,6 @@
 import 'package:hydrow/constants/k_dashboard_container.dart';
+import 'package:hydrow/constants/k_showPravahCard.dart';
+import 'package:hydrow/constants/k_showStarrCard.dart';
 import 'package:hydrow/constants/k_show_all_device_style.dart';
 import 'package:hydrow/flutter_flow/custom_functions.dart';
 import '/auth/auth_util.dart';
@@ -107,6 +109,9 @@ class _TankSummaryTestingWidgetState extends State<TankSummaryTestingWidget>
                 ),
               );
             } else {
+              return showStarrCard(listViewTankRecordList, _model,
+                  animationsMap['containerOnPageLoadAnimation']!);
+              /*
               return ListView.builder(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
@@ -238,6 +243,7 @@ class _TankSummaryTestingWidgetState extends State<TankSummaryTestingWidget>
                   );
                 },
               );
+            */
             }
           },
         ),

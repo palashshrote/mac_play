@@ -19,8 +19,23 @@ export 'individual_summary_model.dart';
 class TwoIndividualSummaryWidget extends StatefulWidget {
   final TankRecord? docReference;
   final bool? isActive;
+  final double? capacity;
+  final String? height;
+  final String? length;
+  final String? breadth;
+  final String? radius;
+  final bool? isCuboid;
+
   const TwoIndividualSummaryWidget(
-      {super.key, this.docReference, this.isActive});
+      {super.key,
+      this.docReference,
+      this.isActive,
+      this.capacity,
+      this.height,
+      this.length,
+      this.breadth,
+      this.radius,
+      this.isCuboid});
 
   @override
   State<TwoIndividualSummaryWidget> createState() =>
@@ -100,23 +115,38 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                         sbox(9, null),
                         dataCardImproved(
                             isDeviceActive,
-                            // functions
-                            //     .getReading(widget.docReference!.meterKey!),
-
+                            functions.getStarrWaterLevel(
+                                widget.docReference!.tankKey!),
                             null,
-                            null,
-                            "%"),
+                            "%",
+                            "tankFilled",
+                            [
+                              widget.docReference!.length!,
+                              widget.docReference!.breadth!,
+                              widget.docReference!.height!,
+                              widget.docReference!.radius!,
+                              widget.docReference!.isCuboid,
+                              widget.docReference!.capacity,
+                            ]),
                       ]),
                       dataCardDecoration([
                         cardHeading("Available for use"),
                         sbox(9, null),
                         dataCardImproved(
                             isDeviceActive,
-                            // functions
-                            //     .getFlowRate(widget.docReference!.meterKey!),
+                            functions.getStarrWaterLevel(
+                                widget.docReference!.tankKey!),
                             null,
-                            null,
-                            "ml/s"),
+                            "L",
+                            "availForUse",
+                            [
+                              widget.docReference!.length!,
+                              widget.docReference!.breadth!,
+                              widget.docReference!.height!,
+                              widget.docReference!.radius!,
+                              widget.docReference!.isCuboid,
+                              widget.docReference!.capacity,
+                            ]),
                       ]),
                     ],
                   ),
@@ -130,13 +160,12 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                       dataCardDecoration([
                         cardHeading("Total Volume"),
                         sbox(9, null),
-                        dataCardImproved(
-                            isDeviceActive,
-                            // functions
-                            //     .getReading(widget.docReference!.meterKey!),
-                            null,
-                            null,
-                            "L"),
+                        Text(
+                          functions.shortenNumber(
+                                  widget.docReference!.capacity!) +
+                              "L",
+                          style: liveDataStyle,
+                        ),
                       ]),
                       dataCardDecoration([
                         cardHeading("Temperature"),
@@ -146,7 +175,9 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                             functions.getTemp(widget.docReference!.tankKey!),
                             // null,
                             null,
-                            "ml/s"),
+                            "°C",
+                            null,
+                            null),
                       ]),
                     ],
                   ),
@@ -161,12 +192,14 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                         cardHeading("Head space"),
                         sbox(9, null),
                         dataCardImproved(
-                            isDeviceActive,
-                            // functions
-                            //     .getReading(widget.docReference!.meterKey!),
-                            null,
-                            null,
-                            "m"),
+                          isDeviceActive,
+                          functions.getStarrWaterLevel(
+                              widget.docReference!.tankKey!),
+                          null,
+                          "m",
+                          "headSpace",
+                          [widget.docReference!.height!],
+                        ),
                       ]),
                       dataCardDecoration([
                         cardHeading("Water level"),
@@ -176,7 +209,9 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                             functions.getStarrWaterLevel(
                                 widget.docReference!.tankKey!),
                             null,
-                            "ml/s"),
+                            "m",
+                            null,
+                            null),
                       ]),
                     ],
                   ),
@@ -196,6 +231,8 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                             functions
                                 .checkActivity(widget.docReference!.tankKey!),
                             true,
+                            null,
+                            null,
                             null),
                       ]),
                     ],
@@ -215,6 +252,7 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                     })
                   ],
                 ),
+
                 // Total Flow Chart
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 40, 20, 0),
@@ -222,7 +260,7 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Total Flow Summary',
+                        'Tank Summary',
                         style: GF.GoogleFonts.leagueSpartan(
                           fontSize: 24,
                           color: Color(0xFFFFFFFF),
@@ -287,9 +325,15 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                   child: Container(
                     height: 200,
                     child: FutureBuilder<SfCartesianChart>(
-                      future: functions.getChartPravahTotal(
+                      future: functions.getChartStarr(
                           widget.docReference!.tankKey!,
-                          dropdownValue),
+                          dropdownValue,
+                          widget.docReference!.length!,
+                          widget.docReference!.breadth!,
+                          widget.docReference!.height!,
+                          widget.docReference!.radius!,
+                          widget.docReference!.capacity!,
+                          widget.docReference!.isCuboid!),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -304,6 +348,154 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                     ),
                   ),
                 ),
+
+                //Insights
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 40, 20, 0),
+                  child: Text(
+                    'Tank Insights',
+                    style: GF.GoogleFonts.leagueSpartan(
+                      fontSize: 24,
+                      color: Color(0xFFFFFFFF),
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+                //today h20 consumption
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Color(0xFF686868)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            // width: double.infinity * 0.4,
+                            width:
+                                (MediaQuery.of(context).size.width - 70) * 0.3,
+                            child: FutureBuilder<dynamic>(
+                                future: functions.getTodayUse(
+                                    widget.docReference!.tankKey!,
+                                    widget.docReference!.length!,
+                                    widget.docReference!.breadth!,
+                                    widget.docReference!.radius!,
+                                    widget.docReference!.isCuboid!),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    var value = snapshot.data;
+                                    return Text(
+                                        value.toString() +
+                                            'L', //replace with original data
+                                        textAlign: TextAlign.left,
+                                        style: GF.GoogleFonts.leagueSpartan(
+                                          fontSize: 24,
+                                          color: Color(0xFF91D9E9),
+                                          fontWeight: FontWeight.w600,
+                                        ));
+                                  }
+                                }),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: Text('Today\'s Water Consumption',
+                                textAlign: TextAlign.left,
+                                style: GF.GoogleFonts.leagueSpartan(
+                                  fontSize: 20,
+                                  height: 1.5,
+                                  color: Color(0xFFFFFFFF),
+                                  fontWeight: FontWeight.normal,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                //av daily h20 consumption
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Color(0xFF686868)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            // width: double.infinity * 0.4,
+                            width:
+                                (MediaQuery.of(context).size.width - 70) * 0.3,
+                            child: FutureBuilder<dynamic>(
+                                future: functions.getAverageUse(
+                                    widget.docReference!.tankKey!,
+                                    widget.docReference!.length!,
+                                    widget.docReference!.breadth!,
+                                    widget.docReference!.radius!,
+                                    widget.docReference!.isCuboid!),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    var value = snapshot.data;
+                                    return Text(
+                                        value.toString() +
+                                            'L', //replace with original data
+                                        textAlign: TextAlign.left,
+                                        style: GF.GoogleFonts.leagueSpartan(
+                                          fontSize: 24,
+                                          color: Color(0xFF91D9E9),
+                                          fontWeight: FontWeight.w600,
+                                        ));
+                                  }
+                                }),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: Text('Average Daily Water Consumption',
+                                textAlign: TextAlign.left,
+                                style: GF.GoogleFonts.leagueSpartan(
+                                  fontSize: 20,
+                                  height: 1.5,
+                                  color: Color(0xFFFFFFFF),
+                                  fontWeight: FontWeight.normal,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+
+
               ],
             ),
           ),
