@@ -268,13 +268,25 @@ Widget showPravahCard(List<MeterRecord> listViewMeterRecordList,
             bool isMeterActive = snapshot.data![0];
             var ansFlowRate = snapshot.data![2];
             var ansReading = snapshot.data![1];
-            if (ansReading == "null") ansReading = "N/A";
-            if (ansFlowRate == "null") ansFlowRate = "N/A";
-            print("DAta is ${ansReading}");
+            if (ansReading == "null") {
+              ansReading = "N/A";
+            } else {
+              if (double.parse(ansReading) > 1000) {
+                ansReading = shortenNumber(double.parse(ansReading)).toString();
+              }
+              ansReading += " L";
+            }
+            if (ansFlowRate == "null")
+              ansFlowRate = "N/A";
+            else {
+              ansFlowRate += " ml/s";
+            }
+
+            print("DAta is ${ansReading} , Type: ${ansReading.runtimeType}");
             return Padding(
               padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
               child: Container(
-                height: 160,
+                height: 180,
                 decoration: isMeterActive
                     ? activeDeviceDecorationStyle
                     : inactiveDeviceDecorationStyle,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
+import 'package:hydrow/constants/k_dashboard_container.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 
 var liveDataStyle = GF.GoogleFonts.leagueSpartan(
@@ -82,6 +83,19 @@ String calculateHeadSpace(String ans, String height) {
   return (double.parse(height) - double.parse(ans)).toString();
 }
 
+Widget dataSubCardStarr(
+    bool isDeviceActive,
+    Future<dynamic>? futureFunction,
+    bool? tellStatus,
+    String? unit,
+    String? subFunction,
+    List<dynamic>? subdata) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [],
+  );
+}
+
 Widget dataCardImproved(
     bool isDeviceActive,
     Future<dynamic>? futureFunction,
@@ -105,41 +119,48 @@ Widget dataCardImproved(
                   print("Error in ${snapshot.error}");
                   return Text('Error: ${snapshot.error}');
                 } else if (snapshot.hasData) {
+                  if (snapshot.data == null) {
+                    return NAText();
+                  }
+                  print("ACtive status : ${isDeviceActive}");
                   var value = snapshot.data;
                   if (value == true) value = "Active";
                   String ans = "";
                   if (value == false) value = "Inactive";
+                  if (value.toString() == "null") value = "N/A";
                   if (unit == null)
                     ans = value;
                   else {
                     ans = value.toString();
-                    if (subFunction == "headSpace") {
-                      ans = calculateHeadSpace(ans, subdata![0]);
-                    }
-                    if (subFunction == "availForUse") {
-                      String waterLevel = ans;
-                      ans = functions.shortenNumber(
-                          functions.calculateWaterAvailable(
-                              subdata![0],
-                              subdata[1],
-                              subdata[2],
-                              subdata[3],
-                              double.parse(waterLevel),
-                              subdata[4]));
-                    }
-                    if (subFunction == "tankFilled") {
-                      String waterLevel = ans;
-                      ans = functions
-                          .convertToInt(functions.tankAPI(
-                              functions.calculateWaterAvailable(
-                                  subdata![0],
-                                  subdata[1],
-                                  subdata[2],
-                                  subdata[3],
-                                  double.parse(waterLevel),
-                                  subdata[4]),
-                              subdata[5]))
-                          .toString();
+                    if (ans != "N/A") {
+                      if (subFunction == "headSpace") {
+                        ans = calculateHeadSpace(ans, subdata![0]);
+                      }
+                      if (subFunction == "availForUse") {
+                        String waterLevel = ans;
+                        ans = functions.shortenNumber(
+                            functions.calculateWaterAvailable(
+                                subdata![0],
+                                subdata[1],
+                                subdata[2],
+                                subdata[3],
+                                double.parse(waterLevel),
+                                subdata[4]));
+                      }
+                      if (subFunction == "tankFilled") {
+                        String waterLevel = ans;
+                        ans = functions
+                            .convertToInt(functions.tankAPI(
+                                functions.calculateWaterAvailable(
+                                    subdata![0],
+                                    subdata[1],
+                                    subdata[2],
+                                    subdata[3],
+                                    double.parse(waterLevel),
+                                    subdata[4]),
+                                subdata[5]))
+                            .toString();
+                      }
                     }
                     if (ans != "N/A") ans = ans + " " + unit;
                   }
@@ -151,15 +172,16 @@ Widget dataCardImproved(
                               ? activeDeviceStatusStyle
                               : inactiveDeviceStatusStyle);
                 } else {
-                  return Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
-                    child: Container(
-                      child: Center(
-                        child: Text('No data available'),
-                      ),
-                    ),
-                  );
+                  return NAText();
+                  // return Padding(
+                  //   padding:
+                  //       EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
+                  //   child: Container(
+                  //     child: Center(
+                  //       child: Text('No data available'),
+                  //     ),
+                  //   ),
+                  // );
                 }
               },
             )

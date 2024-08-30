@@ -112,7 +112,7 @@ class _EditDeviceWidgetState extends State<EditDeviceWidget>
                   padding: const EdgeInsets.all(18.0),
                   child: Center(
                     child: Text(
-                      "No Pravah devices has been added.",
+                      "No Starr devices has been added.",
                       style: GF.GoogleFonts.leagueSpartan(
                         color: Color(0xFF91D9E9),
                         fontSize: 23,

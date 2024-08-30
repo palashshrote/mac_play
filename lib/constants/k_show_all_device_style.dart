@@ -11,7 +11,7 @@ var activeDeviceDecorationStyle = BoxDecoration(
   shape: BoxShape.rectangle,
   borderRadius: BorderRadius.circular(15),
   border: Border.all(color: Color(0xFF686868)),
-  color: Color.fromARGB(153, 230, 246, 135),
+  color: Color.fromARGB(88, 212, 249, 0),
 );
 
 var inactiveDeviceDecorationStyle = BoxDecoration(
@@ -73,7 +73,10 @@ Widget showDeboreCard(List<BorewellRecord> listViewBorewellRecordList,
           } else if (snapshot.hasData) {
             bool isBorewellActive = snapshot.data![0];
             var ans = snapshot.data![1];
-            if (ans == "null") ans = "N/A";
+            if (ans == "null")
+              ans = "N/A";
+            else
+              ans = ans.toString() + "m";
             print("DAta is ${ans}");
             return Padding(
               padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),

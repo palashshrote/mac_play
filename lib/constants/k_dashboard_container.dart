@@ -25,6 +25,14 @@ var notSelectedStyle = GF.GoogleFonts.leagueSpartan(
   color: Colors.white,
 );
 
+Widget NAText() {
+  return Text(
+    'N/A',
+    textAlign: TextAlign.center,
+    style: defaultDeviceNADataStyle,
+  );
+}
+
 var defaultDeviceNADataStyle = GF.GoogleFonts.leagueSpartan(
   fontSize: 24,
   color: Color(0xFF91D9E9),
@@ -42,7 +50,11 @@ var defaultDeviceDataStyle = GF.GoogleFonts.leagueSpartan(
   color: Color(0xFF91D9E9),
   fontWeight: FontWeight.w600,
 );
-
+var cardDataStyle = GF.GoogleFonts.leagueSpartan(
+  fontSize: 28,
+  color: Colors.white,
+  fontWeight: FontWeight.w600,
+);
 var showAllDeviceButtonStyle = ElevatedButton.styleFrom(
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(7.5),

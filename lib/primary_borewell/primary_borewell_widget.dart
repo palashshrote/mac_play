@@ -109,7 +109,7 @@ class _PrimaryBorewellWidgetState extends State<PrimaryBorewellWidget>
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
                       child: Text(
-                        "No device found, Please add devices to select a primay borewell.",
+                        "No device found, Please add a device to select a primay borewell.",
                         style: noDeviceTextStyle,
                       ),
                     ),

@@ -108,7 +108,7 @@ class _PrimaryTankWidgetState extends State<PrimaryTankWidget>
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
                       child: Text(
-                        "No device found, Please add devices to select a primary tank.",
+                        "No device found, Please add a device to select a primary tank.",
                         style: GF.GoogleFonts.leagueSpartan(
                           color: Color(0xFF91D9E9),
                           fontSize: 23,

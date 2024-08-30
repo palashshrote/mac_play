@@ -110,10 +110,11 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      dataCardDecoration([
-                        cardHeading("Tank Filled"),
-                        sbox(9, null),
-                        dataCardImproved(
+                      dataCardDecoration(
+                        [
+                          cardHeading("Tank Filled"),
+                          sbox(9, null),
+                          dataCardImproved(
                             isDeviceActive,
                             functions.getStarrWaterLevel(
                                 widget.docReference!.tankKey!),
@@ -127,8 +128,10 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                               widget.docReference!.radius!,
                               widget.docReference!.isCuboid,
                               widget.docReference!.capacity,
-                            ]),
-                      ]),
+                            ],
+                          ),
+                        ],
+                      ),
                       dataCardDecoration([
                         cardHeading("Available for use"),
                         sbox(9, null),
@@ -268,54 +271,51 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                         ),
                       ),
                       Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF1A1A1A),
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: Color(0xFF656565),
-                              width: 1,
-                            ),
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF1A1A1A),
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: Color(0xFF656565),
+                            width: 1,
                           ),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
-                            child: DropdownButton<String>(
-                              value: dropdownValue,
-                              // borderRadius: BorderRadius.circular(5),
-                              dropdownColor: Color(0xFF1A1A1A),
-                              focusColor: Color(0xFF1A1A1A),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
+                          child: DropdownButton<String>(
+                            value: dropdownValue,
+                            // borderRadius: BorderRadius.circular(5),
+                            dropdownColor: Color(0xFF1A1A1A),
+                            focusColor: Color(0xFF1A1A1A),
 
-                              icon: Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Icon(
-                                    CupertinoIcons.arrow_turn_right_down,
-                                    size: 14,
-                                  )),
-                              iconEnabledColor: Color(0xFF656565), //Icon color
-                              underline: Container(),
-                              items: <String>[
-                                'Daily',
-                                'Weekly',
-                                'Monthly'
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value,
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        fontSize: 14,
-                                        color: Color(0xFFFFFFFF),
-                                        fontWeight: FontWeight.normal,
-                                      )),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownValue = newValue!;
-                                });
-                              },
-                            ),
-                          )),
+                            icon: Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Icon(
+                                  CupertinoIcons.arrow_turn_right_down,
+                                  size: 14,
+                                )),
+                            iconEnabledColor: Color(0xFF656565), //Icon color
+                            underline: Container(),
+                            items: <String>['Daily', 'Weekly', 'Monthly']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 14,
+                                      color: Color(0xFFFFFFFF),
+                                      fontWeight: FontWeight.normal,
+                                    )),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownValue = newValue!;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -494,8 +494,6 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                 SizedBox(
                   height: 50,
                 ),
-
-
               ],
             ),
           ),

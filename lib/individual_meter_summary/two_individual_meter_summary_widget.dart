@@ -51,7 +51,6 @@ class _TwoIndividualMeterSummaryWidgetState
     ),
   };
 
-
   @override
   void initState() {
     super.initState();
@@ -127,9 +126,11 @@ class _TwoIndividualMeterSummaryWidgetState
                         dataCardImproved(
                             isDeviceActive,
                             functions
-                                .getReading(widget.docReference!.meterKey!),
+                                .getReadingStr(widget.docReference!.meterKey!),
                             null,
-                            "L", null, null),
+                            "L",
+                            null,
+                            null),
                       ]),
                       dataCardDecoration([
                         cardHeading("Flow Rate"),
@@ -137,9 +138,11 @@ class _TwoIndividualMeterSummaryWidgetState
                         dataCardImproved(
                             isDeviceActive,
                             functions
-                                .getFlowRate(widget.docReference!.meterKey!),
+                                .getFlowRateStr(widget.docReference!.meterKey!),
                             null,
-                            "ml/s", null, null),
+                            "ml/s",
+                            null,
+                            null),
                       ]),
                     ],
                   ),
@@ -157,7 +160,9 @@ class _TwoIndividualMeterSummaryWidgetState
                             functions.checkActivityDebore(
                                 widget.docReference!.meterKey!),
                             true,
-                            null, null, null),
+                            null,
+                            null,
+                            null),
                       ]),
                     ],
                   ),
@@ -174,7 +179,6 @@ class _TwoIndividualMeterSummaryWidgetState
                       print("Check status : ${isDeviceActive}");
                       setState(() {});
                     })
-                    
                   ],
                 ),
                 // Total Flow Chart

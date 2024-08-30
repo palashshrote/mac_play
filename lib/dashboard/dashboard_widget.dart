@@ -742,21 +742,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  Text(
-                                                                      'Tank Filled',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color(
-                                                                            0xFFFFFFFF),
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                      )),
+                                                                  defaultDeviceSpecsHeading(
+                                                                      "Tank filled"),
                                                                 ],
                                                               ),
                                                               SizedBox(
@@ -768,24 +755,78 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  Text(
-                                                                      isActive
-                                                                          ? functions.convertToInt(functions.tankAPI(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!), containerTankRecord!.capacity)).toString() +
-                                                                              " %"
-                                                                          : 'N/A', //replace with original data
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            24,
-                                                                        color: Color(
-                                                                            0xFF91D9E9),
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      )),
+                                                                  FutureBuilder<
+                                                                      bool>(
+                                                                    future: functions
+                                                                        .checkActivity(
+                                                                            containerTankRecord.tankKey!),
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<dynamic>
+                                                                            snapshot) {
+                                                                      if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                      } else if (snapshot
+                                                                          .hasError) {
+                                                                        return Text(
+                                                                            'Error: ${snapshot.error}');
+                                                                      } else {
+                                                                        var value =
+                                                                            snapshot.data;
+                                                                        isActive =
+                                                                            value;
+                                                                        if (isActive ==
+                                                                            true) {
+                                                                          return FutureBuilder<
+                                                                              dynamic>(
+                                                                            future:
+                                                                                functions.getStarrWaterLevel(containerTankRecord.tankKey!),
+                                                                            builder:
+                                                                                (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                              } else if (snapshot.hasError) {
+                                                                                return Text('Error: ${snapshot.error}');
+                                                                              } else {
+                                                                                var value = snapshot.data;
+                                                                                _model.waterLevel = value;
+                                                                                var filledP = (value != null) ? functions.convertToInt(functions.tankAPI(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!), containerTankRecord!.capacity)).toString() + " %" : "N/A";
+                                                                                return Text(
+                                                                                  filledP,
+                                                                                  style: defaultDeviceDataStyle,
+                                                                                );
+                                                                              }
+                                                                            },
+                                                                          );
+                                                                        } else {
+                                                                          return NAText();
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                  ),
+
+                                                                  /*isActive
+                                                                        ? functions.convertToInt(functions.tankAPI(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!), containerTankRecord!.capacity)).toString() +
+                                                                            " %"
+                                                                        : 'N/A', //replace with original data
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: GF
+                                                                            .GoogleFonts
+                                                                        .leagueSpartan(
+                                                                      fontSize:
+                                                                          24,
+                                                                      color: Color(
+                                                                          0xFF91D9E9),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),*/
                                                                 ],
                                                               ),
                                                             ],
@@ -802,21 +843,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  Text(
-                                                                      'Available for use',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color(
-                                                                            0xFFFFFFFF),
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                      )),
+                                                                  defaultDeviceSpecsHeading(
+                                                                      "Available for use"),
                                                                 ],
                                                               ),
                                                               SizedBox(
@@ -828,24 +856,87 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  Text(
-                                                                      isActive
-                                                                          ? functions.shortenNumber(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!)) +
-                                                                              "L"
-                                                                          : 'N/A', //replace with oririginal data
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            24,
-                                                                        color: Color(
-                                                                            0xFF91D9E9),
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      )),
+                                                                  FutureBuilder<
+                                                                      bool>(
+                                                                    future: functions
+                                                                        .checkActivity(
+                                                                            containerTankRecord.tankKey!),
+                                                                    builder: (BuildContext
+                                                                            context,
+                                                                        AsyncSnapshot<dynamic>
+                                                                            snapshot) {
+                                                                      if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                      } else if (snapshot
+                                                                          .hasError) {
+                                                                        return Text(
+                                                                            'Error: ${snapshot.error}');
+                                                                      } else {
+                                                                        var value =
+                                                                            snapshot.data;
+                                                                        isActive =
+                                                                            value;
+                                                                        if (isActive ==
+                                                                            true) {
+                                                                          return FutureBuilder<
+                                                                              dynamic>(
+                                                                            future:
+                                                                                functions.getStarrWaterLevel(containerTankRecord.tankKey!),
+                                                                            builder:
+                                                                                (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                              } else if (snapshot.hasError) {
+                                                                                return Text('Error: ${snapshot.error}');
+                                                                              } else {
+                                                                                var value = snapshot.data;
+                                                                                print("Value = ${value}");
+                                                                                _model.waterLevel = value;
+                                                                                var availForUse = (value != null) ? functions.shortenNumber(functions.calculateWaterAvailable(containerTankRecord!.length!, containerTankRecord!.breadth!, containerTankRecord!.height!, containerTankRecord!.radius!, _model.waterLevel, containerTankRecord!.isCuboid!)) + "L" : "N/A";
+                                                                                return Text(
+                                                                                  availForUse,
+                                                                                  style: defaultDeviceDataStyle,
+                                                                                );
+                                                                              }
+                                                                            },
+                                                                          );
+                                                                        } else {
+                                                                          return NAText();
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                  ),
+
+                                                                  /*Text(
+                                                                    isActive
+                                                                        ? functions.shortenNumber(functions.calculateWaterAvailable(
+                                                                                containerTankRecord!.length!,
+                                                                                containerTankRecord!.breadth!,
+                                                                                containerTankRecord!.height!,
+                                                                                containerTankRecord!.radius!,
+                                                                                _model.waterLevel,
+                                                                                containerTankRecord!.isCuboid!)) +
+                                                                            "L"
+                                                                        : 'N/A', //replace with oririginal data
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: GF
+                                                                            .GoogleFonts
+                                                                        .leagueSpartan(
+                                                                      fontSize:
+                                                                          24,
+                                                                      color: Color(
+                                                                          0xFF91D9E9),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),
+                                                                */
                                                                 ],
                                                               ),
                                                             ],
@@ -873,21 +964,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  Text(
-                                                                      'Total Volume',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color(
-                                                                            0xFFFFFFFF),
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                      )),
+                                                                  defaultDeviceSpecsHeading(
+                                                                      "Total volume"),
                                                                 ],
                                                               ),
                                                               SizedBox(
@@ -900,23 +978,18 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                         .center,
                                                                 children: [
                                                                   Text(
-                                                                      isActive
-                                                                          ? functions.shortenNumber(containerTankRecord!.capacity!) +
-                                                                              'L'
-                                                                          : 'N/A', //replace with oririginal data
+                                                                      // isActive
+                                                                      //     ? functions.shortenNumber(containerTankRecord!.capacity!) +
+                                                                      //         'L'
+                                                                      //     : 'N/A', //replace with oririginal data
+                                                                      functions.shortenNumber(containerTankRecord!
+                                                                              .capacity!) +
+                                                                          'L',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .center,
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            24,
-                                                                        color: Color(
-                                                                            0xFF91D9E9),
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      )),
+                                                                      style:
+                                                                          defaultDeviceDataStyle),
                                                                 ],
                                                               ),
                                                             ],
@@ -933,27 +1006,72 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  Text(
-                                                                      'Temperature',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color(
-                                                                            0xFFFFFFFF),
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                      )),
+                                                                  defaultDeviceSpecsHeading(
+                                                                      "Temperature"),
+
+                                                                  /*Text(
+                                                                    'Temperature',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: GF
+                                                                            .GoogleFonts
+                                                                        .leagueSpartan(
+                                                                      fontSize:
+                                                                          16,
+                                                                      color: Color(
+                                                                          0xFFFFFFFF),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
+                                                                  ),
+                                                                */
                                                                 ],
                                                               ),
                                                               SizedBox(
                                                                 height: 7,
                                                               ),
-                                                              Row(
+                                                              FutureBuilder<
+                                                                      dynamic>(
+                                                                  future: functions
+                                                                      .getTemp(
+                                                                          containerTankRecord
+                                                                              .tankKey!),
+                                                                  builder: (BuildContext
+                                                                          context,
+                                                                      AsyncSnapshot<
+                                                                              dynamic>
+                                                                          snapshot) {
+                                                                    if (snapshot
+                                                                            .connectionState ==
+                                                                        ConnectionState
+                                                                            .waiting) {
+                                                                      return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                    } else if (snapshot
+                                                                        .hasError) {
+                                                                      return Text(
+                                                                          'Error: ${snapshot.error}');
+                                                                    } else {
+                                                                      var value =
+                                                                          snapshot
+                                                                              .data;
+                                                                      // print("Balue from dashboard: ${value}");
+                                                                      if (value !=
+                                                                          null) {
+                                                                        return Text(
+                                                                          value.toString() +
+                                                                              "°C",
+                                                                          style:
+                                                                              defaultDeviceDataStyle,
+                                                                        );
+                                                                      } else {
+                                                                        return NAText();
+                                                                      }
+                                                                    }
+                                                                  }),
+
+                                                              /*Row(
                                                                 //row3 column2 subrow2
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
@@ -979,6 +1097,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                       )),
                                                                 ],
                                                               ),
+                                                            */
                                                             ],
                                                           ),
                                                         ],
@@ -996,24 +1115,25 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                             // <-- ElevatedButton
                                                             onPressed:
                                                                 () async {
-                                                              isActive = await functions
-                                                                  .checkActivity(
-                                                                      FFAppState()
-                                                                          .tankKey);
-                                                              _model.waterLevel = await actions.callAPI(
-                                                                  functions.generateChannelID(
-                                                                      containerTankRecord!
-                                                                          .tankKey!),
-                                                                  functions.generateReadAPI(
-                                                                      containerTankRecord!
-                                                                          .tankKey!));
-                                                              _model.temperature = await callAPITemperature(
-                                                                  functions.generateChannelID(
-                                                                      containerTankRecord!
-                                                                          .tankKey!),
-                                                                  functions.generateReadAPI(
-                                                                      containerTankRecord!
-                                                                          .tankKey!));
+                                                              // isActive = await functions
+                                                              //     .checkActivity(
+                                                              //         FFAppState()
+                                                              //             .tankKey);
+                                                              // _model.waterLevel = await actions.callAPI(
+                                                              //     functions.generateChannelID(
+                                                              //         containerTankRecord!
+                                                              //             .tankKey!),
+                                                              //     functions.generateReadAPI(
+                                                              //         containerTankRecord!
+                                                              //             .tankKey!));
+                                                              // _model.temperature = await callAPITemperature(
+                                                              //     functions.generateChannelID(
+                                                              //         containerTankRecord!
+                                                              //             .tankKey!),
+                                                              //     functions.generateReadAPI(
+                                                              //         containerTankRecord!
+                                                              //             .tankKey!));
+                                                              isActive = true;
                                                               setState(() {});
                                                             },
                                                             icon: Icon(
@@ -2191,487 +2311,468 @@ class _DashboardWidgetState extends State<DashboardWidget>
                             color: Color.fromARGB(255, 0, 0, 0),
                             borderRadius: BorderRadius.circular(25),
                           ),
-                          child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Column(
-                                    mainAxisSize: MainAxisSize.max,
+                          child:
+                              Column(mainAxisSize: MainAxisSize.max, children: [
+                            Column(mainAxisSize: MainAxisSize.max, children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    15, 20, 15, 0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xded2ecf2),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.center,
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            15, 20, 15, 0),
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xded2ecf2),
-                                            shape: BoxShape.circle,
+                                      Positioned(
+                                        child: Center(
+                                          child: gauges.SfRadialGauge(
+                                            animationDuration: 2000,
+                                            enableLoadingAnimation: true,
+                                            axes: <gauges.RadialAxis>[
+                                              gauges.RadialAxis(
+                                                minimum: 0,
+                                                maximum: 100,
+                                                radiusFactor: 1,
+                                                minorTicksPerInterval: 5,
+                                                startAngle: 110,
+                                                endAngle: 70,
+                                                showLabels: false,
+                                                axisLineStyle:
+                                                    gauges.AxisLineStyle(
+                                                  thickness: 0.1,
+                                                  thicknessUnit: gauges
+                                                      .GaugeSizeUnit.factor,
+                                                  cornerStyle: gauges
+                                                      .CornerStyle.bothCurve,
+                                                  color: Color(0xFF0C0C0C),
+                                                ),
+                                                majorTickStyle:
+                                                    gauges.MajorTickStyle(
+                                                        length: 0.075,
+                                                        lengthUnit: gauges
+                                                            .GaugeSizeUnit
+                                                            .factor,
+                                                        color: Color(0xFF0c0c0c)
+                                                        // color: Color(0xb1bbe5ef),
+                                                        ),
+                                                minorTickStyle:
+                                                    gauges.MinorTickStyle(
+                                                  // color: Color(0x7bbbe5ef),
+                                                  color: Color(0xFF0c0c0c),
+                                                  length: 0.05,
+                                                  lengthUnit: gauges
+                                                      .GaugeSizeUnit.factor,
+                                                ),
+                                                pointers: [
+                                                  gauges.RangePointer(
+                                                    width: 0.087,
+                                                    sizeUnit: gauges
+                                                        .GaugeSizeUnit.factor,
+                                                    value: _pointerValue,
+                                                    cornerStyle: gauges
+                                                        .CornerStyle.bothCurve,
+                                                    color: Color(0xff37a8d4),
+                                                  ),
+                                                  gauges.NeedlePointer(
+                                                    value: _pointerValue,
+                                                    needleStartWidth: 1,
+                                                    needleEndWidth: 5,
+                                                    needleLength: 8,
+                                                    needleColor:
+                                                        Color(0x770c0c0c),
+                                                    knobStyle: gauges.KnobStyle(
+                                                      knobRadius: 5,
+                                                      sizeUnit: gauges
+                                                          .GaugeSizeUnit
+                                                          .logicalPixel,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
                                           ),
-                                          child: Stack(
-                                            alignment:
-                                                AlignmentDirectional.center,
-                                            children: [
-                                              Positioned(
-                                                child: Center(
-                                                  child: gauges.SfRadialGauge(
-                                                    animationDuration: 2000,
-                                                    enableLoadingAnimation:
-                                                        true,
-                                                    axes: <gauges.RadialAxis>[
-                                                      gauges.RadialAxis(
-                                                        minimum: 0,
-                                                        maximum: 100,
-                                                        radiusFactor: 1,
-                                                        minorTicksPerInterval:
-                                                            5,
-                                                        startAngle: 110,
-                                                        endAngle: 70,
-                                                        showLabels: false,
-                                                        axisLineStyle: gauges
-                                                            .AxisLineStyle(
-                                                          thickness: 0.1,
-                                                          thicknessUnit: gauges
-                                                              .GaugeSizeUnit
-                                                              .factor,
-                                                          cornerStyle: gauges
-                                                              .CornerStyle
-                                                              .bothCurve,
-                                                          color:
-                                                              Color(0xFF0C0C0C),
-                                                        ),
-                                                        majorTickStyle: gauges
-                                                            .MajorTickStyle(
-                                                                length: 0.075,
-                                                                lengthUnit: gauges
-                                                                    .GaugeSizeUnit
-                                                                    .factor,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        child: Center(
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xd80c0c0c),
+                                              shape: BoxShape.circle,
+                                            ),
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    50, 0, 50, 0),
+                                            child: isConnected
+                                                ? Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Row(
+                                                        //Row 1
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                            child: Text(
+                                                              meterRecord!
+                                                                  .meterName!,
+                                                              // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
+                                                              style: GF
+                                                                      .GoogleFonts
+                                                                  .leagueSpartan(
+                                                                fontSize: 30,
                                                                 color: Color(
-                                                                    0xFF0c0c0c)
-                                                                // color: Color(0xb1bbe5ef),
-                                                                ),
-                                                        minorTickStyle: gauges
-                                                            .MinorTickStyle(
-                                                          // color: Color(0x7bbbe5ef),
-                                                          color:
-                                                              Color(0xFF0c0c0c),
-                                                          length: 0.05,
-                                                          lengthUnit: gauges
-                                                              .GaugeSizeUnit
-                                                              .factor,
-                                                        ),
-                                                        pointers: [
-                                                          gauges.RangePointer(
-                                                            width: 0.087,
-                                                            sizeUnit: gauges
-                                                                .GaugeSizeUnit
-                                                                .factor,
-                                                            value:
-                                                                _pointerValue,
-                                                            cornerStyle: gauges
-                                                                .CornerStyle
-                                                                .bothCurve,
-                                                            color: Color(
-                                                                0xff37a8d4),
-                                                          ),
-                                                          gauges.NeedlePointer(
-                                                            value:
-                                                                _pointerValue,
-                                                            needleStartWidth: 1,
-                                                            needleEndWidth: 5,
-                                                            needleLength: 8,
-                                                            needleColor: Color(
-                                                                0x770c0c0c),
-                                                            knobStyle: gauges
-                                                                .KnobStyle(
-                                                              knobRadius: 5,
-                                                              sizeUnit: gauges
-                                                                  .GaugeSizeUnit
-                                                                  .logicalPixel,
+                                                                    0xFFFFFFFF),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                              overflow: TextOverflow
+                                                                  .ellipsis, // new
                                                             ),
                                                           ),
                                                         ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                child: Center(
-                                                  child: Container(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.7,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.7,
-                                                    decoration: BoxDecoration(
-                                                      color: Color(0xd80c0c0c),
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                50, 0, 50, 0),
-                                                    child: isConnected
-                                                        ? Column(
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Row(
+                                                        //Row2
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Column(
+                                                            //row2 column1
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: <Widget>[
                                                               Row(
-                                                                //Row 1
+                                                                //row2 column1 subrow1
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  Container(
-                                                                    child: Text(
-                                                                      meterRecord!
-                                                                          .meterName!,
-                                                                      // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            30,
-                                                                        color: Color(
-                                                                            0xFFFFFFFF),
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                      ),
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis, // new
-                                                                    ),
-                                                                  ),
+                                                                  defaultDeviceSpecsHeading(
+                                                                      "Reading"),
                                                                 ],
                                                               ),
                                                               SizedBox(
-                                                                height: 20,
+                                                                height: 7,
                                                               ),
                                                               Row(
-                                                                //Row2
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: <Widget>[
-                                                                  Column(
-                                                                    //row2 column1
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: <Widget>[
-                                                                      Row(
-                                                                        //row2 column1 subrow1
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          Text(
-                                                                              'Reading',
-                                                                              textAlign: TextAlign.center,
-                                                                              style: GF.GoogleFonts.leagueSpartan(
-                                                                                fontSize: 16,
-                                                                                color: Color(0xFFFFFFFF),
-                                                                                fontWeight: FontWeight.normal,
-                                                                              )),
-                                                                        ],
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            7,
-                                                                      ),
-                                                                      Row(
-                                                                        //row2 column1 subrow2
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          isActivePravah
-                                                                              ? FutureBuilder<dynamic>(
-                                                                                  future: functions.getReading(meterRecord.meterKey!),
-                                                                                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                      return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                                                    } else if (snapshot.hasError) {
-                                                                                      return Text('Error: ${snapshot.error}');
-                                                                                    } else {
-                                                                                      var value = snapshot.data;
-                                                                                      return Text(
-                                                                                          // value
-                                                                                          //     .toString(),
-                                                                                          functions.shortenNumber(value) + "L",
-                                                                                          textAlign: TextAlign.center,
-                                                                                          style: GF.GoogleFonts.leagueSpartan(
-                                                                                            fontSize: 24,
-                                                                                            color: Color(0xFF91D9E9),
-                                                                                            fontWeight: FontWeight.w600,
-                                                                                          ));
-                                                                                    }
-                                                                                  },
-                                                                                )
-                                                                              : Text('N/A',
-                                                                                  textAlign: TextAlign.center,
-                                                                                  style: GF.GoogleFonts.leagueSpartan(
-                                                                                    fontSize: 24,
-                                                                                    color: Color(0xFF91D9E9),
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                  ))
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Column(
-                                                                    //row2 column2
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: <Widget>[
-                                                                      Row(
-                                                                        //row2 column2 subrow1
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          Text(
-                                                                              'Flow Rate',
-                                                                              textAlign: TextAlign.center,
-                                                                              style: GF.GoogleFonts.leagueSpartan(
-                                                                                fontSize: 16,
-                                                                                color: Color(0xFFFFFFFF),
-                                                                                fontWeight: FontWeight.normal,
-                                                                              )),
-                                                                        ],
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            7,
-                                                                      ),
-                                                                      Row(
-                                                                        //row2 column2 subrow2
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          isActivePravah
-                                                                              ? FutureBuilder<dynamic>(
-                                                                                  future: functions.getFlowRate(meterRecord.meterKey!),
-                                                                                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                                                                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                      return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
-                                                                                    } else if (snapshot.hasError) {
-                                                                                      return Text('Error: ${snapshot.error}');
-                                                                                    } else {
-                                                                                      var value = snapshot.data;
-                                                                                      return Text(value.toString(),
-                                                                                          textAlign: TextAlign.center,
-                                                                                          style: GF.GoogleFonts.leagueSpartan(
-                                                                                            fontSize: 24,
-                                                                                            color: Color(0xFF91D9E9),
-                                                                                            fontWeight: FontWeight.w600,
-                                                                                          ));
-                                                                                    }
-                                                                                  },
-                                                                                )
-                                                                              : Text('N/A',
-                                                                                  textAlign: TextAlign.center,
-                                                                                  style: GF.GoogleFonts.leagueSpartan(
-                                                                                    fontSize: 24,
-                                                                                    color: Color(0xFF91D9E9),
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                  ))
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-                                                              Row(
-                                                                //Row4
+                                                                //row2 column1 subrow2
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
                                                                         .center,
                                                                 children: [
-                                                                  ElevatedButton
-                                                                      .icon(
-                                                                    // <-- ElevatedButton
-                                                                    onPressed:
-                                                                        () async {
-                                                                      _model.totalFlow =
-                                                                          await functions
-                                                                              .getReading(meterRecord.meterKey!);
-                                                                      _model.waterLevel =
-                                                                          await functions
-                                                                              .getFlowRate(meterRecord.meterKey!);
-                                                                      setState(
-                                                                          () {});
-                                                                    },
-                                                                    icon: Icon(
-                                                                      CupertinoIcons
-                                                                          .arrow_2_squarepath,
-                                                                      size:
-                                                                          16.0,
-                                                                      color: Color(
-                                                                          0xFF0C0C0C),
-                                                                    ),
-                                                                    label: Text(
-                                                                      'Refresh',
-                                                                      style: GF
-                                                                              .GoogleFonts
-                                                                          .leagueSpartan(
-                                                                        fontSize:
-                                                                            16,
-                                                                        color: Color(
-                                                                            0xFF0C0C0C),
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                      ),
-                                                                    ),
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(7.5),
-                                                                      ),
-                                                                      backgroundColor:
-                                                                          Color(
-                                                                              0xFFC6DDDB),
-                                                                    ),
-                                                                  )
+                                                                  isActivePravah
+                                                                      ? FutureBuilder<
+                                                                          dynamic>(
+                                                                          future:
+                                                                              functions.getReading(meterRecord.meterKey!),
+                                                                          builder:
+                                                                              (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                                                            if (snapshot.connectionState ==
+                                                                                ConnectionState.waiting) {
+                                                                              return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                            } else if (snapshot.hasError) {
+                                                                              return Text('Error: ${snapshot.error}');
+                                                                            } else {
+                                                                              var value = snapshot.data;
+                                                                              // print("Reading : ${value} and type: ${value.runtimeType}");
+                                                                              if (value != null) {
+                                                                                return Text(
+                                                                                    // value
+                                                                                    //     .toString(),
+                                                                                    functions.shortenNumber(value) + "L",
+                                                                                    textAlign: TextAlign.center,
+                                                                                    style: defaultDeviceDataStyle);
+                                                                              } else {
+                                                                                return Text(
+                                                                                  'N/A',
+                                                                                  textAlign: TextAlign.center,
+                                                                                  style: defaultDeviceNADataStyle,
+                                                                                );
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                        )
+                                                                      : Text(
+                                                                          'N/A',
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style:
+                                                                              defaultDeviceNADataStyle,
+                                                                        )
                                                                 ],
                                                               ),
                                                             ],
-                                                          )
-                                                        : Column(
+                                                          ),
+                                                          Column(
+                                                            //row2 column2
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .center,
-                                                            children: [
-                                                              Container(
-                                                                child: Text(
-                                                                  meterRecord!
-                                                                      .meterName!,
-                                                                  // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
-                                                                  style: GF
-                                                                          .GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        30,
-                                                                    color: Color(
-                                                                        0xFFFFFFFF),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis, // new
-                                                                ),
+                                                            children: <Widget>[
+                                                              Row(
+                                                                //row2 column2 subrow1
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  defaultDeviceSpecsHeading(
+                                                                      "Flow Rate"),
+                                                                ],
                                                               ),
-                                                              emptyBox(),
+                                                              SizedBox(
+                                                                height: 7,
+                                                              ),
+                                                              Row(
+                                                                //row2 column2 subrow2
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  isActivePravah
+                                                                      ? FutureBuilder<
+                                                                          dynamic>(
+                                                                          future:
+                                                                              functions.getFlowRate(meterRecord.meterKey!),
+                                                                          builder:
+                                                                              (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                                                            if (snapshot.connectionState ==
+                                                                                ConnectionState.waiting) {
+                                                                              return CircularProgressIndicator(); // Display a loading indicator while waiting for the result
+                                                                            } else if (snapshot.hasError) {
+                                                                              return Text('Error: ${snapshot.error}');
+                                                                            } else {
+                                                                              var value = snapshot.data;
+                                                                              if (value != null) {
+                                                                                return Text(
+                                                                                  value.toString(),
+                                                                                  textAlign: TextAlign.center,
+                                                                                  style: defaultDeviceDataStyle,
+                                                                                );
+                                                                              } else {
+                                                                                return Text(
+                                                                                  'N/A',
+                                                                                  textAlign: TextAlign.center,
+                                                                                  style: defaultDeviceNADataStyle,
+                                                                                );
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                        )
+                                                                      : Text(
+                                                                          'N/A',
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                          style:
+                                                                              defaultDeviceNADataStyle,
+                                                                        ),
+                                                                ],
+                                                              ),
                                                             ],
                                                           ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Row(
+                                                        //Row4
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ElevatedButton.icon(
+                                                            // <-- ElevatedButton
+                                                            onPressed:
+                                                                () async {
+                                                              // _model.totalFlow =
+                                                              //     await functions
+                                                              //         .getReading(meterRecord.meterKey!);
+                                                              // _model.waterLevel =
+                                                              //     await functions
+                                                              //         .getFlowRate(meterRecord.meterKey!);
+                                                              isActivePravah =
+                                                                  true;
+                                                              setState(() {});
+                                                            },
+                                                            icon: Icon(
+                                                              CupertinoIcons
+                                                                  .arrow_2_squarepath,
+                                                              size: 16.0,
+                                                              color: Color(
+                                                                  0xFF0C0C0C),
+                                                            ),
+                                                            label: Text(
+                                                              'Refresh',
+                                                              style: GF
+                                                                      .GoogleFonts
+                                                                  .leagueSpartan(
+                                                                fontSize: 16,
+                                                                color: Color(
+                                                                    0xFF0C0C0C),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            7.5),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xFFC6DDDB),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        child: Text(
+                                                          meterRecord!
+                                                              .meterName!,
+                                                          // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
+                                                          style: GF.GoogleFonts
+                                                              .leagueSpartan(
+                                                            fontSize: 30,
+                                                            color: Color(
+                                                                0xFFFFFFFF),
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis, // new
+                                                        ),
+                                                      ),
+                                                      emptyBox(),
+                                                    ],
                                                   ),
-                                                ),
-                                              ),
-                                            ],
                                           ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                              ),
 
-                                      // Total Flow Chart
-                                      summaryDropDownBtnGeneralized(
-                                        "Total Flow Summary",
-                                        dropdownValuePravahTotal,
-                                        (String? newValue) {
-                                          setState(() {
-                                            dropdownValuePravahTotal =
-                                                newValue!;
-                                          });
-                                        },
-                                      ),
-                                      // graph - library to be updated as per the data
-                                      generalizedGraph(
-                                        functions.getChartPravahTotal(
-                                            meterRecord!.meterKey!,
-                                            dropdownValuePravahTotal),
-                                      ),
+                              // Total Flow Chart
+                              summaryDropDownBtnGeneralized(
+                                "Total Flow Summary",
+                                dropdownValuePravahTotal,
+                                (String? newValue) {
+                                  setState(() {
+                                    dropdownValuePravahTotal = newValue!;
+                                  });
+                                },
+                              ),
+                              // graph - library to be updated as per the data
+                              generalizedGraph(
+                                functions.getChartPravahTotal(
+                                    meterRecord!.meterKey!,
+                                    dropdownValuePravahTotal),
+                              ),
 
-                                      // Flow Rate Chart
-                                      summaryDropDownBtnGeneralized(
-                                        "Flow Rate Summary",
-                                        dropdownValuePravahRate,
-                                        (String? newValue) {
-                                          setState(() {
-                                            dropdownValuePravahRate = newValue!;
-                                          });
-                                        },
-                                      ),
+                              // Flow Rate Chart
+                              summaryDropDownBtnGeneralized(
+                                "Flow Rate Summary",
+                                dropdownValuePravahRate,
+                                (String? newValue) {
+                                  setState(() {
+                                    dropdownValuePravahRate = newValue!;
+                                  });
+                                },
+                              ),
 
-                                      // graph - library to be updated as per the data
-                                      generalizedGraph(
-                                        functions.getChartPravahRate(
-                                            meterRecord.meterKey!,
-                                            dropdownValuePravahRate),
-                                      ),
+                              // graph - library to be updated as per the data
+                              generalizedGraph(
+                                functions.getChartPravahRate(
+                                    meterRecord.meterKey!,
+                                    dropdownValuePravahRate),
+                              ),
 
-                                      //Show all pravah dev. btn
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            20, 30, 20, 30),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            showAllDevicesButton(
-                                              "Show all pravah",
-                                              () async {
-                                                if (!await InternetConnectionCheckerPlus()
-                                                    .hasConnection) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .hideCurrentSnackBar();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                          'Please connect to the internet'),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  setState(() {
-                                                    _isLoading = true;
-                                                  });
-                                                  //Earlier I've applied try catch block with this as I've encountered some bugs
-                                                  _model.outputPravah =
-                                                      await newCustomActionPravah(
-                                                    (currentUserDocument
-                                                                ?.meterKeyList
-                                                                ?.toList() ??
-                                                            [])
-                                                        .toList(),
-                                                  );
-
-                                                  setState(() {
-                                                    _isLoading = false;
-                                                  });
-
-                                                  context.pushNamed(
-                                                    'MeterSummary',
-                                                    queryParams: {
-                                                      'reading': serializeParam(
-                                                        _model.outputPravah,
-                                                        ParamType.JSON,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
-                                                }
-                                              },
+                              //Show all pravah dev. btn
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20, 30, 20, 30),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    showAllDevicesButton(
+                                      "Show all pravah",
+                                      () async {
+                                        if (!await InternetConnectionCheckerPlus()
+                                            .hasConnection) {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Please connect to the internet'),
                                             ),
-                                            /*
+                                          );
+                                        } else {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          //Earlier I've applied try catch block with this as I've encountered some bugs
+                                          _model.outputPravah =
+                                              await newCustomActionPravah(
+                                            (currentUserDocument?.meterKeyList
+                                                        ?.toList() ??
+                                                    [])
+                                                .toList(),
+                                          );
+
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+
+                                          context.pushNamed(
+                                            'MeterSummary',
+                                            queryParams: {
+                                              'reading': serializeParam(
+                                                _model.outputPravah,
+                                                ParamType.JSON,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                    /*
                                                   ElevatedButton(
                                                     onPressed: () async {
                                                       if (!await InternetConnectionCheckerPlus()
@@ -2749,29 +2850,28 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                         20,
                                                                         17)),
                                                   ),*/
-                                            showAllDevicesButton("Testing",
-                                                () async {
-                                              if (!await InternetConnectionCheckerPlus()
-                                                  .hasConnection) {
-                                                ScaffoldMessenger.of(context)
-                                                    .hideCurrentSnackBar();
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                        'Please connect to the internet'),
-                                                  ),
-                                                );
-                                              } else {
-                                                context.pushNamed(
-                                                    'MeterSummaryTesting');
-                                              }
-                                            }),
-                                          ],
-                                        ),
-                                      ),
-                                    ]),
-                              ]),
+                                    showAllDevicesButton("Testing", () async {
+                                      if (!await InternetConnectionCheckerPlus()
+                                          .hasConnection) {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Please connect to the internet'),
+                                          ),
+                                        );
+                                      } else {
+                                        context
+                                            .pushNamed('MeterSummaryTesting');
+                                      }
+                                    }),
+                                  ],
+                                ),
+                              ),
+                            ]),
+                          ]),
                         );
                       }),
                 ],
@@ -2906,8 +3006,11 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                   var value =
                                                                       snapshot
                                                                           .data;
-                                                                  return value.toString() ==
-                                                                          "N/A"
+                                                                  // print(
+                                                                  //     "Dsbrd val: ${value}  ${value.runtimeType}");
+
+                                                                  return value ==
+                                                                          "null"
                                                                       ? Text(
                                                                           "N/A",
                                                                           style:
@@ -2915,7 +3018,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                         )
                                                                       : Text(
                                                                           value.toString() +
-                                                                              "L",
+                                                                              "m",
                                                                           textAlign:
                                                                               TextAlign.center,
                                                                           style:

@@ -241,8 +241,8 @@ Future<dynamic> getTemp(String tankKey) async {
   // print("Null value : ${val}");
 
   try {
-    var ans = (double.tryParse(val)).toString();
-    if (ans == null) return "N/A";
+    var ans = double.tryParse(val);
+    // if (ans == null) return "N/A";
     return ans;
   } catch (e) {
     return "N/A";
@@ -273,8 +273,8 @@ Future<dynamic> getStarrWaterLevel(String tankKey) async {
   // print("Null value : ${val}");
 
   try {
-    var ans = (double.tryParse(val)).toString();
-    if (ans == null) return "N/A";
+    var ans = double.tryParse(val);
+    // if (ans == null) return "N/A";
     return ans;
   } catch (e) {
     return "N/A";
@@ -300,7 +300,7 @@ Future<dynamic> getFlowRate(String meterKey) async {
   try {
     // if (val == null) return "N/A";
     var ans = double.tryParse(val);
-    if (ans == null) return "N/A";
+    // if (ans == null) return "N/A";
     return ans;
   } catch (e) {
     return "N/A";
@@ -326,7 +326,7 @@ Future<dynamic> getReading(String meterKey) async {
   try {
     // if (val == null) return "N/A";
     var ans = double.tryParse(val);
-    if (ans == null) return "N/A";
+    // if (ans == null) return "N/A";
     return ans;
   } catch (e) {
     return "N/A";
@@ -430,6 +430,7 @@ Future<bool> checkActivity(String key) async {
   String jsonData = await fetchData(url);
   List<DataEntry> data = convertDataStarr(jsonData);
   return isActive(data);
+  // return false;
 }
 
 Future<bool> checkActivityPravah(String key) async {

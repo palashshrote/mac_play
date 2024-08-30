@@ -126,7 +126,7 @@ class _TwoIndividualBorewellSummaryWidgetState
                             functions.getWaterLevelfromGround(
                                 widget.docReference!.borewellKey!),
                             null,
-                            "L",
+                            "m",
                             null,
                             null),
                       ]),

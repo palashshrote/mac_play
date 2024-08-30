@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:hydrow/backend/backend.dart';
+import 'package:hydrow/constants/k_dashboard_container.dart';
 import 'package:hydrow/constants/k_individual_device_summary.dart';
 import 'package:hydrow/constants/k_show_all_device_style.dart';
 import 'package:hydrow/flutter_flow/custom_functions.dart';
@@ -10,6 +11,17 @@ import 'package:hydrow/meter_summary/meter_summary_testing_model.dart';
 import 'package:hydrow/tank_summary/tank_summary_testing_model.dart';
 import '../borewell_summary/borewell_summary_testing_model.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+
+Widget deviceSpecsHeading(String heading) {
+  return Text(
+    heading,
+    style: GF.GoogleFonts.leagueSpartan(
+      fontSize: 18,
+      color: Color(0xFFFFFFFF),
+      fontWeight: FontWeight.normal,
+    ),
+  );
+}
 
 Widget showStarrCard(List<TankRecord> listViewTankRecordList,
     TankSummaryTestingModel _model, AnimationInfo animationsMap) {
@@ -65,8 +77,39 @@ Widget showStarrCard(List<TankRecord> listViewTankRecordList,
             print("Item count: ${listViewTankRecordList.length}");
             print(snapshot.data);
             bool isTankActive = snapshot.data![0];
-            var ansWaterLevel = double.parse(snapshot.data![2]);
+            var ansWaterLevel = (snapshot.data![2]);
+            print("AnswaterLevel type : ${ansWaterLevel.runtimeType}");
             var ansTemp = snapshot.data![1];
+            var tankFilledP = (ansWaterLevel != null)
+                ? functions
+                        .convertToInt(
+                          functions.tankAPI(
+                              functions.calculateWaterAvailable(
+                                  listViewTankRecord.length!,
+                                  listViewTankRecord.breadth!,
+                                  listViewTankRecord.height!,
+                                  listViewTankRecord.radius!,
+                                  double.parse(ansWaterLevel.toString()),
+                                  listViewTankRecord.isCuboid!),
+                              listViewTankRecord.capacity),
+                        )
+                        .toString() +
+                    " %"
+                : "N/A";
+
+            var waterAvailable = (ansWaterLevel != null)
+                ? shortenNumber(
+                      functions.calculateWaterAvailable(
+                          listViewTankRecord.length!,
+                          listViewTankRecord.breadth!,
+                          listViewTankRecord.height!,
+                          listViewTankRecord.radius!,
+                          double.parse(ansWaterLevel.toString()),
+                          listViewTankRecord.isCuboid!),
+                    ) +
+                    'L'
+                : "N/A";
+            // double waterLevelDbl = double.parse(ansWaterLevel);
             // double ansFilled = calculateWaterAvailable(
             //     listViewTankRecord.length!,
             //     listViewTankRecord.breadth!,
@@ -86,7 +129,7 @@ Widget showStarrCard(List<TankRecord> listViewTankRecordList,
             return Padding(
               padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
               child: Container(
-                height: 160,
+                height: 180,
                 decoration: isTankActive
                     ? activeDeviceDecorationStyle
                     : inactiveDeviceDecorationStyle,
@@ -106,47 +149,45 @@ Widget showStarrCard(List<TankRecord> listViewTankRecordList,
                               children: [
                                 Row(
                                   children: [
+                                    // Text(
+                                    //   isTankActive
+                                    //       ? functions
+                                    //               .convertToInt(functions.tankAPI(
+                                    //                   functions
+                                    //                       .calculateWaterAvailable(
+                                    //                           listViewTankRecord
+                                    //                               .length!,
+                                    //                           listViewTankRecord
+                                    //                               .breadth!,
+                                    //                           listViewTankRecord
+                                    //                               .height!,
+                                    //                           listViewTankRecord
+                                    //                               .radius!,
+                                    //                           double.parse(
+                                    //                               ansWaterLevel),
+                                    //                           listViewTankRecord
+                                    //                               .isCuboid!),
+                                    //                   listViewTankRecord
+                                    //                       .capacity))
+                                    //               .toString() +
+                                    //           ' %'
+                                    //       : 'N/A',
+                                    //   style: GF.GoogleFonts.leagueSpartan(
+                                    //     fontSize: 28,
+                                    //     color: Color(0xFF91D9E9),
+                                    //     fontWeight: FontWeight.w600,
+                                    //   ),
+                                    // ),
                                     Text(
-                                      isTankActive
-                                          ? functions
-                                                  .convertToInt(functions.tankAPI(
-                                                      functions
-                                                          .calculateWaterAvailable(
-                                                              listViewTankRecord
-                                                                  .length!,
-                                                              listViewTankRecord
-                                                                  .breadth!,
-                                                              listViewTankRecord
-                                                                  .height!,
-                                                              listViewTankRecord
-                                                                  .radius!,
-                                                              ansWaterLevel,
-                                                              listViewTankRecord
-                                                                  .isCuboid!),
-                                                      listViewTankRecord
-                                                          .capacity))
-                                                  .toString() +
-                                              ' %'
-                                          : 'N/A',
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        fontSize: 28,
-                                        color: Color(0xFF91D9E9),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      isTankActive ? tankFilledP : 'N/A',
+                                      style: cardDataStyle,
                                     ),
                                   ],
                                 ),
                                 sbox(7, null),
                                 Row(
                                   children: [
-                                    Text(
-                                      'Tank Filled',
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        fontSize: 18,
-                                        color: Color(0xFFFFFFFF),
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
+                                    deviceSpecsHeading("Tank Filled"),
                                   ],
                                 ),
                               ],
@@ -171,41 +212,15 @@ Widget showStarrCard(List<TankRecord> listViewTankRecordList,
                                 Row(
                                   children: [
                                     Text(
-                                      isTankActive
-                                          ? shortenNumber(functions
-                                                  .calculateWaterAvailable(
-                                                      listViewTankRecord
-                                                          .length!,
-                                                      listViewTankRecord
-                                                          .breadth!,
-                                                      listViewTankRecord
-                                                          .height!,
-                                                      listViewTankRecord
-                                                          .radius!,
-                                                      ansWaterLevel,
-                                                      listViewTankRecord
-                                                          .isCuboid!)) +
-                                              ' L'
-                                          : 'N/A',
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        fontSize: 28,
-                                        color: Color(0xFF91D9E9),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      isTankActive ? waterAvailable : 'N/A',
+                                      style: cardDataStyle,
                                     ),
                                   ],
                                 ),
                                 sbox(7, null),
                                 Row(
                                   children: [
-                                    Text(
-                                      'Available for use',
-                                      style: GF.GoogleFonts.leagueSpartan(
-                                        fontSize: 18,
-                                        color: Color(0xFFFFFFFF),
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
+                                    deviceSpecsHeading("Available for use"),
                                   ],
                                 ),
                               ],
