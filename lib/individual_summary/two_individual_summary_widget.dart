@@ -78,7 +78,7 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: genAppBar("Testing starr details", centerTitle: true),
+      appBar: genAppBar("Tank Details", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),

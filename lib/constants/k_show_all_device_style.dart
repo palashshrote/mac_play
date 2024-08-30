@@ -11,7 +11,7 @@ var activeDeviceDecorationStyle = BoxDecoration(
   shape: BoxShape.rectangle,
   borderRadius: BorderRadius.circular(15),
   border: Border.all(color: Color(0xFF686868)),
-  color: Color.fromARGB(88, 212, 249, 0),
+  // color: Color.fromARGB(88, 212, 249, 0),
 );
 
 var inactiveDeviceDecorationStyle = BoxDecoration(
@@ -105,6 +105,7 @@ Widget showDeboreCard(List<BorewellRecord> listViewBorewellRecordList,
                                       ans,
                                       style: GF.GoogleFonts.leagueSpartan(
                                         color: Color(0xFFFFFFFF),
+                                        // color: Color(0xFF91D9E9),
                                         fontSize: 28,
                                         fontWeight: FontWeight.w600,
                                       ),

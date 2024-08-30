@@ -444,7 +444,7 @@ Future<bool> checkActivityDebore(String key) async {
   String url = await getActivityURLDebore(key);
   String jsonData = await fetchData(url);
   List<DataEntry> data = convertDataDebore(jsonData);
-  print("${key} : Active Debore: ${isActiveDebore(data)}");
+  // print("${key} : Active Debore: ${isActiveDebore(data)}");
   return isActiveDebore(data);
 }
 
@@ -489,6 +489,7 @@ bool isActiveDebore(List<DataEntry> data) {
     return false;
   }
   DataEntry latestEntry = data.last;
+  // print("Name: ${latestEntry.}");
   // print("LAtest entry value: ${latestEntry.value}");
   if (latestEntry.value == null ||
       latestEntry.value == "No Value" ||
@@ -658,6 +659,7 @@ List<DataEntry> convertDataDebore(String jsonData) {
           if (feed.containsKey('created_at') && feed.containsKey('field1')) {
             DateTime? createdAt = DateTime.tryParse(feed['created_at']);
             double? field1 = double.tryParse(feed['field1']);
+            print("Field1 : ${field1}");
             if (createdAt != null && field1 != null) {
               DataEntry dataEntry = DataEntry(createdAt, field1);
               dataEntries.add(dataEntry);

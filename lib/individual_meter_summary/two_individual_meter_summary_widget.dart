@@ -81,7 +81,7 @@ class _TwoIndividualMeterSummaryWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          '(TESting) Meter Details',
+          'Meter Details',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,

@@ -1355,7 +1355,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      ElevatedButton(
+                                      /*ElevatedButton(
                                         onPressed: () async {
                                           if (!await InternetConnectionCheckerPlus()
                                               .hasConnection) {
@@ -1436,8 +1436,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     20, 17, 20, 17)),
                                       ),
+                                      */
                                       showAllDevicesButton(
-                                        "Tes STr",
+                                        "Show All Devices",
                                         () async {
                                           if (!await InternetConnectionCheckerPlus()
                                               .hasConnection) {
@@ -2729,7 +2730,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    showAllDevicesButton(
+                                    /*showAllDevicesButton(
                                       "Show all pravah",
                                       () async {
                                         if (!await InternetConnectionCheckerPlus()
@@ -2772,6 +2773,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         }
                                       },
                                     ),
+                                    */
                                     /*
                                                   ElevatedButton(
                                                     onPressed: () async {
@@ -2850,7 +2852,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                         20,
                                                                         17)),
                                                   ),*/
-                                    showAllDevicesButton("Testing", () async {
+                                    showAllDevicesButton("Show All Devices",
+                                        () async {
                                       if (!await InternetConnectionCheckerPlus()
                                           .hasConnection) {
                                         ScaffoldMessenger.of(context)
@@ -3006,8 +3009,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                   var value =
                                                                       snapshot
                                                                           .data;
-                                                                  // print(
-                                                                  //     "Dsbrd val: ${value}  ${value.runtimeType}");
+                                                                  print(
+                                                                      "Dsbrd val: ${value}  ${value.runtimeType}");
 
                                                                   return value ==
                                                                           "null"
@@ -3083,7 +3086,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      showAllDevicesButton("Show all Debore",
+                                      /*showAllDevicesButton("Show all Debore",
                                           () async {
                                         if (!await InternetConnectionCheckerPlus()
                                             .hasConnection) {
@@ -3124,7 +3127,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           );
                                         }
                                       }),
-                                      showAllDevicesButton("Testing", () async {
+                                      */
+                                      showAllDevicesButton("Show All Devices",
+                                          () async {
                                         if (!await InternetConnectionCheckerPlus()
                                             .hasConnection) {
                                           ScaffoldMessenger.of(context)
@@ -3191,6 +3196,12 @@ class _DashboardWidgetState extends State<DashboardWidget>
                   child: CircularProgressIndicator(),
                 ),
               if (snapshot.hasData && !snapshot.data!)
+                // Positioned(
+                //   bottom: 0, // This anchors the widget to the bottom
+                //   left: 0, // Make sure the widget is stretched across the width
+                //   right: 0,
+                //   child: NetworkConnectivityWidget(),
+                // ),
                 NetworkConnectivityWidget(),
             ],
           );

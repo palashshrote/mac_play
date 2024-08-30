@@ -79,7 +79,7 @@ class _TwoIndividualBorewellSummaryWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          '(TESting) Borewell Details',
+          'Borewell Details',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,

@@ -78,7 +78,7 @@ class _BorewellSummaryTestingWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'All debore testing',
+          'All Debore Devices',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -125,8 +125,6 @@ class _BorewellSummaryTestingWidgetState
             } else {
               return showDeboreCard(listViewBorewellRecordList, _model,
                   animationsMap['containerOnPageLoadAnimation']!);
-
-              
             }
           },
         ),
