@@ -250,7 +250,7 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                           .checkActivity(widget.docReference!.tankKey!);
 
                       isDeviceActive = true;
-                      print("Check status : ${isDeviceActive}");
+                      // print("Check status : ${isDeviceActive}");
                       setState(() {});
                     })
                   ],

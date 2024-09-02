@@ -74,11 +74,11 @@ Widget showStarrCard(List<TankRecord> listViewTankRecordList,
               ),
             );
           } else if (snapshot.hasData) {
-            print("Item count: ${listViewTankRecordList.length}");
-            print(snapshot.data);
+            // print("Item count: ${listViewTankRecordList.length}");
+            // print(snapshot.data);
             bool isTankActive = snapshot.data![0];
             var ansWaterLevel = (snapshot.data![2]);
-            print("AnswaterLevel type : ${ansWaterLevel.runtimeType}");
+            // print("AnswaterLevel type : ${ansWaterLevel.runtimeType}");
             var ansTemp = snapshot.data![1];
             var tankFilledP = (ansWaterLevel != null)
                 ? functions
@@ -230,7 +230,7 @@ Widget showStarrCard(List<TankRecord> listViewTankRecordList,
                               () async {
                                 _model.outputIsActive = await checkActivity(
                                     listViewTankRecord.tankKey!);
-                                print(listViewTankRecord.tankKey!);
+                                // print(listViewTankRecord.tankKey!);
                                 // print(listViewTankRecord.borewellKey!);
                                 try {
                                   context.pushNamed(
@@ -276,7 +276,7 @@ Widget showStarrCard(List<TankRecord> listViewTankRecordList,
                                     },
                                   );
                                 } catch (e) {
-                                  print('Navigation failed: $e');
+                                  // print('Navigation failed: $e');
                                 }
                                 // setState(() {});
                               },

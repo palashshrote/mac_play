@@ -659,7 +659,7 @@ List<DataEntry> convertDataDebore(String jsonData) {
           if (feed.containsKey('created_at') && feed.containsKey('field1')) {
             DateTime? createdAt = DateTime.tryParse(feed['created_at']);
             double? field1 = double.tryParse(feed['field1']);
-            print("Field1 : ${field1}");
+            // print("Field1 : ${field1}");
             if (createdAt != null && field1 != null) {
               DataEntry dataEntry = DataEntry(createdAt, field1);
               dataEntries.add(dataEntry);

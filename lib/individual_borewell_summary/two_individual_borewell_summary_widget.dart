@@ -155,7 +155,7 @@ class _TwoIndividualBorewellSummaryWidgetState
                           widget.docReference!.borewellKey!);
 
                       isDeviceActive = true;
-                      print("Check status : ${isDeviceActive}");
+                      // print("Check status : ${isDeviceActive}");
                       setState(() {});
                     })
                   ],

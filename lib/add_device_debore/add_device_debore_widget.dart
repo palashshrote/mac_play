@@ -150,12 +150,12 @@ class _AddDeviceDeboreWidgetState extends State<AddDeviceDeboreWidget>
                                   0.0, 0.0, 0.0, 30.0),
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  print("Onpressed tapped");
+                                  // print("Onpressed tapped");
 
                                   if (_model.formKey.currentState == null ||
                                       !_model.formKey.currentState!
                                           .validate()) {
-                                    print("Form not valid");
+                                    // print("Form not valid");
                                     return;
                                   }
 
@@ -164,7 +164,7 @@ class _AddDeviceDeboreWidgetState extends State<AddDeviceDeboreWidget>
                                     borewellName: _model.textController1.text,
                                     borewellKey: widget.borewellKey,
                                   );
-                                  print(borewellCreateData);
+                                  // print(borewellCreateData);
                                   await BorewellRecord.createDoc(
                                           currentUserReference!)
                                       .set(borewellCreateData);

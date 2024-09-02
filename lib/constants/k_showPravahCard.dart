@@ -403,7 +403,7 @@ Widget showPravahCard(List<MeterRecord> listViewMeterRecordList,
                                     },
                                   );
                                 } catch (e) {
-                                  print('Navigation failed: $e');
+                                  // print('Navigation failed: $e');
                                 }
                                 // setState(() {});
                               },

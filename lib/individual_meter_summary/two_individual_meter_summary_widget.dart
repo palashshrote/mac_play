@@ -176,7 +176,7 @@ class _TwoIndividualMeterSummaryWidgetState
                           .checkActivityPravah(widget.docReference!.meterKey!);
 
                       isDeviceActive = true;
-                      print("Check status : ${isDeviceActive}");
+                      // print("Check status : ${isDeviceActive}");
                       setState(() {});
                     })
                   ],

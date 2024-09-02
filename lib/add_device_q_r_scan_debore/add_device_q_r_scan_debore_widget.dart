@@ -144,7 +144,7 @@ class _AddDeviceQRScanDeboreWidgetState
                                         ScanMode.QR,
                                       );
                                     } catch (e) {
-                                      print(e.toString());
+                                      // print(e.toString());
                                     }
                                     if (functions.qrDebore(_model.qROutput)) {
                                       context.pushNamed(

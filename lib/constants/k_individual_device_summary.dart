@@ -111,18 +111,18 @@ Widget dataCardImproved(
               future: futureFunction,
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  print("Entered waiting state");
+                  // print("Entered waiting state");
                   return CircularProgressIndicator(
                     color: Colors.white,
                   ); // Display a loading indicator while waiting for the result
                 } else if (snapshot.hasError) {
-                  print("Error in ${snapshot.error}");
+                  // print("Error in ${snapshot.error}");
                   return Text('Error: ${snapshot.error}');
                 } else if (snapshot.hasData) {
                   if (snapshot.data == null) {
                     return NAText();
                   }
-                  print("ACtive status : ${isDeviceActive}");
+                  // print("ACtive status : ${isDeviceActive}");
                   var value = snapshot.data;
                   if (value == true) value = "Active";
                   String ans = "";

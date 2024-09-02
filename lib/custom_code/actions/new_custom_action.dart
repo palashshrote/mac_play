@@ -24,7 +24,7 @@ Future<dynamic> newCustomActionDebore(List<String> keys) async {
   String FinalString = "{\"borewells\"" + ":[";
   String thingspeak = 'https://api.thingspeak.com/';
   for (int i = 0; i < keys.length; i++) {
-    print(keys[i]);
+    // print(keys[i]);
     String ChannelID = generateChannelID(keys[i]);
     String ReadAPI = generateReadAPI(keys[i]);
 
@@ -79,7 +79,7 @@ Future<dynamic> newCustomActionDebore(List<String> keys) async {
   }
 
   FinalString += "]}";
-  print(FinalString);
+  // print(FinalString);
   var mapObject = json.decode(FinalString);
 
   return mapObject;
@@ -87,12 +87,12 @@ Future<dynamic> newCustomActionDebore(List<String> keys) async {
 
 Future<dynamic> newCustomActionPravah(List<String> keys) async {
   if (keys.isEmpty) {
-    print("No keys found");
+    // print("No keys found");
     return;
   } else {
-    print(keys.length);
+    // print(keys.length);
     for (int i = 0; i < keys.length; i++) {
-      print(keys[i]);
+      // print(keys[i]);
     }
   }
   String str1 = "channels/";
@@ -171,12 +171,12 @@ Future<dynamic> newCustomActionPravah(List<String> keys) async {
 
 Future<dynamic> newCustomAction(List<String> keys) async {
   if (keys.isEmpty) {
-    print("No keys found");
+    // print("No keys found");
     return;
   } else {
-    print(keys.length);
+    // print(keys.length);
     for (int i = 0; i < keys.length; i++) {
-      print(keys[i]);
+      // print(keys[i]);
     }
   }
   String str1 = '/channels/';

@@ -77,7 +77,7 @@ Widget showDeboreCard(List<BorewellRecord> listViewBorewellRecordList,
               ans = "N/A";
             else
               ans = ans.toString() + "m";
-            print("DAta is ${ans}");
+            // print("DAta is ${ans}");
             return Padding(
               padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
               child: Container(
