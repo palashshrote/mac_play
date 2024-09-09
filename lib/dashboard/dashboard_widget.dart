@@ -3083,51 +3083,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       20, 30, 20, 30),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  child: Column(
                                     children: [
-                                      /*showAllDevicesButton("Show all Debore",
-                                          () async {
-                                        if (!await InternetConnectionCheckerPlus()
-                                            .hasConnection) {
-                                          ScaffoldMessenger.of(context)
-                                              .hideCurrentSnackBar();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Please connect to the internet'),
-                                            ),
-                                          );
-                                        } else {
-                                          setState(() {
-                                            _isLoading = true;
-                                          });
-                                          //Earlier I've applied try catch block with this as I've encountered some bugs
-                                          _model.outputDebore =
-                                              await newCustomActionDebore(
-                                            (currentUserDocument
-                                                        ?.borewellKeyList
-                                                        ?.toList() ??
-                                                    [])
-                                                .toList(),
-                                          );
-                                          setState(() {
-                                            _isLoading = false;
-                                          });
-
-                                          context.pushNamed(
-                                            'BorewellSummary',
-                                            queryParams: {
-                                              'reading': serializeParam(
-                                                _model.outputDebore,
-                                                ParamType.JSON,
-                                              ),
-                                            }.withoutNulls,
-                                          );
-                                        }
-                                      }),
-                                      */
                                       showAllDevicesButton("Show All Devices",
                                           () async {
                                         if (!await InternetConnectionCheckerPlus()
@@ -3144,6 +3101,26 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         } else {
                                           context.pushNamed(
                                               'BorewellSummaryTesting');
+                                        }
+                                      }),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      showAllDevicesButton("Testing", () async {
+                                        if (!await InternetConnectionCheckerPlus()
+                                            .hasConnection) {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Please connect to the internet'),
+                                            ),
+                                          );
+                                        } else {
+                                          context
+                                              .pushNamed('BorewellSummaryT2');
                                         }
                                       }),
                                     ],

@@ -130,7 +130,8 @@ Future<FFFirestorePage<TankRecord>> queryTankRecordPage({
     );
 //Function to fetch stream
 Future<List<Borewell>> fetchBorewells() async {
-  QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('borewell').get();
+  QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection('borewell').get();
 
   // Convert the snapshot into a list of Borewell objects
   return querySnapshot.docs.map((doc) {
@@ -154,6 +155,19 @@ Future<int> queryBorewellRecordCount({
       queryBuilder: queryBuilder,
       limit: limit,
     );
+Future<Map<String, dynamic>?> fetchBorewellData(String borewellKey) async {
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('Borewell')
+      .where('BorewellKey', isEqualTo: borewellKey)
+      .get();
+
+  if (snapshot.docs.isNotEmpty) {
+    var borewellDoc = snapshot.docs.first;
+    return borewellDoc.data() as Map<String, dynamic>?;
+  }
+  return null;
+}
+
 Stream<List<BorewellRecord>> queryBorewellRecord({
   DocumentReference? parent,
   Query Function(Query)? queryBuilder,
