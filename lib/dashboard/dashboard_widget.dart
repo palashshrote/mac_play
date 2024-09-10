@@ -2986,48 +2986,54 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                       ),
                                                       isActiveDebore
                                                           ? FutureBuilder<
-                                                              dynamic>(
-                                                              future: functions
-                                                                  .getWaterLevelfromGround(
-                                                                      containerBorewellRecord
-                                                                          .borewellKey!),
-                                                              builder: (BuildContext
-                                                                      context,
-                                                                  AsyncSnapshot<
-                                                                          dynamic>
-                                                                      snapshot) {
+                                                              Map<String,
+                                                                  dynamic>?>(
+                                                              future: fetchBorewellDataForUser(
+                                                                  containerBorewellRecord
+                                                                      .borewellKey!),
+                                                              builder: (context,
+                                                                  snapshot) {
                                                                 if (snapshot
                                                                         .connectionState ==
                                                                     ConnectionState
                                                                         .waiting) {
-                                                                  return CircularProgressIndicator();
+                                                                  return const CircularProgressIndicator();
                                                                 } else if (snapshot
                                                                     .hasError) {
-                                                                  return Text(
-                                                                      'Error: ${snapshot.error}');
-                                                                } else {
-                                                                  var value =
-                                                                      snapshot
-                                                                          .data;
-                                                                  print(
-                                                                      "Dsbrd val: ${value}  ${value.runtimeType}");
-
-                                                                  return value ==
-                                                                          "null"
-                                                                      ? Text(
-                                                                          "N/A",
-                                                                          style:
-                                                                              defaultDeviceNADataStyle,
-                                                                        )
-                                                                      : Text(
-                                                                          value.toString() +
-                                                                              "m",
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                          style:
-                                                                              defaultDeviceDataStyle,
-                                                                        );
+                                                                  return const Text(
+                                                                      'Error fetching data');
+                                                                } else if (!snapshot
+                                                                        .hasData ||
+                                                                    snapshot.data ==
+                                                                        null) {
+                                                                  return const Text(
+                                                                      'No data available');
                                                                 }
+
+                                                                var borewellData =
+                                                                    snapshot
+                                                                        .data!;
+                                                                var waterLevel =
+                                                                    borewellData[
+                                                                        'WaterLevelGround'];
+                                                                Timestamp ts =
+                                                                    borewellData[
+                                                                        'Timestamp'];
+                                                                DateTime dt =
+                                                                    ts.toDate();
+                                                                print(
+                                                                    "Timestamp val: ${dt}");
+                                                                bool
+                                                                    isBorewellActive =
+                                                                    waterLevel ==
+                                                                            "N/A"
+                                                                        ? false
+                                                                        : true;
+                                                                return Text(
+                                                                  waterLevel,
+                                                                  style:
+                                                                      defaultDeviceDataStyle,
+                                                                );
                                                               },
                                                             )
                                                           : Text(

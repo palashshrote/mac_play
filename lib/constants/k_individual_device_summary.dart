@@ -197,3 +197,40 @@ Widget dataCardImproved(
     ],
   );
 }
+
+Widget dataContainer(String heading, String data, [double? c_width]) {
+  return Container(
+    width: c_width == null ? 140 : c_width,
+    height: 90,
+    decoration: BoxDecoration(
+      shape: BoxShape.rectangle,
+      borderRadius: BorderRadius.circular(15),
+      border: Border.all(color: Color(0xFF686868)),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          //container1 //row1
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              heading,
+              textAlign: TextAlign.center,
+              style: GF.GoogleFonts.leagueSpartan(
+                fontSize: 16,
+                color: Color(0xFFFFFFFF),
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+        sbox(9, null),
+        Text(
+          data,
+          style: liveDataStyle,
+        ),
+      ],
+    ),
+  );
+}

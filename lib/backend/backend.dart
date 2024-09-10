@@ -168,6 +168,15 @@ Future<Map<String, dynamic>?> fetchBorewellData(String borewellKey) async {
   return null;
 }
 
+Future<Map<String, dynamic>?> fetchBorewellDataForUser(
+    String borewellKey) async {
+  if (borewellKey != null) {
+    // Fetch Borewell data by BorewellKey
+    return await fetchBorewellData(borewellKey);
+  }
+  return null;
+}
+
 Stream<List<BorewellRecord>> queryBorewellRecord({
   DocumentReference? parent,
   Query Function(Query)? queryBuilder,
