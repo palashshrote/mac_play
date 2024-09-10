@@ -19,6 +19,7 @@ import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.
 import 'package:hydrow/individual_meter_summary/two_individual_meter_summary_widget.dart';
 import 'package:hydrow/individual_summary/two_individual_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
+import 'package:hydrow/meter_summary/meter_summary_t2_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_testing_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_widget.dart';
 import 'package:hydrow/tank_summary/tank_summary_testing_widget.dart';
@@ -127,6 +128,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'MeterSummaryTesting',
               path: 'meterSummaryTesting',
               builder: (context, params) => MeterSummaryTestingWidget(),
+            ),
+            FFRoute(
+              name: 'MeterSummaryT2',
+              path: 'meterSummaryT2',
+              builder: (context, params) => MeterSummaryT2Widget(),
             ),
             FFRoute(
               name: 'AddDeviceQRScanDebore',
@@ -287,6 +293,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     getDoc(['users', 'meter'], BorewellRecord.serializer),
               },
               builder: (context, params) => T2IndividualBorewellSummaryWidget(
+                docReference:
+                    params.getParam('docReference', ParamType.Document),
+                isActive: params.getParam('isActive', ParamType.bool),
+              ),
+            ),
+            FFRoute(
+              name: 'T2IndividualMeterSummary',
+              path: 't2IndividualMeterSummary',
+              asyncParams: {
+                'docReference':
+                    getDoc(['users', 'meter'], MeterRecord.serializer),
+              },
+              builder: (context, params) => T2IndividualMeterSummaryWidget(
                 docReference:
                     params.getParam('docReference', ParamType.Document),
                 isActive: params.getParam('isActive', ParamType.bool),

@@ -6,6 +6,7 @@ import 'package:hydrow/constants/k_show_all_device_style.dart';
 import 'package:hydrow/flutter_flow/custom_functions.dart';
 import 'package:hydrow/flutter_flow/flutter_flow_animations.dart';
 import 'package:hydrow/flutter_flow/flutter_flow_util.dart';
+import 'package:hydrow/meter_summary/meter_summary_t2_model.dart';
 import 'package:hydrow/meter_summary/meter_summary_testing_model.dart';
 import 'package:hydrow/tank_summary/tank_summary_testing_model.dart';
 import '../borewell_summary/borewell_summary_testing_model.dart';
@@ -419,6 +420,144 @@ Widget showPravahCard(List<MeterRecord> listViewMeterRecordList,
               child: Text('No data available'),
             );
           }
+        },
+      );
+    },
+  );
+}
+
+Widget showPravahCardOptimised(List<MeterRecord> listViewMeterRecordList,
+    MeterSummaryT2Model _model, AnimationInfo animationsMap) {
+  return ListView.builder(
+    padding: EdgeInsets.zero,
+    shrinkWrap: true,
+    scrollDirection: Axis.vertical,
+    itemCount: listViewMeterRecordList.length,
+    itemBuilder: (context, listViewIndex) {
+      final listViewMeterRecord = listViewMeterRecordList[listViewIndex];
+
+      return FutureBuilder<Map<String, dynamic>?>(
+        future: fetchMeterDataForUser(listViewMeterRecord.meterKey!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return const Text('Error fetching data');
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return const Text('No data available');
+          }
+
+          var meterData = snapshot.data!;
+          var reading = meterData['Reading'] + " kL";
+          var flowRate = meterData['FlowRate'] + " ml/s";
+          bool isMeterActive = reading == "N/A" ? false : true;
+          return Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
+            child: Container(
+              height: 180,
+              decoration: isMeterActive
+                  ? activeDeviceDecorationStyle
+                  : inactiveDeviceDecorationStyle,
+              child: Padding(
+                padding: const EdgeInsets.all(22.0),
+                child: Column(
+                    // mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    reading,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      color: Color(0xFFFFFFFF),
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              sbox(7, null),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Reading',
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 18,
+                                      color: Color(0xFFFFFFFF),
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Text(
+                            listViewMeterRecord.meterName!,
+                            style: GF.GoogleFonts.leagueSpartan(
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    flowRate,
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      color: Color(0xFFFFFFFF),
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              sbox(7, null),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Flow Rate',
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 18,
+                                      color: Color(0xFFFFFFFF),
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          viewMoreBtn(
+                            "View more",
+                            () async {},
+                          ),
+                        ],
+                      ),
+                    ]),
+              ),
+            ),
+          );
+
+          // return Text(
+          //   'Water Level: $waterLevel',
+          //   style: liveDataStyle,
+          // );
         },
       );
     },

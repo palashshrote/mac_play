@@ -2727,11 +2727,10 @@ class _DashboardWidgetState extends State<DashboardWidget>
                               Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     20, 30, 20, 30),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                child: Column(
                                   children: [
-                                    /*showAllDevicesButton(
-                                      "Show all pravah",
+                                    showAllDevicesButton(
+                                      "Show All Devices",
                                       () async {
                                         if (!await InternetConnectionCheckerPlus()
                                             .hasConnection) {
@@ -2745,131 +2744,30 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             ),
                                           );
                                         } else {
-                                          setState(() {
-                                            _isLoading = true;
-                                          });
-                                          //Earlier I've applied try catch block with this as I've encountered some bugs
-                                          _model.outputPravah =
-                                              await newCustomActionPravah(
-                                            (currentUserDocument?.meterKeyList
-                                                        ?.toList() ??
-                                                    [])
-                                                .toList(),
-                                          );
-
-                                          setState(() {
-                                            _isLoading = false;
-                                          });
-
-                                          context.pushNamed(
-                                            'MeterSummary',
-                                            queryParams: {
-                                              'reading': serializeParam(
-                                                _model.outputPravah,
-                                                ParamType.JSON,
-                                              ),
-                                            }.withoutNulls,
-                                          );
+                                          context
+                                              .pushNamed('MeterSummaryTesting');
                                         }
                                       },
                                     ),
-                                    */
-                                    /*
-                                                  ElevatedButton(
-                                                    onPressed: () async {
-                                                      if (!await InternetConnectionCheckerPlus()
-                                                          .hasConnection) {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .hideCurrentSnackBar();
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content: Text(
-                                                                'Please connect to the internet'),
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        setState(() {
-                                                          _isLoading = true;
-                                                        });
-                                                        //Earlier I've applied try catch block with this as I've encountered some bugs
-                                                        _model.outputPravah =
-                                                            await newCustomActionPravah(
-                                                          (currentUserDocument
-                                                                      ?.meterKeyList
-                                                                      ?.toList() ??
-                                                                  [])
-                                                              .toList(),
-                                                        );
-
-                                                        setState(() {
-                                                          _isLoading = false;
-                                                        });
-
-                                                        context.pushNamed(
-                                                          'MeterSummary',
-                                                          queryParams: {
-                                                            'reading':
-                                                                serializeParam(
-                                                              _model
-                                                                  .outputPravah,
-                                                              ParamType.JSON,
-                                                            ),
-                                                          }.withoutNulls,
-                                                        );
-                                                      }
-                                                    },
-                                                    child: Text(
-                                                      'Show All Devices',
-                                                      style: GF.GoogleFonts
-                                                          .leagueSpartan(
-                                                        fontSize: 18,
-                                                        color:
-                                                            Color(0xFF0C0C0C),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          7.5),
-                                                            ),
-                                                            backgroundColor:
-                                                                Color(
-                                                                    0xFFC6DDDB),
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        20,
-                                                                        17,
-                                                                        20,
-                                                                        17)),
-                                                  ),*/
-                                    showAllDevicesButton("Show All Devices",
-                                        () async {
-                                      if (!await InternetConnectionCheckerPlus()
-                                          .hasConnection) {
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentSnackBar();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Please connect to the internet'),
-                                          ),
-                                        );
-                                      } else {
-                                        context
-                                            .pushNamed('MeterSummaryTesting');
-                                      }
-                                    }),
+                                    showAllDevicesButton(
+                                      "Testing",
+                                      () async {
+                                        if (!await InternetConnectionCheckerPlus()
+                                            .hasConnection) {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Please connect to the internet'),
+                                            ),
+                                          );
+                                        } else {
+                                          context.pushNamed('MeterSummaryT2');
+                                        }
+                                      },
+                                    ),
                                   ],
                                 ),
                               ),

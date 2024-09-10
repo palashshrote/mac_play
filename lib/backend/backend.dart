@@ -177,6 +177,48 @@ Future<Map<String, dynamic>?> fetchBorewellDataForUser(
   return null;
 }
 
+Future<Map<String, dynamic>?> fetchMeterData(String meterKey) async {
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('Meter')
+      .where('MeterKey', isEqualTo: meterKey)
+      .get();
+
+  if (snapshot.docs.isNotEmpty) {
+    var meterDoc = snapshot.docs.first;
+    return meterDoc.data() as Map<String, dynamic>?;
+  }
+  return null;
+}
+
+Future<Map<String, dynamic>?> fetchMeterDataForUser(String meterKey) async {
+  if (meterKey != null) {
+    // Fetch Borewell data by BorewellKey
+    return await fetchMeterData(meterKey);
+  }
+  return null;
+}
+
+Future<Map<String, dynamic>?> fetchTankData(String tankKey) async {
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('Tank')
+      .where('TankKey', isEqualTo: tankKey)
+      .get();
+
+  if (snapshot.docs.isNotEmpty) {
+    var tankDoc = snapshot.docs.first;
+    return tankDoc.data() as Map<String, dynamic>?;
+  }
+  return null;
+}
+
+Future<Map<String, dynamic>?> fetchTankDataForUser(String tankKey) async {
+  if (tankKey != null) {
+    // Fetch Borewell data by BorewellKey
+    return await fetchBorewellData(tankKey);
+  }
+  return null;
+}
+
 Stream<List<BorewellRecord>> queryBorewellRecord({
   DocumentReference? parent,
   Query Function(Query)? queryBuilder,

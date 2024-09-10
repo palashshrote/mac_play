@@ -68,15 +68,6 @@ class _BorewellSummaryT2WidgetState extends State<BorewellSummaryT2Widget>
     super.dispose();
   }
 
-  Future<Map<String, dynamic>?> fetchBorewellDataForUser(
-      String borewellKey) async {
-    if (borewellKey != null) {
-      // Fetch Borewell data by BorewellKey
-      return await fetchBorewellData(borewellKey);
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
@@ -84,7 +75,6 @@ class _BorewellSummaryT2WidgetState extends State<BorewellSummaryT2Widget>
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
       appBar: genAppBar("All Debore from db", centerTitle: false),
-      
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
@@ -121,8 +111,8 @@ class _BorewellSummaryT2WidgetState extends State<BorewellSummaryT2Widget>
                   ),
                 );
               } else {
-                return showDeboreCardOptimised(listViewBorewellRecordList, _model,
-                    animationsMap['containerOnPageLoadAnimation']!);
+                return showDeboreCardOptimised(listViewBorewellRecordList,
+                    _model, animationsMap['containerOnPageLoadAnimation']!);
 
                 /*return ListView.builder(
                   padding: EdgeInsets.zero,
