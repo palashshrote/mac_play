@@ -1,6 +1,7 @@
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 import 'package:hydrow/constants/k_showPravahCard.dart';
+import 'package:hydrow/constants/k_showStarrCard.dart';
 import 'package:hydrow/constants/k_show_all_device_style.dart';
 import 'package:hydrow/flutter_flow/custom_functions.dart';
 import 'package:hydrow/meter_summary/meter_summary_t2_model.dart';

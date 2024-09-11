@@ -119,11 +119,30 @@ class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
                     }
 
                     var tankData = snapshot.data!;
-                    var waterLevel = tankData['WaterLevel'] + " kL";
+                    var waterLevel = tankData['WaterLevel'];
                     var temp = tankData['Temperature'] + "°C";
+                    if (waterLevel != "N/A")
+                      waterLevel = double.parse(waterLevel);
                     bool isTankActive = waterLevel == "N/A" ? false : true;
-                    var tankFilled = functions
-                        .convertToInt(functions.tankAPI(
+                    var tankFilled = waterLevel == "N/A"
+                        ? "N/A"
+                        : functions
+                            .convertToInt(
+                              functions.tankAPI(
+                                  functions.calculateWaterAvailable(
+                                    widget.docReference!.length!,
+                                    widget.docReference!.breadth!,
+                                    widget.docReference!.height!,
+                                    widget.docReference!.radius!,
+                                    waterLevel,
+                                    widget.docReference!.isCuboid!,
+                                  ),
+                                  widget.docReference!.capacity),
+                            )
+                            .toString();
+                    var availForUse = waterLevel == "N/A"
+                        ? "N/A"
+                        : functions.shortenNumber(
                             functions.calculateWaterAvailable(
                               widget.docReference!.length!,
                               widget.docReference!.breadth!,
@@ -132,17 +151,7 @@ class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
                               waterLevel,
                               widget.docReference!.isCuboid!,
                             ),
-                            widget.docReference!.capacity))
-                        .toString();
-                    var availForUse = functions
-                        .shortenNumber(functions.calculateWaterAvailable(
-                      widget.docReference!.length!,
-                      widget.docReference!.breadth!,
-                      widget.docReference!.height!,
-                      widget.docReference!.radius!,
-                      waterLevel,
-                      widget.docReference!.isCuboid!,
-                    ));
+                          );
                     var totalVol =
                         functions.shortenNumber(widget.docReference!.capacity!);
                     var headSpace = calculateHeadSpace(

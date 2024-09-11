@@ -1484,159 +1484,171 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                       SizedBox(
                                                         height: 20,
                                                       ),
-                                                      isActivePravah
-                                                          ? FutureBuilder<
-                                                              Map<String,
-                                                                  dynamic>?>(
-                                                              future: fetchMeterDataForUser(
-                                                                  meterRecord
-                                                                      .meterKey!),
-                                                              builder: (context,
-                                                                  snapshot) {
-                                                                if (snapshot
-                                                                        .connectionState ==
-                                                                    ConnectionState
-                                                                        .waiting) {
-                                                                  return const CircularProgressIndicator();
-                                                                } else if (snapshot
-                                                                    .hasError) {
-                                                                  return const Text(
-                                                                      'Error fetching data');
-                                                                } else if (!snapshot
-                                                                        .hasData ||
-                                                                    snapshot.data ==
-                                                                        null) {
-                                                                  return const Text(
-                                                                      'No data available');
-                                                                }
+                                                      // isActivePravah
+                                                      //     ?
+                                                      // : Text("N/A"),
+                                                      FutureBuilder<
+                                                          Map<String,
+                                                              dynamic>?>(
+                                                        future:
+                                                            fetchMeterDataForUser(
+                                                                meterRecord
+                                                                    .meterKey!),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                                  .connectionState ==
+                                                              ConnectionState
+                                                                  .waiting) {
+                                                            return const CircularProgressIndicator();
+                                                          } else if (snapshot
+                                                              .hasError) {
+                                                            return const Text(
+                                                                'Error fetching data');
+                                                          } else if (!snapshot
+                                                                  .hasData ||
+                                                              snapshot.data ==
+                                                                  null) {
+                                                            return const Text(
+                                                                'No data available');
+                                                          }
 
-                                                                var meterData =
-                                                                    snapshot
-                                                                        .data!;
-                                                                var reading =
-                                                                    meterData[
-                                                                        'Reading'];
-                                                                var flowRate =
-                                                                    meterData[
-                                                                        'FlowRate'];
-                                                                bool
-                                                                    isMeterActive =
-                                                                    reading ==
-                                                                            "N/A"
-                                                                        ? false
-                                                                        : true;
-                                                                Timestamp ts =
-                                                                    meterData[
-                                                                        'Timestamp'];
-                                                                DateTime dt =
-                                                                    ts.toDate();
-                                                                return Row(
-                                                                  //Row2
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: <Widget>[
-                                                                    Column(
-                                                                      //row2 column1
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: <Widget>[
-                                                                        Row(
-                                                                          //row2 column1 subrow1
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            defaultDeviceSpecsHeading("Reading"),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              7,
-                                                                        ),
-                                                                        Row(
-                                                                          //row2 column1 subrow2
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Text(
-                                                                              reading,
-                                                                              textAlign: TextAlign.center,
-                                                                              style: defaultDeviceNADataStyle,
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              7,
-                                                                        ),
-                                                                        Row(
-                                                                          //row2 column1 subrow2
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Text(
-                                                                              "kL",
-                                                                              textAlign: TextAlign.center,
-                                                                              style: defaultDeviceNADataStyle,
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    Column(
-                                                                      //row2 column2
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: <Widget>[
-                                                                        Row(
-                                                                          //row2 column2 subrow1
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            defaultDeviceSpecsHeading("Flow Rate"),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              7,
-                                                                        ),
-                                                                        Row(
-                                                                          //row2 column2 subrow2
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Text(
-                                                                              flowRate,
-                                                                              textAlign: TextAlign.center,
-                                                                              style: defaultDeviceNADataStyle,
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(
-                                                                          height:
-                                                                              7,
-                                                                        ),
-                                                                        Row(
-                                                                          //row2 column2 subrow2
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Text(
-                                                                              "ml/s",
-                                                                              textAlign: TextAlign.center,
-                                                                              style: defaultDeviceNADataStyle,
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              },
-                                                            )
-                                                          : Text("N/A"),
+                                                          var meterData =
+                                                              snapshot.data!;
+                                                          var reading =
+                                                              meterData[
+                                                                  'Reading'];
+                                                          var flowRate =
+                                                              meterData[
+                                                                  'FlowRate'];
+                                                          bool isMeterActive =
+                                                              reading == "N/A"
+                                                                  ? false
+                                                                  : true;
+                                                          Timestamp ts =
+                                                              meterData[
+                                                                  'Timestamp'];
+                                                          DateTime dt =
+                                                              ts.toDate();
+                                                          return Row(
+                                                            //Row2
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: <Widget>[
+                                                              Column(
+                                                                //row2 column1
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    //row2 column1 subrow1
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      defaultDeviceSpecsHeading(
+                                                                          "Reading"),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 7,
+                                                                  ),
+                                                                  Row(
+                                                                    //row2 column1 subrow2
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                        reading,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style:
+                                                                            defaultDeviceNADataStyle,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 7,
+                                                                  ),
+                                                                  Row(
+                                                                    //row2 column1 subrow2
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                        "kL",
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style:
+                                                                            defaultDeviceNADataStyle,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                //row2 column2
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    //row2 column2 subrow1
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      defaultDeviceSpecsHeading(
+                                                                          "Flow Rate"),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 7,
+                                                                  ),
+                                                                  Row(
+                                                                    //row2 column2 subrow2
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                        flowRate,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style:
+                                                                            defaultDeviceNADataStyle,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 7,
+                                                                  ),
+                                                                  Row(
+                                                                    //row2 column2 subrow2
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
+                                                                        "ml/s",
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style:
+                                                                            defaultDeviceNADataStyle,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      ),
+
                                                       SizedBox(
                                                         height: 20,
                                                       ),

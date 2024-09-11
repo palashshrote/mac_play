@@ -214,7 +214,7 @@ Future<Map<String, dynamic>?> fetchTankData(String tankKey) async {
 Future<Map<String, dynamic>?> fetchTankDataForUser(String tankKey) async {
   if (tankKey != null) {
     // Fetch Borewell data by BorewellKey
-    return await fetchBorewellData(tankKey);
+    return await fetchTankData(tankKey);
   }
   return null;
 }
