@@ -16,12 +16,15 @@ import 'package:hydrow/individual_borewell_summary/individual_borewell_summary_w
 import 'package:hydrow/individual_borewell_summary/t2_individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_borewell_summary/two_individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/individual_meter_summary_widget.dart';
+import 'package:hydrow/individual_meter_summary/t2_individual_meter_summary_widget.dart';
 import 'package:hydrow/individual_meter_summary/two_individual_meter_summary_widget.dart';
+import 'package:hydrow/individual_summary/t2_individual_summary_widget.dart';
 import 'package:hydrow/individual_summary/two_individual_summary_widget.dart';
 import 'package:hydrow/meter_edit/meter_edit_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_t2_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_testing_widget.dart';
 import 'package:hydrow/meter_summary/meter_summary_widget.dart';
+import 'package:hydrow/tank_summary/tank_summary_t2_widget.dart';
 import 'package:hydrow/tank_summary/tank_summary_testing_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
@@ -123,6 +126,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'TankSummaryTesting',
               path: 'tankSummaryTesting',
               builder: (context, params) => TankSummaryTestingWidget(),
+            ),
+             FFRoute(
+              name: 'TankSummaryT2',
+              path: 'tankSummaryT2',
+              builder: (context, params) => TankSummaryT2Widget(),
             ),
             FFRoute(
               name: 'MeterSummaryTesting',
@@ -309,6 +317,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 docReference:
                     params.getParam('docReference', ParamType.Document),
                 isActive: params.getParam('isActive', ParamType.bool),
+              ),
+            ),
+            FFRoute(
+              name: 'T2IndividualSummary',
+              path: 't2IndividualSummary',
+              asyncParams: {
+                'docReference':
+                    getDoc(['users', 'tank'], TankRecord.serializer),
+              },
+              builder: (context, params) => T2IndividualSummaryWidget(
+                docReference:
+                    params.getParam('docReference', ParamType.Document),
+                isActive: params.getParam('isActive', ParamType.bool),
+                capacity: params.getParam('capacity', ParamType.double),
+                height: params.getParam('height', ParamType.String),
+                length: params.getParam('length', ParamType.String),
+                breadth: params.getParam('breadth', ParamType.String),
+                radius: params.getParam('radius', ParamType.String),
+                isCuboid: params.getParam('isCuboid', ParamType.bool),
               ),
             ),
             FFRoute(

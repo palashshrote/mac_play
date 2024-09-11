@@ -1,5 +1,6 @@
 import 'package:hydrow/constants/k_dashboard_container.dart';
 import 'package:hydrow/constants/k_individual_device_summary.dart';
+import 'package:hydrow/constants/k_show_all_device_style.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -16,7 +17,7 @@ import '../constants/k_generalized.dart';
 import 'individual_summary_model.dart';
 export 'individual_summary_model.dart';
 
-class TwoIndividualSummaryWidget extends StatefulWidget {
+class T2IndividualSummaryWidget extends StatefulWidget {
   final TankRecord? docReference;
   final bool? isActive;
   final double? capacity;
@@ -26,7 +27,7 @@ class TwoIndividualSummaryWidget extends StatefulWidget {
   final String? radius;
   final bool? isCuboid;
 
-  const TwoIndividualSummaryWidget(
+  const T2IndividualSummaryWidget(
       {super.key,
       this.docReference,
       this.isActive,
@@ -38,11 +39,11 @@ class TwoIndividualSummaryWidget extends StatefulWidget {
       this.isCuboid});
 
   @override
-  State<TwoIndividualSummaryWidget> createState() =>
-      _TwoIndividualSummaryWidgetState();
+  State<T2IndividualSummaryWidget> createState() =>
+      _T2IndividualSummaryWidgetState();
 }
 
-class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
+class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
     with TickerProviderStateMixin {
   late IndividualSummaryModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -78,7 +79,7 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: genAppBar("Tank Details", centerTitle: true),
+      appBar: genAppBar("Tank Testing", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
@@ -105,142 +106,98 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                   ],
                 ),
                 //Tank filled and available for use
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 12.5, 30, 12.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      dataCardDecoration(
-                        [
-                          cardHeading("Tank Filled"),
-                          sbox(9, null),
-                          dataCardImproved(
-                            isDeviceActive,
-                            functions.getStarrWaterLevel(
-                                widget.docReference!.tankKey!),
-                            null,
-                            "%",
-                            "tankFilled",
-                            [
+
+                FutureBuilder<Map<String, dynamic>?>(
+                  future: fetchTankDataForUser(widget.docReference!.tankKey!),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return const Text('Error fetching data');
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return const Text('No data available');
+                    }
+
+                    var tankData = snapshot.data!;
+                    var waterLevel = tankData['WaterLevel'] + " kL";
+                    var temp = tankData['Temperature'] + "°C";
+                    bool isTankActive = waterLevel == "N/A" ? false : true;
+                    var tankFilled = functions
+                        .convertToInt(functions.tankAPI(
+                            functions.calculateWaterAvailable(
                               widget.docReference!.length!,
                               widget.docReference!.breadth!,
                               widget.docReference!.height!,
                               widget.docReference!.radius!,
-                              widget.docReference!.isCuboid,
-                              widget.docReference!.capacity,
+                              waterLevel,
+                              widget.docReference!.isCuboid!,
+                            ),
+                            widget.docReference!.capacity))
+                        .toString();
+                    var availForUse = functions
+                        .shortenNumber(functions.calculateWaterAvailable(
+                      widget.docReference!.length!,
+                      widget.docReference!.breadth!,
+                      widget.docReference!.height!,
+                      widget.docReference!.radius!,
+                      waterLevel,
+                      widget.docReference!.isCuboid!,
+                    ));
+                    var totalVol =
+                        functions.shortenNumber(widget.docReference!.capacity!);
+                    var headSpace = calculateHeadSpace(
+                        waterLevel, widget.docReference!.height!);
+                    Timestamp ts = tankData['Timestamp'];
+                    DateTime dt = ts.toDate();
+                    return Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(30, 12.5, 30, 12.5),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              dataContainer("Tank Filled", tankFilled),
+                              dataContainer("Available for use", availForUse),
+                            ],
+                          ),
+                          sbox(10, null),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              dataContainer("Total Volume", totalVol),
+                              dataContainer("Temperature", temp),
+                            ],
+                          ),
+                          sbox(10, null),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              dataContainer("Head space", headSpace),
+                              dataContainer("Water level", waterLevel),
+                            ],
+                          ),
+                          sbox(10, null),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              dataContainer("Device status",
+                                  isTankActive ? "Active" : "Inactive"),
+                            ],
+                          ),
+                          sbox(10, null),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              dataContainer("Updated at", dt.toString(), 200),
                             ],
                           ),
                         ],
                       ),
-                      dataCardDecoration([
-                        cardHeading("Available for use"),
-                        sbox(9, null),
-                        dataCardImproved(
-                            isDeviceActive,
-                            functions.getStarrWaterLevel(
-                                widget.docReference!.tankKey!),
-                            null,
-                            "L",
-                            "availForUse",
-                            [
-                              widget.docReference!.length!,
-                              widget.docReference!.breadth!,
-                              widget.docReference!.height!,
-                              widget.docReference!.radius!,
-                              widget.docReference!.isCuboid,
-                              widget.docReference!.capacity,
-                            ]),
-                      ]),
-                    ],
-                  ),
-                ),
-                //Total Volume and Temperature
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 12.5, 30, 12.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      dataCardDecoration([
-                        cardHeading("Total Volume"),
-                        sbox(9, null),
-                        Text(
-                          functions.shortenNumber(
-                                  widget.docReference!.capacity!) +
-                              "L",
-                          style: liveDataStyle,
-                        ),
-                      ]),
-                      dataCardDecoration([
-                        cardHeading("Temperature"),
-                        sbox(9, null),
-                        dataCardImproved(
-                            isDeviceActive,
-                            functions.getTemp(widget.docReference!.tankKey!),
-                            // null,
-                            null,
-                            "°C",
-                            null,
-                            null),
-                      ]),
-                    ],
-                  ),
-                ),
-                //Head space and water level
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 12.5, 30, 12.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      dataCardDecoration([
-                        cardHeading("Head space"),
-                        sbox(9, null),
-                        dataCardImproved(
-                          isDeviceActive,
-                          functions.getStarrWaterLevel(
-                              widget.docReference!.tankKey!),
-                          null,
-                          "m",
-                          "headSpace",
-                          [widget.docReference!.height!],
-                        ),
-                      ]),
-                      dataCardDecoration([
-                        cardHeading("Water level"),
-                        sbox(9, null),
-                        dataCardImproved(
-                            isDeviceActive,
-                            functions.getStarrWaterLevel(
-                                widget.docReference!.tankKey!),
-                            null,
-                            "m",
-                            null,
-                            null),
-                      ]),
-                    ],
-                  ),
+                    );
+                  },
                 ),
 
-                //Device status
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(30, 12.5, 30, 12.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      dataCardDecoration([
-                        cardHeading("Device status"),
-                        sbox(9, null),
-                        dataCardImproved(
-                            isDeviceActive,
-                            functions
-                                .checkActivity(widget.docReference!.tankKey!),
-                            true,
-                            null,
-                            null,
-                            null),
-                      ]),
-                    ],
-                  ),
-                ),
                 SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -496,7 +453,6 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                 ),
               ],
             ),
-          
           ),
         ),
       ),

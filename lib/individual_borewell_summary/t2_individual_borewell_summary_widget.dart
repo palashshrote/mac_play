@@ -130,7 +130,7 @@ class _T2IndividualBorewellSummaryWidgetState
                     var waterLevel = borewellData['WaterLevelGround'];
                     Timestamp ts = borewellData['Timestamp'];
                     DateTime dt = ts.toDate();
-                    print("Timestamp val: ${dt}");
+                    // print("Timestamp val: ${dt}");
                     bool isBorewellActive = waterLevel == "N/A" ? false : true;
                     return Padding(
                       padding:

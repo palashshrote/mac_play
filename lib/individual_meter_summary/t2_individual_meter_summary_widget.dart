@@ -33,7 +33,8 @@ class _T2IndividualMeterSummaryWidgetState
   late IndividualMeterSummaryModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
-  String dropdownValueDeboreTotal = 'Daily';
+  String dropdownValuePravahTotal = 'Daily';
+  String dropdownValuePravahRate = 'Daily';
   bool isDeviceActive = false;
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
@@ -114,7 +115,7 @@ class _T2IndividualMeterSummaryWidgetState
                   ],
                 ),
                 FutureBuilder<Map<String, dynamic>?>(
-                  future: fetchMeterDataForUser(listViewMeterRecord.meterKey!),
+                  future: fetchMeterDataForUser(widget.docReference!.meterKey!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
@@ -128,6 +129,8 @@ class _T2IndividualMeterSummaryWidgetState
                     var reading = meterData['Reading'] + " kL";
                     var flowRate = meterData['FlowRate'] + " ml/s";
                     bool isMeterActive = reading == "N/A" ? false : true;
+                    Timestamp ts = meterData['Timestamp'];
+                    DateTime dt = ts.toDate();
                     return Padding(
                       padding:
                           EdgeInsetsDirectional.fromSTEB(30, 12.5, 30, 12.5),
@@ -136,9 +139,16 @@ class _T2IndividualMeterSummaryWidgetState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              dataContainer("Reading", waterLevel),
+                              dataContainer("Reading", reading),
+                              dataContainer("Flow Rate", flowRate),
+                            ],
+                          ),
+                          sbox(10, null),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
                               dataContainer("Device status",
-                                  isBorewellActive ? "Active" : "Inactive"),
+                                  isMeterActive ? "Active" : "Inactive"),
                             ],
                           ),
                           sbox(10, null),
@@ -251,17 +261,28 @@ class _T2IndividualMeterSummaryWidgetState
                 ),
                 */
                 summaryDropDownBtnGeneralized(
-                  "Borewell Summary",
-                  dropdownValueDeboreTotal,
+                    "Total Flow Summary", dropdownValuePravahTotal,
+                    (String? newValue) {
+                  setState(() {
+                    dropdownValuePravahTotal = newValue!;
+                  });
+                }),
+                generalizedGraph(
+                  functions.getChartPravahTotal(
+                      widget.docReference!.meterKey!, dropdownValuePravahTotal),
+                ),
+                summaryDropDownBtnGeneralized(
+                  "Flow Rate Summary",
+                  dropdownValuePravahRate,
                   (String? newValue) {
                     setState(() {
-                      dropdownValueDeboreTotal = newValue!;
+                      dropdownValuePravahRate = newValue!;
                     });
                   },
                 ),
                 generalizedGraph(
-                  functions.getChartDebore(widget.docReference!.borewellKey!,
-                      dropdownValueDeboreTotal),
+                  functions.getChartPravahRate(
+                      widget.docReference!.meterKey!, dropdownValuePravahRate),
                 ),
               ],
             ),

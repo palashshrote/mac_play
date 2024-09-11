@@ -1,6 +1,5 @@
 import 'package:hydrow/constants/k_dashboard_container.dart';
 import 'package:hydrow/constants/k_individual_device_summary.dart';
-
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_util.dart';
