@@ -126,8 +126,10 @@ class _T2IndividualMeterSummaryWidgetState
                     }
 
                     var meterData = snapshot.data!;
-                    var reading = meterData['Reading'] + " kL";
-                    var flowRate = meterData['FlowRate'] + " ml/s";
+                    var reading = meterData['Reading'];
+                    reading = reading != "N/A" ? reading + " L" : "N/A";
+                    var flowRate = meterData['FlowRate'];
+                    flowRate = flowRate != "N/A" ? flowRate + " kL/s" : "N/A";
                     bool isMeterActive = reading == "N/A" ? false : true;
                     Timestamp ts = meterData['Timestamp'];
                     DateTime dt = ts.toDate();

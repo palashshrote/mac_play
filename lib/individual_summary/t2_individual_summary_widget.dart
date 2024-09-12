@@ -120,42 +120,51 @@ class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
 
                     var tankData = snapshot.data!;
                     var waterLevel = tankData['WaterLevel'];
-                    var temp = tankData['Temperature'] + "°C";
+                    String waterLevelStr =
+                        waterLevel == "N/A" ? "N/A" : waterLevel + " m";
+                    var temp = tankData['Temperature'];
+                    temp = temp == "N/A" ? "N/A" : temp + " °C";
+                    double capacityC = widget.docReference!.capacity!;
                     if (waterLevel != "N/A")
                       waterLevel = double.parse(waterLevel);
                     bool isTankActive = waterLevel == "N/A" ? false : true;
                     var tankFilled = waterLevel == "N/A"
                         ? "N/A"
                         : functions
-                            .convertToInt(
-                              functions.tankAPI(
-                                  functions.calculateWaterAvailable(
-                                    widget.docReference!.length!,
-                                    widget.docReference!.breadth!,
-                                    widget.docReference!.height!,
-                                    widget.docReference!.radius!,
-                                    waterLevel,
-                                    widget.docReference!.isCuboid!,
-                                  ),
-                                  widget.docReference!.capacity),
-                            )
-                            .toString();
+                                .convertToInt(
+                                  functions.tankAPI(
+                                      functions.calculateWaterAvailable(
+                                        widget.docReference!.length!,
+                                        widget.docReference!.breadth!,
+                                        widget.docReference!.height!,
+                                        widget.docReference!.radius!,
+                                        waterLevel,
+                                        widget.docReference!.isCuboid!,
+                                      ),
+                                      capacityC),
+                                )
+                                .toString() +
+                            " %";
                     var availForUse = waterLevel == "N/A"
                         ? "N/A"
-                        : functions.shortenNumber(
-                            functions.calculateWaterAvailable(
-                              widget.docReference!.length!,
-                              widget.docReference!.breadth!,
-                              widget.docReference!.height!,
-                              widget.docReference!.radius!,
-                              waterLevel,
-                              widget.docReference!.isCuboid!,
-                            ),
-                          );
-                    var totalVol =
-                        functions.shortenNumber(widget.docReference!.capacity!);
-                    var headSpace = calculateHeadSpace(
-                        waterLevel, widget.docReference!.height!);
+                        : functions
+                                .calculateWaterAvailable(
+                                  widget.docReference!.length!,
+                                  widget.docReference!.breadth!,
+                                  widget.docReference!.height!,
+                                  widget.docReference!.radius!,
+                                  waterLevel,
+                                  widget.docReference!.isCuboid!,
+                                )
+                                .toString() +
+                            " L";
+                    var totalVol = capacityC.toString() + " L";
+                    var headSpace = waterLevel == "N/A"
+                        ? "N/A"
+                        : calculateHeadSpace(waterLevel.toString(),
+                                widget.docReference!.height!) +
+                            " m";
+
                     Timestamp ts = tankData['Timestamp'];
                     DateTime dt = ts.toDate();
                     return Padding(
@@ -183,7 +192,7 @@ class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               dataContainer("Head space", headSpace),
-                              dataContainer("Water level", waterLevel),
+                              dataContainer("Water level", waterLevelStr),
                             ],
                           ),
                           sbox(10, null),
@@ -212,11 +221,6 @@ class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     refreshButton(() async {
-                      isDeviceActive = await functions
-                          .checkActivity(widget.docReference!.tankKey!);
-
-                      isDeviceActive = true;
-                      // print("Check status : ${isDeviceActive}");
                       setState(() {});
                     })
                   ],

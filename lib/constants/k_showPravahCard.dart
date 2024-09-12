@@ -11,6 +11,7 @@ import 'package:hydrow/meter_summary/meter_summary_testing_model.dart';
 import 'package:hydrow/tank_summary/tank_summary_t2_model.dart';
 import 'package:hydrow/tank_summary/tank_summary_testing_model.dart';
 import '../borewell_summary/borewell_summary_testing_model.dart';
+import 'package:hydrow/flutter_flow/custom_functions.dart' as functions;
 
 /*Widget showStarrCard(List<TankRecord> listViewTankRecordList,
     TankSummaryTestingModel _model, AnimationInfo animationsMap) {
@@ -449,8 +450,22 @@ Widget showPravahCardOptimised(List<MeterRecord> listViewMeterRecordList,
           }
 
           var meterData = snapshot.data!;
-          var reading = meterData['Reading'] + " kL";
-          var flowRate = meterData['FlowRate'] + " ml/s";
+          var reading = meterData['Reading'];
+
+          String unit = "";
+
+          if (reading != "N/A") {
+            reading = functions.shortenNumber(double.parse(reading));
+
+            List<String> parts = reading.split(' ');
+            // "2.13"
+            reading = parts[0];
+            unit = parts[1] + "L"; // "kL"
+          }
+
+          var flowRate = meterData['FlowRate'];
+          var flowRateUnit = flowRate != "N/A" ? " kL/hr" : "";
+
           bool isMeterActive = reading == "N/A" ? false : true;
           return Padding(
             padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
@@ -476,7 +491,7 @@ Widget showPravahCardOptimised(List<MeterRecord> listViewMeterRecordList,
                               Row(
                                 children: [
                                   Text(
-                                    reading,
+                                    reading + " " + unit,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       color: Color(0xFFFFFFFF),
                                       fontSize: 28,
@@ -520,7 +535,7 @@ Widget showPravahCardOptimised(List<MeterRecord> listViewMeterRecordList,
                               Row(
                                 children: [
                                   Text(
-                                    flowRate,
+                                    flowRate + flowRateUnit,
                                     style: GF.GoogleFonts.leagueSpartan(
                                       color: Color(0xFFFFFFFF),
                                       fontSize: 28,
@@ -587,4 +602,3 @@ Widget showPravahCardOptimised(List<MeterRecord> listViewMeterRecordList,
     },
   );
 }
-

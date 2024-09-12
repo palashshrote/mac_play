@@ -25,6 +25,16 @@ import 'package:http/http.dart' as http;
 //   ),
 // );
 
+String shortenNumberUnit(double value) {
+  List<String> units = [' ', 'k', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
+  int unitIndex = 0;
+  while (value >= 1000 && unitIndex < units.length - 1) {
+    value /= 1000;
+    unitIndex++;
+  }
+  return units[unitIndex];
+}
+
 String shortenNumber(double value) {
   List<String> units = [' ', 'k', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
   int unitIndex = 0;

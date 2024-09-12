@@ -1403,7 +1403,8 @@ Widget showAllDevicesButton(String str, void Function()? onPressFunction) {
   );
 }
 
-Widget refreshButton(void Function()? onPressFunction) {
+Widget refreshButton(void Function()? onPressFunction,
+    [double? padding_val = 20]) {
   return ElevatedButton.icon(
     onPressed: onPressFunction,
 
@@ -1425,7 +1426,7 @@ Widget refreshButton(void Function()? onPressFunction) {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(7.5),
       ),
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(padding_val!),
       backgroundColor: Color(0xFFC6DDDB),
     ),
   );

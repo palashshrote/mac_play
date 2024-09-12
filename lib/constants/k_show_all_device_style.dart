@@ -195,8 +195,6 @@ Widget showDeboreCard(List<BorewellRecord> listViewBorewellRecordList,
 
 Widget showDeboreCardOptimised(List<BorewellRecord> listViewBorewellRecordList,
     BorewellSummaryT2Model _model, AnimationInfo animationsMap) {
-  
-
   return ListView.builder(
     padding: EdgeInsets.zero,
     shrinkWrap: true,
@@ -218,6 +216,7 @@ Widget showDeboreCardOptimised(List<BorewellRecord> listViewBorewellRecordList,
 
           var borewellData = snapshot.data!;
           var waterLevel = borewellData['WaterLevelGround'];
+          waterLevel = waterLevel != "N/A" ? waterLevel + " m" : "N/A";
           var ts = borewellData['Timestamp'];
           bool isBorewellActive = waterLevel == "N/A" ? false : true;
           return Padding(

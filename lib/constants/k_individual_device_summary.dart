@@ -8,6 +8,7 @@ var liveDataStyle = GF.GoogleFonts.leagueSpartan(
   color: Color(0xFF91D9E9),
   fontWeight: FontWeight.w600,
 );
+
 var activeDeviceStatusStyle = GF.GoogleFonts.leagueSpartan(
   fontSize: 24,
   color: Color(0xFF91E995),
@@ -228,7 +229,11 @@ Widget dataContainer(String heading, String data, [double? c_width]) {
         sbox(9, null),
         Text(
           data,
-          style: liveDataStyle,
+          style: data == "Active"
+              ? activeDeviceStatusStyle
+              : data == "Inactive"
+                  ? inactiveDeviceStatusStyle
+                  : liveDataStyle,
         ),
       ],
     ),

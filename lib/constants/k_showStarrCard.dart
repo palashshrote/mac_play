@@ -322,11 +322,28 @@ Widget showStarrCardOptimised(List<TankRecord> listViewTankRecordList,
 
           var tankData = snapshot.data!;
           var waterLevel = tankData['WaterLevel'];
-          if(waterLevel != "N/A") waterLevel = double.parse(waterLevel);
+          if (waterLevel != "N/A") waterLevel = double.parse(waterLevel);
           var temp = tankData['Temperature'] + " C";
-          var tankFilled = waterLevel == "N/A" ? "N/A" : functions
-              .convertToInt(
-                functions.tankAPI(
+          var tankFilled = waterLevel == "N/A"
+              ? "N/A"
+              : functions
+                      .convertToInt(
+                        functions.tankAPI(
+                            functions.calculateWaterAvailable(
+                              listViewTankRecord.length!,
+                              listViewTankRecord.breadth!,
+                              listViewTankRecord.height!,
+                              listViewTankRecord.radius!,
+                              waterLevel,
+                              listViewTankRecord.isCuboid!,
+                            ),
+                            listViewTankRecord.capacity),
+                      )
+                      .toString() +
+                  " %";
+          var availForUse = waterLevel == "N/A"
+              ? "N/A"
+              : functions.shortenNumber(
                     functions.calculateWaterAvailable(
                       listViewTankRecord.length!,
                       listViewTankRecord.breadth!,
@@ -335,19 +352,8 @@ Widget showStarrCardOptimised(List<TankRecord> listViewTankRecordList,
                       waterLevel,
                       listViewTankRecord.isCuboid!,
                     ),
-                    listViewTankRecord.capacity),
-              )
-              .toString();
-          var availForUse = waterLevel == "N/A" ? "N/A" : functions.shortenNumber(
-            functions.calculateWaterAvailable(
-              listViewTankRecord.length!,
-              listViewTankRecord.breadth!,
-              listViewTankRecord.height!,
-              listViewTankRecord.radius!,
-              waterLevel,
-              listViewTankRecord.isCuboid!,
-            ),
-          );
+                  ) +
+                  "L";
           bool isTankActive = waterLevel == "N/A" ? false : true;
           return Padding(
             padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
