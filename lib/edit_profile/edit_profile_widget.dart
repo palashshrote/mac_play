@@ -310,6 +310,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                               context.goNamedAuth(
                                                   'LogInSignUp', mounted);
                                               Navigator.pop(alertDialogContext);
+                                              Navigator.pop(context);
                                             },
                                             child: Text('Yes'),
                                           ),
