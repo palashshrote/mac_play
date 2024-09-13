@@ -1,4 +1,6 @@
+import 'package:hydrow/constants/k_edit_profile.dart';
 import 'package:hydrow/constants/k_generalized.dart';
+import 'package:hydrow/constants/k_individual_device_summary.dart';
 
 import '/auth/auth_util.dart';
 import '/backend/backend.dart';
@@ -231,64 +233,98 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 20.0, 0.0, 30.0),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (!await InternetConnectionCheckerPlus()
-                                  .hasConnection) {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text('Please connect to the internet'),
-                                  ),
-                                );
-                              } else {
-                                final usersUpdateData = createUsersRecordData(
-                                  displayName: _model.textController1.text,
-                                  phoneNumber: _model.textController2.text,
-                                );
-                                await currentUserReference!
-                                    .update(usersUpdateData);
-                                await showDialog(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Saved'),
-                                      content:
-                                          Text('Changes saved successfully.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                                // context.pushNamed('Dashboard');
-                                //THREE TIMES to reach back to the hompage
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                // Navigator.pop(context);
-                              }
-                            },
-                            child: Text(
-                              'Save Changes',
-                              style: GF.GoogleFonts.leagueSpartan(
-                                fontSize: 18,
-                                color: Color(0xFF0C0C0C),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.5),
-                                ),
-                                backgroundColor: Color(0xFFC6DDDB),
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 17, 20, 17)),
+                          child: Column(
+                            children: [
+                              udBtn(() async {
+                                if (!await InternetConnectionCheckerPlus()
+                                    .hasConnection) {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Please connect to the internet'),
+                                    ),
+                                  );
+                                } else {
+                                  final usersUpdateData = createUsersRecordData(
+                                    displayName: _model.textController1.text,
+                                    phoneNumber: _model.textController2.text,
+                                  );
+                                  await currentUserReference!
+                                      .update(usersUpdateData);
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text('Saved'),
+                                        content:
+                                            Text('Changes saved successfully.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('Ok'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  // context.pushNamed('Dashboard');
+                                  //THREE TIMES to reach back to the hompage
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  // Navigator.pop(context);
+                                }
+                              }, "Save Changes"),
+                              sbox(20, null),
+                              udBtn(() async {
+                                if (!await InternetConnectionCheckerPlus()
+                                    .hasConnection) {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Please connect to the internet'),
+                                    ),
+                                  );
+                                } else {
+                                  // await deleteUser(context);
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text('Alert'),
+                                        content: Text(
+                                            'Are you sure want to delete your account ?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () async {
+                                              await currentUserReference!
+                                                  .delete();
+
+                                              GoRouter.of(context)
+                                                  .prepareAuthEvent();
+                                              await deleteUser(context);
+                                              context.goNamedAuth(
+                                                  'LogInSignUp', mounted);
+                                              Navigator.pop(alertDialogContext);
+                                            },
+                                            child: Text('Yes'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('No'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              }, "Delete account"),
+                            ],
                           ),
                         ),
 
