@@ -227,6 +227,10 @@ Future<dynamic> getTemp(String tankKey) async {
       "&results=1";
   String res = await fetchData(apiUrl);
   // print("All well ${generateChannelID(borewellKey)}");
+
+
+
+
   var jsonData = json.decode(res, reviver: (key, value) {
     if (value == null || value == -1) {
       // print("REturning NA");
