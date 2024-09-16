@@ -121,8 +121,8 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         ),
                       ),
                       labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
+                        color: Colors.white,
+                      ),
                     ),
                     style: TextStyle(
                       color: Colors.white,
@@ -169,8 +169,8 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         ),
                       ),
                       labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
+                        color: Colors.white,
+                      ),
                     ),
                     style: TextStyle(
                       color: Colors.white,
@@ -219,12 +219,14 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         ),
                       ),
                       labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
+                        color: Colors.white,
+                      ),
                     ),
                     style: TextStyle(
                       color: Colors.white,
                     ),
+                    keyboardType: const TextInputType.numberWithOptions(
+                        signed: true, decimal: true),
                   ),
                 ],
               ),
@@ -268,8 +270,8 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         ),
                       ),
                       labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
+                        color: Colors.white,
+                      ),
                     ),
                     style: TextStyle(
                       color: Colors.white,
@@ -317,8 +319,8 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                         ),
                       ),
                       labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
+                        color: Colors.white,
+                      ),
                     ),
                     style: TextStyle(
                       color: Colors.white,
