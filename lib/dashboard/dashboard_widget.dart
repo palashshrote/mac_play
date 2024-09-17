@@ -561,115 +561,147 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                     ),
                                     child: Stack(
                                       children: [
-                                        Positioned(
-                                          child: WaveWidget(
-                                            config: CustomConfig(colors: [
-                                              Color(0xFF93DCEC),
-                                              Color(0xFF91D9E9),
-                                              Color(0xFF52B9D5)
-                                            ], durations: [
-                                              4000,
-                                              6000,
-                                              8000
-                                            ], heightPercentages: [
-                                              isActive
-                                                  ? 0.87 -
-                                                      functions.tankAPI(
-                                                          functions.calculateWaterAvailable(
-                                                              containerTankRecord!
-                                                                  .length!,
-                                                              containerTankRecord!
-                                                                  .breadth!,
-                                                              containerTankRecord!
-                                                                  .height!,
-                                                              containerTankRecord!
-                                                                  .radius!,
-                                                              _model.waterLevel,
-                                                              containerTankRecord!
-                                                                  .isCuboid!),
-                                                          functions.calculateVolume(
-                                                              containerTankRecord!
-                                                                  .isCuboid!,
-                                                              containerTankRecord!
-                                                                  .length!,
-                                                              containerTankRecord!
-                                                                  .breadth!,
-                                                              containerTankRecord!
-                                                                  .height!,
-                                                              containerTankRecord!
-                                                                  .radius!))
-                                                  : 0.87,
-                                              isActive
-                                                  ? 0.87 -
-                                                      functions.tankAPI(
-                                                          functions.calculateWaterAvailable(
-                                                              containerTankRecord!
-                                                                  .length!,
-                                                              containerTankRecord!
-                                                                  .breadth!,
-                                                              containerTankRecord!
-                                                                  .height!,
-                                                              containerTankRecord!
-                                                                  .radius!,
-                                                              _model.waterLevel,
-                                                              containerTankRecord!
-                                                                  .isCuboid!),
-                                                          functions.calculateVolume(
-                                                              containerTankRecord!
-                                                                  .isCuboid!,
-                                                              containerTankRecord!
-                                                                  .length!,
-                                                              containerTankRecord!
-                                                                  .breadth!,
-                                                              containerTankRecord!
-                                                                  .height!,
-                                                              containerTankRecord!
-                                                                  .radius!))
-                                                  : 0.87,
-                                              isActive
-                                                  ? 0.87 -
-                                                      functions.tankAPI(
-                                                          functions.calculateWaterAvailable(
-                                                              containerTankRecord!
-                                                                  .length!,
-                                                              containerTankRecord!
-                                                                  .breadth!,
-                                                              containerTankRecord!
-                                                                  .height!,
-                                                              containerTankRecord!
-                                                                  .radius!,
-                                                              _model.waterLevel,
-                                                              containerTankRecord!
-                                                                  .isCuboid!),
-                                                          functions.calculateVolume(
-                                                              containerTankRecord!
-                                                                  .isCuboid!,
-                                                              containerTankRecord!
-                                                                  .length!,
-                                                              containerTankRecord!
-                                                                  .breadth!,
-                                                              containerTankRecord!
-                                                                  .height!,
-                                                              containerTankRecord!
-                                                                  .radius!))
-                                                  : 0.87
-                                            ]
-                                                // heightPercentages: [
-                                                //   0.50,
-                                                //   0.52,
-                                                //   0.54
-                                                // ], //replace with actual tank height
-                                                // blur: MaskFilter.blur(BlurStyle.solid, 1),
+                                        FutureBuilder<Map<String, dynamic>?>(
+                                          future: fetchTankDataForUser(
+                                              containerTankRecord!.tankKey!),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const CircularProgressIndicator();
+                                            } else if (snapshot.hasError) {
+                                              return const Text(
+                                                  'Error fetching data');
+                                            } else if (!snapshot.hasData ||
+                                                snapshot.data == null) {
+                                              return const Text(
+                                                  'No data available');
+                                            }
+
+                                            var tankData = snapshot.data!;
+                                            var waterLevel =
+                                                tankData['WaterLevel'];
+                                            var temp = tankData['Temperature'];
+                                            temp = temp != "N/A"
+                                                ? temp + "°C"
+                                                : "N/A";
+                                            double capacityC =
+                                                containerTankRecord.capacity!;
+                                            if (waterLevel != "N/A")
+                                              waterLevel =
+                                                  double.parse(waterLevel);
+                                            bool isTankActive =
+                                                waterLevel == "N/A"
+                                                    ? false
+                                                    : true;
+                                            double tankFilledDoubleVal =
+                                                isTankActive
+                                                    ? functions.tankAPI(
+                                                        functions
+                                                            .calculateWaterAvailable(
+                                                          containerTankRecord
+                                                              .length!,
+                                                          containerTankRecord
+                                                              .breadth!,
+                                                          containerTankRecord
+                                                              .height!,
+                                                          containerTankRecord
+                                                              .radius!,
+                                                          waterLevel,
+                                                          containerTankRecord
+                                                              .isCuboid!,
+                                                        )!,
+                                                        capacityC!)
+                                                    : 0.0;
+
+                                            var tankFilled = waterLevel == "N/A"
+                                                ? "N/A"
+                                                : functions
+                                                        .convertToInt(
+                                                          functions.tankAPI(
+                                                              functions
+                                                                  .calculateWaterAvailable(
+                                                                containerTankRecord
+                                                                    .length!,
+                                                                containerTankRecord
+                                                                    .breadth!,
+                                                                containerTankRecord
+                                                                    .height!,
+                                                                containerTankRecord
+                                                                    .radius!,
+                                                                waterLevel,
+                                                                containerTankRecord
+                                                                    .isCuboid!,
+                                                              ),
+                                                              capacityC),
+                                                        )
+                                                        .toString() +
+                                                    "%";
+                                            var availForUse =
+                                                waterLevel == "N/A"
+                                                    ? "N/A"
+                                                    : functions.shortenNumber(
+                                                          functions
+                                                              .calculateWaterAvailable(
+                                                            containerTankRecord
+                                                                .length!,
+                                                            containerTankRecord
+                                                                .breadth!,
+                                                            containerTankRecord
+                                                                .height!,
+                                                            containerTankRecord
+                                                                .radius!,
+                                                            waterLevel,
+                                                            containerTankRecord
+                                                                .isCuboid!,
+                                                          ),
+                                                        ) +
+                                                        "L";
+                                            var totalVol = functions
+                                                    .shortenNumber(capacityC) +
+                                                "L";
+
+                                            return Positioned(
+                                              child: WaveWidget(
+                                                config: CustomConfig(colors: [
+                                                  Color(0xFF93DCEC),
+                                                  Color(0xFF91D9E9),
+                                                  Color(0xFF52B9D5)
+                                                ], durations: [
+                                                  4000,
+                                                  6000,
+                                                  8000
+                                                ], heightPercentages: [
+                                                  isTankActive
+                                                      ? 0.87 -
+                                                          tankFilledDoubleVal
+                                                      : 0.87,
+                                                  isTankActive
+                                                      ? 0.87 -
+                                                          tankFilledDoubleVal
+                                                      : 0.87,
+                                                  isTankActive
+                                                      ? 0.87 -
+                                                          tankFilledDoubleVal
+                                                      : 0.87
+                                                ]
+                                                    // heightPercentages: [
+                                                    //   0.50,
+                                                    //   0.52,
+                                                    //   0.54
+                                                    // ], //replace with actual tank height
+                                                    // blur: MaskFilter.blur(BlurStyle.solid, 1),
+                                                    ),
+                                                waveAmplitude:
+                                                    3.00, //depth of curves
+                                                waveFrequency:
+                                                    3, //number of curves in waves
+                                                size: Size(
+                                                  double.infinity,
+                                                  double.infinity,
                                                 ),
-                                            waveAmplitude:
-                                                3.00, //depth of curves
-                                            waveFrequency:
-                                                3, //number of curves in waves
-                                            size: Size(
-                                              double.infinity,
-                                              double.infinity,
-                                            ),
-                                          ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                         Positioned(
                                             child: Center(
@@ -1804,57 +1836,56 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                       SizedBox(
                                                         height: 7,
                                                       ),
-                                                      isActiveDebore
-                                                          ? FutureBuilder<
-                                                              Map<String,
-                                                                  dynamic>?>(
-                                                              future: fetchBorewellDataForUser(
-                                                                  containerBorewellRecord
-                                                                      .borewellKey!),
-                                                              builder: (context,
-                                                                  snapshot) {
-                                                                if (snapshot
-                                                                        .connectionState ==
-                                                                    ConnectionState
-                                                                        .waiting) {
-                                                                  return const CircularProgressIndicator();
-                                                                } else if (snapshot
-                                                                    .hasError) {
-                                                                  return const Text(
-                                                                      'Error fetching data');
-                                                                } else if (!snapshot
-                                                                        .hasData ||
-                                                                    snapshot.data ==
-                                                                        null) {
-                                                                  return const Text(
-                                                                      'No data available');
-                                                                }
+                                                      // isActiveDebore
+                                                      //     ? Text(
+                                                      //         "N/A",
+                                                      //         style:
+                                                      //             defaultDeviceNADataStyle,
+                                                      //       ):
+                                                      FutureBuilder<
+                                                          Map<String,
+                                                              dynamic>?>(
+                                                        future: fetchBorewellDataForUser(
+                                                            containerBorewellRecord
+                                                                .borewellKey!),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          if (snapshot
+                                                                  .connectionState ==
+                                                              ConnectionState
+                                                                  .waiting) {
+                                                            return const CircularProgressIndicator();
+                                                          } else if (snapshot
+                                                              .hasError) {
+                                                            return const Text(
+                                                                'Error fetching data');
+                                                          } else if (!snapshot
+                                                                  .hasData ||
+                                                              snapshot.data ==
+                                                                  null) {
+                                                            return const Text(
+                                                                'No data available');
+                                                          }
 
-                                                                var borewellData =
-                                                                    snapshot
-                                                                        .data!;
-                                                                var waterLevel =
-                                                                    borewellData[
-                                                                        'WaterLevelGround'];
-                                                                waterLevel =
-                                                                    waterLevel !=
-                                                                            "N/A"
-                                                                        ? waterLevel +
-                                                                            " m"
-                                                                        : "N/A";
+                                                          var borewellData =
+                                                              snapshot.data!;
+                                                          var waterLevel =
+                                                              borewellData[
+                                                                  'WaterLevelGround'];
+                                                          waterLevel =
+                                                              waterLevel !=
+                                                                      "N/A"
+                                                                  ? waterLevel +
+                                                                      " m"
+                                                                  : "N/A";
 
-                                                                return Text(
-                                                                  waterLevel,
-                                                                  style:
-                                                                      defaultDeviceDataStyle,
-                                                                );
-                                                              },
-                                                            )
-                                                          : Text(
-                                                              "N/A",
-                                                              style:
-                                                                  defaultDeviceNADataStyle,
-                                                            ),
+                                                          return Text(
+                                                            waterLevel,
+                                                            style:
+                                                                defaultDeviceDataStyle,
+                                                          );
+                                                        },
+                                                      ),
                                                       SizedBox(
                                                         height: 20,
                                                       ),

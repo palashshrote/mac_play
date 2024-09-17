@@ -278,7 +278,53 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                 }
                               }, "Save Changes"),
                               sbox(20, null),
-                              udBtn(() {}, "Delete Account"),
+                              udBtn(() async {
+                                if (!await InternetConnectionCheckerPlus()
+                                    .hasConnection) {
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Please connect to the internet'),
+                                    ),
+                                  );
+                                } else {
+                                  // await deleteUser(context);
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text('Alert'),
+                                        content: Text(
+                                            'Are you sure want to delete your account ?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () async {
+                                              await currentUserReference!
+                                                  .delete();
+
+                                              GoRouter.of(context)
+                                                  .prepareAuthEvent();
+                                              await deleteUser(context);
+                                              context.goNamedAuth(
+                                                  'LogInSignUp', mounted);
+                                              Navigator.pop(alertDialogContext);
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Yes'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('No'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              }, "Delete Account"),
                             ],
                           ),
 

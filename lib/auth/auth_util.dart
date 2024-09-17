@@ -105,8 +105,10 @@ Future deleteUser(BuildContext context) async {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                'Too long since most recent sign in. Sign in again before deleting your account.')),
+          content: Text(
+            'Too long since most recent sign in. Sign in again before deleting your account.',
+          ),
+        ),
       );
     }
   }

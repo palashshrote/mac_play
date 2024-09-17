@@ -107,6 +107,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
         ),
       }.withoutNulls,
     );
+    Navigator.pop(context);
   }
 
   @override
