@@ -87,7 +87,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
     GoRouter.of(context).prepareAuthEvent();
     final user = await signInWithEmail(
       context,
-      _model.logInEmailController.text,
+      _model.logInEmailController.text.trim(),
       _model.logInPasswordController.text,
     );
 

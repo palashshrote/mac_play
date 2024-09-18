@@ -351,7 +351,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                   }
                   final user = await createAccountWithEmail(
                     context,
-                    _model.emailController.text,
+                    _model.emailController.text.trim(),
                     _model.signUpPasswordController.text,
                   );
                   if (user == null) {
@@ -359,8 +359,8 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                   }
 
                   final usersCreateData = createUsersRecordData(
-                    email: _model.emailController.text,
-                    displayName: _model.userNameController.text,
+                    email: _model.emailController.text.trim(),
+                    displayName: _model.userNameController.text.trim(),
                     phoneNumber: _model.phoneNumberController.text,
                   );
                   await UsersRecord.collection

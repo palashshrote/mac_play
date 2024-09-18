@@ -1,6 +1,7 @@
 import 'package:hydrow/constants/k_edit_profile.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 import 'package:hydrow/constants/k_individual_device_summary.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '/auth/auth_util.dart';
 import '/backend/backend.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hydrow/auth/firebase_user_provider.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:provider/provider.dart';
@@ -248,7 +250,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                   );
                                 } else {
                                   final usersUpdateData = createUsersRecordData(
-                                    displayName: _model.textController1.text,
+                                    displayName: _model.textController1.text.trim(),
                                     phoneNumber: _model.textController2.text,
                                   );
                                   await currentUserReference!
