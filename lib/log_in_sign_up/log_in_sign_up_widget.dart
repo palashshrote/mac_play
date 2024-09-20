@@ -13,6 +13,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:google_fonts/google_fonts.dart' as GF;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'log_in_sign_up_model.dart';
 export 'log_in_sign_up_model.dart';
@@ -90,11 +91,17 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
       _model.logInEmailController.text.trim(),
       _model.logInPasswordController.text,
     );
+    // final usersUpdateData = createUsersRecordData(
+    //   lastLoginTime: getCurrentTimestamp,
+    // );
+    // await currentUserReference!.update(usersUpdateData);
 
     if (user == null) {
       return;
     }
+
     // print(user.email);
+    //Add timestamp while logining in
 
     // login to dashboard code below.
     context.goNamedAuth(
@@ -110,6 +117,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
     Navigator.pop(context);
   }
 
+  final GoogleSignInProvider _googleSignInProvider = GoogleSignInProvider();
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
@@ -299,6 +307,17 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                     }
                   });
                 },
+                // onPressed: () async {
+                //   User? user = await _googleSignInProvider.signInWithGoogle();
+                //   print(user);
+                //   if (user != null) {
+                //     ScaffoldMessenger.of(context).showSnackBar(
+                //       SnackBar(
+                //         content: Text('Welcome ${user.displayName}!'),
+                //       ),
+                //     );
+                //   }
+                // },
                 // onPressed: () => AuthService().signInWithGoogle(),
                 // Implement your Google login functionality herer
                 icon: Image.asset(

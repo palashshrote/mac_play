@@ -51,7 +51,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
       ],
     ),
   };
-
+  final TextEditingController _deleteAccController = TextEditingController();
+  bool correctPassword = false;
   @override
   void initState() {
     super.initState();
@@ -70,9 +71,76 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
   @override
   void dispose() {
     _model.dispose();
+    _deleteAccController.dispose();
 
     _unfocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _relogin(BuildContext context) async {
+    try {
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: currentUserEmail,
+        password: _deleteAccController.text,
+      );
+      if (userCredential.user != null) {
+        //signin success
+        correctPassword = true;
+        // final usersUpdateData = createUsersRecordData(
+        //   lastLoginTime: getCurrentTimestamp,
+        // );
+        // await currentUserReference!.update(usersUpdateData);
+
+        print("RESign-in success");
+        // Navigator.pop(context);
+      } else {
+        // User is null, sign-in failed
+        print('Sign-in failed');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.message ==
+          "There is no user record corresponding to this identifier. The user may have been deleted.") {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User does not exists'),
+          ),
+        );
+      } else if (e.message ==
+          "A network error (such as timeout, interrupted connection or unreachable host) has occurred.") {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                'Please check you internet connectivity to proceed further.'),
+          ),
+        );
+      } else if (e.message ==
+          "The password is invalid or the user does not have a password.") {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Incorrect password'),
+          ),
+        );
+      } else if (e.message == "Given String is empty or null") {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Enter correct details'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('Error in function signInOrCreateAccount: ${e.message!}'),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -250,7 +318,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                   );
                                 } else {
                                   final usersUpdateData = createUsersRecordData(
-                                    displayName: _model.textController1.text.trim(),
+                                    displayName:
+                                        _model.textController1.text.trim(),
                                     phoneNumber: _model.textController2.text,
                                   );
                                   await currentUserReference!
@@ -303,16 +372,88 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                         actions: [
                                           TextButton(
                                             onPressed: () async {
-                                              await currentUserReference!
-                                                  .delete();
+                                              int curr_seconds = DateTime.now()
+                                                      .millisecondsSinceEpoch ~/
+                                                  1000;
+                                              // Object lastLoginTime =
+                                              //     currentUserLastLoginTime;
 
-                                              GoRouter.of(context)
-                                                  .prepareAuthEvent();
-                                              await deleteUser(context);
-                                              context.goNamedAuth(
-                                                  'LogInSignUp', mounted);
+                                              // int elpasedSeconds = lastLoginTime
+                                              //         .millisecondsSinceEpoch ~/
+                                              //     1000;
+                                              // print('Seconds: $elpasedSeconds');
+                                              // int time_diff =
+                                              //     curr_seconds - elpasedSeconds;
+                                              // print(
+                                              //     "Difference in seconds: ${time_diff}");
+                                              print(
+                                                  "Able to delete user after modification");
                                               Navigator.pop(alertDialogContext);
-                                              Navigator.pop(context);
+                                              await showDialog(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return AlertDialog(
+                                                    title: Text('Warning'),
+                                                    content: Text(
+                                                        'All your saved data will be deleted! Enter the password and tap on the button to continue'),
+                                                    actions: [
+                                                      TextField(
+                                                          controller:
+                                                              _deleteAccController,
+                                                          obscureText: true,
+                                                          decoration:
+                                                              InputDecoration(
+                                                            labelText:
+                                                                'Password',
+                                                            labelStyle:
+                                                                TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                          )),
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          await _relogin(
+                                                              context);
+                                                          if (correctPassword ==
+                                                              true) {
+                                                            Navigator.pop(
+                                                                alertDialogContext);
+                                                            print(
+                                                                " Delete account code below");
+                                                            await currentUserReference!
+                                                                .delete(); //deleting doc
+
+                                                            GoRouter.of(context)
+                                                                .prepareAuthEvent();
+                                                            await deleteUser(
+                                                                context); //deleting user
+
+                                                            // Navigator.pop(
+                                                            //     alertDialogContext);
+                                                            Navigator.pop(
+                                                                context);
+
+                                                            context.goNamedAuth(
+                                                                'LogInSignUp',
+                                                                mounted);
+                                                            Navigator.pop(
+                                                                context);
+                                                          } else {
+                                                            print(
+                                                                "Cant delete due to incorrect password");
+                                                          }
+                                                        },
+                                                        child: Text(
+                                                            "Delete account"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
                                             },
                                             child: Text('Yes'),
                                           ),
@@ -329,69 +470,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                               }, "Delete Account"),
                             ],
                           ),
-
-                          /*ElevatedButton(
-                            onPressed: () async {
-                              if (!await InternetConnectionCheckerPlus()
-                                  .hasConnection) {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text('Please connect to the internet'),
-                                  ),
-                                );
-                              } else {
-                                final usersUpdateData = createUsersRecordData(
-                                  displayName: _model.textController1.text,
-                                  phoneNumber: _model.textController2.text,
-                                );
-                                await currentUserReference!
-                                    .update(usersUpdateData);
-                                await showDialog(
-                                  context: context,
-                                  builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Saved'),
-                                      content:
-                                          Text('Changes saved successfully.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                                // context.pushNamed('Dashboard');
-                                //THREE TIMES to reach back to the hompage
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                // Navigator.pop(context);
-                              }
-                            },
-                            child: Text(
-                              'Save Changes',
-                              style: GF.GoogleFonts.leagueSpartan(
-                                fontSize: 18,
-                                color: Color(0xFF0C0C0C),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.5),
-                                ),
-                                backgroundColor: Color(0xFFC6DDDB),
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 17, 20, 17)),
-                          ),
-                        */
                         ),
-
                         // BUTTON for saving the changes.
                       ],
                     ),
