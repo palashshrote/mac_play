@@ -264,64 +264,64 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
               ),
             ),
             SizedBox(height: 15.0),
-            Text(
-              "or",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                fontFamily: "Spartan",
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: 300,
-              child: ElevatedButton.icon(
-                onPressed: () async {
-                  AuthService().signInWithGoogle().then((success) {
-                    if (success) {
-                      // Navigator.of(context).pushReplacement(
-                      //   MaterialPageRoute(builder: (context) => DashboardWidget()),
-                      // );
-                      context.goNamedAuth(
-                        'Dashboard',
-                        mounted,
-                        queryParams: {
-                          'water': serializeParam(
-                            _model.output,
-                            ParamType.JSON,
-                          ),
-                        }.withoutNulls,
-                      );
-                    }
-                  });
-                },
-                // onPressed: () => AuthService().signInWithGoogle(),
-                // Implement your Google login functionality herer
-                icon: Image.asset(
-                  'assets/images/google.png',
-                  width: 24,
-                  height: 24,
-                ),
-                label: Text(
-                  'Continue with Google',
-                  style: TextStyle(
-                    fontFamily: 'Spartan',
-                    color: Colors.white,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(color: Color(0xFFC6DDDB)),
-                  ),
-                  backgroundColor: Colors.black,
-                  foregroundColor: Color(0xFFC6DDDB),
-                ),
-              ),
-            ),
+            // Text(
+            //   "or",
+            //   style: TextStyle(
+            //     fontSize: 12,
+            //     fontWeight: FontWeight.w500,
+            //     fontFamily: "Spartan",
+            //     color: Colors.white,
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Container(
+            //   width: 300,
+            //   child: ElevatedButton.icon(
+            //     onPressed: () async {
+            //       AuthService().signInWithGoogle().then((success) {
+            //         if (success) {
+            //           // Navigator.of(context).pushReplacement(
+            //           //   MaterialPageRoute(builder: (context) => DashboardWidget()),
+            //           // );
+            //           context.goNamedAuth(
+            //             'Dashboard',
+            //             mounted,
+            //             queryParams: {
+            //               'water': serializeParam(
+            //                 _model.output,
+            //                 ParamType.JSON,
+            //               ),
+            //             }.withoutNulls,
+            //           );
+            //         }
+            //       });
+            //     },
+            //     // onPressed: () => AuthService().signInWithGoogle(),
+            //     // Implement your Google login functionality herer
+            //     icon: Image.asset(
+            //       'assets/images/google.png',
+            //       width: 24,
+            //       height: 24,
+            //     ),
+            //     label: Text(
+            //       'Continue with Google',
+            //       style: TextStyle(
+            //         fontFamily: 'Spartan',
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //     style: ElevatedButton.styleFrom(
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(10),
+            //         side: BorderSide(color: Color(0xFFC6DDDB)),
+            //       ),
+            //       backgroundColor: Colors.black,
+            //       foregroundColor: Color(0xFFC6DDDB),
+            //     ),
+            //   ),
+            // ),
             SizedBox(height: 35),
             GestureDetector(
               onTap: () {

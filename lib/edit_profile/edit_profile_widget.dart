@@ -452,7 +452,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                                           }
                                                         },
                                                         child: Text(
-                                                            "Delete account"),
+                                                            "Delete Account"),
                                                       ),
                                                     ],
                                                   );
