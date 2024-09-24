@@ -107,6 +107,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
         ),
       }.withoutNulls,
     );
+
     Navigator.pop(context);
   }
 
@@ -281,7 +282,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
             //   width: 300,
             //   child: ElevatedButton.icon(
             //     onPressed: () async {
-            //       AuthService().signInWithGoogle().then((success) {
+            // AuthService().signInWithGoogle().then((success) {
             //         if (success) {
             //           // Navigator.of(context).pushReplacement(
             //           //   MaterialPageRoute(builder: (context) => DashboardWidget()),
