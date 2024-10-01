@@ -114,6 +114,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
         ),
       }.withoutNulls,
     );
+
     Navigator.pop(context);
   }
 
@@ -273,6 +274,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
               ),
             ),
             SizedBox(height: 15.0),
+            /*
             Text(
               "or",
               style: TextStyle(
@@ -342,6 +344,8 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                 ),
               ),
             ),
+            
+            */
             SizedBox(height: 35),
             GestureDetector(
               onTap: () {

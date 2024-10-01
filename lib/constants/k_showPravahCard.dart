@@ -464,7 +464,7 @@ Widget showPravahCardOptimised(List<MeterRecord> listViewMeterRecordList,
           }
 
           var flowRate = meterData['FlowRate'];
-          var flowRateUnit = flowRate != "N/A" ? " kL/hr" : "";
+          var flowRateUnit = flowRate != "N/A" ? " kL/h" : "";
 
           bool isMeterActive = reading == "N/A" ? false : true;
           return Padding(

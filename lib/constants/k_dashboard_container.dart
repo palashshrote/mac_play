@@ -1431,3 +1431,32 @@ Widget refreshButton(void Function()? onPressFunction,
     ),
   );
 }
+
+Widget refreshButton2(
+  void Function()? onPressFunction,
+) {
+  return ElevatedButton.icon(
+    onPressed: onPressFunction,
+
+    // onPressed: () {},
+    icon: Icon(
+      CupertinoIcons.arrow_2_squarepath,
+      size: 16.0,
+      color: Color(0xFF0C0C0C),
+    ),
+    label: Text(
+      'Refresh',
+      style: GF.GoogleFonts.leagueSpartan(
+        fontSize: 16,
+        color: Color(0xFF0C0C0C),
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(7.5),
+      ),
+      backgroundColor: Color(0xFFC6DDDB),
+    ),
+  );
+}

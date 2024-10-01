@@ -80,7 +80,7 @@ class _T2IndividualBorewellSummaryWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'Borewell Details (Testing)',
+          'Borewell Details',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -149,7 +149,7 @@ class _T2IndividualBorewellSummaryWidgetState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              dataContainer("Updated at", dt.toString(), 200),
+                              dataContainerUpdatedAt("Updated at", dt, 300),
                             ],
                           ),
                         ],
@@ -168,7 +168,6 @@ class _T2IndividualBorewellSummaryWidgetState
                   ],
                 ),
 
-                
                 summaryDropDownBtnGeneralized(
                   "Borewell Summary",
                   dropdownValueDeboreTotal,

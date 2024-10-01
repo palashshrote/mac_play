@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:hydrow/constants/k_dashboard_container.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:intl/intl.dart';
 
 var liveDataStyle = GF.GoogleFonts.leagueSpartan(
   fontSize: 24,
@@ -235,6 +236,83 @@ Widget dataContainer(String heading, String data, [double? c_width]) {
                   ? inactiveDeviceStatusStyle
                   : liveDataStyle,
         ),
+      ],
+    ),
+  );
+}
+
+Widget dataContainerUpdatedAt(String heading, DateTime data,
+    [double? c_width]) {
+  String formattedDate = DateFormat('dd-MM-yyyy').format(data);
+  String formattedTime = DateFormat('hh:mm a').format(data);
+
+  return Container(
+    width: c_width == null ? 190 : c_width,
+    height: 130,
+    decoration: BoxDecoration(
+      shape: BoxShape.rectangle,
+      borderRadius: BorderRadius.circular(15),
+      border: Border.all(color: Color(0xFF686868)),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          //container1 //row1
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              heading,
+              textAlign: TextAlign.center,
+              style: GF.GoogleFonts.leagueSpartan(
+                fontSize: 16,
+                color: Color(0xFFFFFFFF),
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+        sbox(9, null),
+        Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Date: ",
+                  style: liveDataStyle,
+                ),
+                Text(
+                  formattedDate,
+                  style: data == "Active"
+                      ? activeDeviceStatusStyle
+                      : data == "Inactive"
+                          ? inactiveDeviceStatusStyle
+                          : liveDataStyle,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Time: ",
+                  style: liveDataStyle,
+                ),
+                Text(
+                  formattedTime,
+                  style: data == "Active"
+                      ? activeDeviceStatusStyle
+                      : data == "Inactive"
+                          ? inactiveDeviceStatusStyle
+                          : liveDataStyle,
+                ),
+              ],
+            ),
+          ],
+        )
       ],
     ),
   );

@@ -80,7 +80,7 @@ class _MeterSummaryT2WidgetState extends State<MeterSummaryT2Widget>
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          '(TESTing)',
+          'All Pravah Devices',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,

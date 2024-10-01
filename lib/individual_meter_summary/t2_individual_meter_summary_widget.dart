@@ -80,7 +80,7 @@ class _T2IndividualMeterSummaryWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'Borewell Details (Testing)',
+          'Meter Details',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -129,7 +129,7 @@ class _T2IndividualMeterSummaryWidgetState
                     var reading = meterData['Reading'];
                     reading = reading != "N/A" ? reading + " L" : "N/A";
                     var flowRate = meterData['FlowRate'];
-                    flowRate = flowRate != "N/A" ? flowRate + " kL/s" : "N/A";
+                    flowRate = flowRate != "N/A" ? flowRate + " kL/h" : "N/A";
                     bool isMeterActive = reading == "N/A" ? false : true;
                     Timestamp ts = meterData['Timestamp'];
                     DateTime dt = ts.toDate();
@@ -157,7 +157,7 @@ class _T2IndividualMeterSummaryWidgetState
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              dataContainer("Updated at", dt.toString(), 200),
+                              dataContainerUpdatedAt("Updated at", dt, 300),
                             ],
                           ),
                         ],

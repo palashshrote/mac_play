@@ -82,7 +82,7 @@ class _TankSummaryT2WidgetState extends State<TankSummaryT2Widget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: genAppBar("Testing"),
+      appBar: genAppBar("All Starr Devices", centerTitle: true),
       body: SafeArea(
           child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),

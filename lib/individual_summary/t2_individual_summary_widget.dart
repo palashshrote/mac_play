@@ -79,7 +79,7 @@ class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: genAppBar("Tank Testing", centerTitle: true),
+      appBar: genAppBar("Tank Details", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
@@ -207,7 +207,7 @@ class _T2IndividualSummaryWidgetState extends State<T2IndividualSummaryWidget>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              dataContainer("Updated at", dt.toString(), 200),
+                              dataContainerUpdatedAt("Updated at", dt, 300),
                             ],
                           ),
                         ],
