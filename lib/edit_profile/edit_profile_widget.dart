@@ -467,7 +467,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                     },
                                   );
                                 }
-                              }, "Delete Account"),
+                              }, "Delete Profile"),
                             ],
                           ),
                         ),
