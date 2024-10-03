@@ -50,6 +50,11 @@ var defaultDeviceDataStyle = GF.GoogleFonts.leagueSpartan(
   color: Color(0xFF91D9E9),
   fontWeight: FontWeight.w600,
 );
+var errorDataStyle = GF.GoogleFonts.leagueSpartan(
+  fontSize: 20,
+  color: Color.fromARGB(255, 233, 145, 173),
+  fontWeight: FontWeight.w600,
+);
 var cardDataStyle = GF.GoogleFonts.leagueSpartan(
   fontSize: 28,
   color: Colors.white,

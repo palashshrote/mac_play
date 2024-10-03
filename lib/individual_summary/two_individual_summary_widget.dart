@@ -175,7 +175,8 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                         sbox(9, null),
                         dataCardImproved(
                             isDeviceActive,
-                            functions.getTemp(widget.docReference!.tankKey!),
+                            functions.getTemp(
+                                widget.docReference!.tankKey!),
                             // null,
                             null,
                             "°C",
@@ -496,7 +497,6 @@ class _TwoIndividualSummaryWidgetState extends State<TwoIndividualSummaryWidget>
                 ),
               ],
             ),
-          
           ),
         ),
       ),

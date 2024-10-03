@@ -195,16 +195,6 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                                   _model.qROutput,
                                                   ParamType.String),
                                             }.withoutNulls);
-                                        // Navigator.pushReplacement(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (context) =>
-                                        //         RegisterDevice(
-                                        //       deviceType: "Tank",
-                                        //       qrData: _model.qROutput!,
-                                        //     ),
-                                        //   ),
-                                        // );
                                       } else {
                                         context.pushNamed(
                                           'CubeOrCy',

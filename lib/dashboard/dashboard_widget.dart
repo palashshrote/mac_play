@@ -1562,6 +1562,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: <Widget>[
                                                       //device name
                                                       defaultDeviceName(
@@ -1597,14 +1600,20 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                             return const CircularProgressIndicator();
                                                           } else if (snapshot
                                                               .hasError) {
-                                                            return const Text(
-                                                                'Error fetching data');
+                                                            return Text(
+                                                              'Error fetching data',
+                                                              style:
+                                                                  errorDataStyle,
+                                                            );
                                                           } else if (!snapshot
                                                                   .hasData ||
                                                               snapshot.data ==
                                                                   null) {
-                                                            return const Text(
-                                                                'No data available');
+                                                            return Text(
+                                                              'No data available',
+                                                              style:
+                                                                  errorDataStyle,
+                                                            );
                                                           }
 
                                                           var borewellData =

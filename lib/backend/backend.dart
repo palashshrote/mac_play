@@ -165,6 +165,7 @@ Future<Map<String, dynamic>?> fetchBorewellData(String borewellKey) async {
     var borewellDoc = snapshot.docs.first;
     return borewellDoc.data() as Map<String, dynamic>?;
   }
+  //complete it snapshot docs is empty
   return null;
 }
 

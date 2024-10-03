@@ -227,7 +227,7 @@ String? boreWell(String? channel) {
   }
 }
 
-Future<dynamic> getTemp(String tankKey) async {
+Future<dynamic> getTemp(String tankKey, {bool str = false}) async {
   String str1 = 'https://api.thingspeak.com/channels/';
   String str2 = '/feeds.json?api_key=';
   String apiUrl = str1 +
@@ -251,7 +251,11 @@ Future<dynamic> getTemp(String tankKey) async {
   // print("Null value : ${val}");
 
   try {
-    var ans = double.tryParse(val);
+    var ans;
+    if (str == true)
+      ans = (double.tryParse(val)).toString();
+    else
+      ans = double.tryParse(val);
     // if (ans == null) return "N/A";
     return ans;
   } catch (e) {
@@ -259,7 +263,7 @@ Future<dynamic> getTemp(String tankKey) async {
   }
 }
 
-Future<dynamic> getStarrWaterLevel(String tankKey) async {
+Future<dynamic> getStarrWaterLevel(String tankKey, {bool str = false}) async {
   String str1 = 'https://api.thingspeak.com/channels/';
   String str2 = '/feeds.json?api_key=';
   String apiUrl = str1 +
@@ -283,7 +287,11 @@ Future<dynamic> getStarrWaterLevel(String tankKey) async {
   // print("Null value : ${val}");
 
   try {
-    var ans = double.tryParse(val);
+    var ans;
+    if (str == true)
+      ans = (double.tryParse(val)).toString();
+    else
+      ans = double.tryParse(val);
     // if (ans == null) return "N/A";
     return ans;
   } catch (e) {
@@ -291,7 +299,7 @@ Future<dynamic> getStarrWaterLevel(String tankKey) async {
   }
 }
 
-Future<dynamic> getFlowRate(String meterKey) async {
+Future<dynamic> getFlowRate(String meterKey, {bool str = false}) async {
   String str1 = 'https://api.thingspeak.com/channels/';
   String str2 = '/feeds.json?api_key=';
   String apiUrl = str1 +
@@ -309,7 +317,11 @@ Future<dynamic> getFlowRate(String meterKey) async {
   var val = jsonData['feeds'][0]['field2'];
   try {
     // if (val == null) return "N/A";
-    var ans = double.tryParse(val);
+    var ans;
+    if (str)
+      ans = (double.tryParse(val)).toString();
+    else
+      ans = double.tryParse(val);
     // if (ans == null) return "N/A";
     return ans;
   } catch (e) {
@@ -317,7 +329,7 @@ Future<dynamic> getFlowRate(String meterKey) async {
   }
 }
 
-Future<dynamic> getReading(String meterKey) async {
+Future<dynamic> getReading(String meterKey, {bool str = false}) async {
   String str1 = 'https://api.thingspeak.com/channels/';
   String str2 = '/feeds.json?api_key=';
   String apiUrl = str1 +
@@ -335,7 +347,11 @@ Future<dynamic> getReading(String meterKey) async {
   var val = jsonData['feeds'][0]['field1'];
   try {
     // if (val == null) return "N/A";
-    var ans = double.tryParse(val);
+    var ans;
+    if (str)
+      ans = (double.tryParse(val)).toString();
+    else
+      ans = double.tryParse(val);
     // if (ans == null) return "N/A";
     return ans;
   } catch (e) {

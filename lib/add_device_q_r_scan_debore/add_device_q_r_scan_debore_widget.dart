@@ -123,7 +123,7 @@ class _AddDeviceQRScanDeboreWidgetState
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     10, 20, 10, 30),
                                 child: Text(
-                                  "Scan Debore QR to proceed futher",
+                                  "Scan Dbore QR to proceed futher",
                                   textAlign: TextAlign.center,
                                   style: scanQrTextStyle,
                                 ),
@@ -157,26 +157,29 @@ class _AddDeviceQRScanDeboreWidgetState
                                       if (!await deviceAlreadyPresent(
                                           cId, "Borewell")) {
                                         //register code
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegisterDevice(
-                                              deviceType: "Borewell",
-                                              qrData: _model.qROutput!,
+                                        print(
+                                            "Device not registered, navigating to register page");
+                                        context.pushNamed('Register',
+                                            queryParams: {
+                                              'deviceType': serializeParam(
+                                                "Borewell",
+                                                ParamType.String,
+                                              ),
+                                              'qrData': serializeParam(
+                                                  _model.qROutput,
+                                                  ParamType.String),
+                                            }.withoutNulls);
+                                      } else {
+                                        context.pushNamed(
+                                          'AddDeviceDebore',
+                                          queryParams: {
+                                            'borewellKey': serializeParam(
+                                              _model.qROutput,
+                                              ParamType.String,
                                             ),
-                                          ),
+                                          }.withoutNulls,
                                         );
                                       }
-                                      context.pushNamed(
-                                        'AddDeviceDebore',
-                                        queryParams: {
-                                          'borewellKey': serializeParam(
-                                            _model.qROutput,
-                                            ParamType.String,
-                                          ),
-                                        }.withoutNulls,
-                                      );
                                     } else {
                                       await showDialog(
                                         context: context,

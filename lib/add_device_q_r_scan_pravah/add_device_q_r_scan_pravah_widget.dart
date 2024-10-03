@@ -183,28 +183,35 @@ class _AddDeviceQRScanPravahWidgetState
                                                   if (!await deviceAlreadyPresent(
                                                       cId, "Meter")) {
                                                     //register code
-                                                    Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            RegisterDevice(
-                                                          deviceType: "Meter",
-                                                          qrData:
-                                                              _model.qROutput!,
+                                                    print(
+                                                        "Device not registered, navigating to register page");
+                                                    context.pushNamed(
+                                                        'Register',
+                                                        queryParams: {
+                                                          'deviceType':
+                                                              serializeParam(
+                                                            "Meter",
+                                                            ParamType.String,
+                                                          ),
+                                                          'qrData':
+                                                              serializeParam(
+                                                                  _model
+                                                                      .qROutput,
+                                                                  ParamType
+                                                                      .String),
+                                                        }.withoutNulls);
+                                                  } else {
+                                                    context.pushNamed(
+                                                      'AddDevicePravah',
+                                                      queryParams: {
+                                                        'meterKey':
+                                                            serializeParam(
+                                                          _model.qROutput,
+                                                          ParamType.String,
                                                         ),
-                                                      ),
+                                                      }.withoutNulls,
                                                     );
                                                   }
-                                                  context.pushNamed(
-                                                    'AddDevicePravah',
-                                                    queryParams: {
-                                                      'meterKey':
-                                                          serializeParam(
-                                                        _model.qROutput,
-                                                        ParamType.String,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
                                                 } else {
                                                   await showDialog(
                                                     context: context,
