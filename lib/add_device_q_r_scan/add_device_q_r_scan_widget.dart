@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hydrow/backend/api_requests/checking.dart';
+import 'package:hydrow/backend/api_requests/register_device.dart';
 
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -171,15 +173,49 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                       // String? tr1 = serializeParam(
                                       //     _model.qROutput, ParamType.String);
                                       // print("Serial param : $tr1");
-                                      context.pushNamed(
-                                        'CubeOrCy',
-                                        queryParams: {
-                                          'tankKey': serializeParam(
-                                            _model.qROutput,
-                                            ParamType.String,
-                                          ),
-                                        }.withoutNulls,
-                                      );
+
+                                      //register device functionality
+                                      List<String>? parts =
+                                          _model.qROutput?.split('&');
+                                      String cId = parts![0];
+                                      String readApi = parts[1];
+
+                                      if (!await deviceAlreadyPresent(
+                                          cId, "Tank")) {
+                                        //register code
+                                        print(
+                                            "Device not registered, navigating to register page");
+                                        context.pushNamed('Register',
+                                            queryParams: {
+                                              'deviceType': serializeParam(
+                                                "Tank",
+                                                ParamType.String,
+                                              ),
+                                              'qrData': serializeParam(
+                                                  _model.qROutput,
+                                                  ParamType.String),
+                                            }.withoutNulls);
+                                        // Navigator.pushReplacement(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) =>
+                                        //         RegisterDevice(
+                                        //       deviceType: "Tank",
+                                        //       qrData: _model.qROutput!,
+                                        //     ),
+                                        //   ),
+                                        // );
+                                      } else {
+                                        context.pushNamed(
+                                          'CubeOrCy',
+                                          queryParams: {
+                                            'tankKey': serializeParam(
+                                              _model.qROutput,
+                                              ParamType.String,
+                                            ),
+                                          }.withoutNulls,
+                                        );
+                                      }
                                     } else {
                                       await showDialog(
                                         context: context,

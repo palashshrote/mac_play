@@ -7,6 +7,7 @@ import 'package:hydrow/add_device_debore/add_device_debore_widget.dart';
 import 'package:hydrow/add_device_pravah/add_device_pravah_widget.dart';
 import 'package:hydrow/add_device_q_r_scan_debore/add_device_q_r_scan_debore_widget.dart';
 import 'package:hydrow/add_device_q_r_scan_pravah/add_device_q_r_scan_pravah_widget.dart';
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/borewell_edit/borewell_edit_widget.dart';
 import 'package:hydrow/borewell_summary/borewell_summary_t2_widget.dart';
@@ -107,6 +108,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'logInSignUp',
               builder: (context, params) => LogInSignUpWidget(),
             ),
+
             FFRoute(
               name: 'AddDeviceQRScan',
               path: 'addDeviceQRScan',
@@ -127,7 +129,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'tankSummaryTesting',
               builder: (context, params) => TankSummaryTestingWidget(),
             ),
-             FFRoute(
+            FFRoute(
               name: 'TankSummaryT2',
               path: 'tankSummaryT2',
               builder: (context, params) => TankSummaryT2Widget(),
@@ -162,6 +164,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'cubeOrCy',
               builder: (context, params) => CubeOrCyWidget(
                 tankKey: params.getParam('tankKey', ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'Register',
+              path: 'register',
+              builder: (context, params) => RegisterDevice(
+                deviceType: params.getParam('deviceType', ParamType.String),
+                qrData: params.getParam('qrData', ParamType.String),
               ),
             ),
             FFRoute(
