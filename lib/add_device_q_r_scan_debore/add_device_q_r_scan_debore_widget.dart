@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hydrow/add_device_q_r_scan_debore/add_device_q_r_scan_debore_model.dart';
+import 'package:hydrow/backend/api_requests/checking.dart';
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/constants/k_add_device_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -74,7 +76,7 @@ class _AddDeviceQRScanDeboreWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'Add Debore - QR Scan',
+          'Add Device - QR Scan',
           style: GF.GoogleFonts.leagueSpartan(
             color: Color(0xFFFFFFFF),
             fontWeight: FontWeight.normal,
@@ -147,6 +149,25 @@ class _AddDeviceQRScanDeboreWidgetState
                                       // print(e.toString());
                                     }
                                     if (functions.qrDebore(_model.qROutput)) {
+                                      List<String>? parts =
+                                          _model.qROutput?.split('&');
+                                      String cId = parts![0];
+                                      String readApi = parts[1];
+
+                                      if (!await deviceAlreadyPresent(
+                                          cId, "Borewell")) {
+                                        //register code
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterDevice(
+                                              deviceType: "Borewell",
+                                              qrData: _model.qROutput!,
+                                            ),
+                                          ),
+                                        );
+                                      }
                                       context.pushNamed(
                                         'AddDeviceDebore',
                                         queryParams: {
