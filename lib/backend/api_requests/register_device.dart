@@ -1,8 +1,10 @@
+import 'package:hydrow/backend/api_requests/api_manager.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 import 'package:hydrow/flutter_flow/flutter_flow_util.dart';
 import 'package:provider/src/provider.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hydrow/flutter_flow/nav/serialization_util.dart';
@@ -23,6 +25,20 @@ class _RegisterDeviceState extends State<RegisterDevice> {
   late String _qrData;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController devicenameController = TextEditingController();
+  bool _isButtonDisabled = false;
+
+  void _onButtonTap() {
+    setState(() {
+      _isButtonDisabled = true; // Disable the button when tapped
+    });
+
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _isButtonDisabled = false; // Re-enable the button after 3 seconds
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +47,7 @@ class _RegisterDeviceState extends State<RegisterDevice> {
   }
 
   Future<void> addToFirestore() async {
+    _onButtonTap();
     String deviceName = devicenameController.text;
 
     // Ensure device name is not empty
@@ -65,18 +82,31 @@ class _RegisterDeviceState extends State<RegisterDevice> {
         var confirmDialogResponse = await showDialog<bool>(
               context: context,
               builder: (alertDialogContext) {
-                return AlertDialog(
-                  title: Text('Register'),
-                  content: Text(
-                      'Do you want to register this device as ${deviceName}?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext, false),
-                      child: Text('Cancel'),
+                return customBodyAlertDialog(
+                  null,
+                  Text.rich(
+                    TextSpan(
+                      text:
+                          'Are you sure to register this device as ', // Regular text
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: deviceName, // Bold text for deviceName
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const TextSpan(
+                          text: ' ?', // Regular text after deviceName
+                        ),
+                      ],
                     ),
-                    TextButton(
+                  ),
+                  [
+                    actionBtnWidget(
+                      'C A N C E L',
+                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                    ),
+                    actionBtnWidget(
+                      'C O N F I R M',
                       onPressed: () => Navigator.pop(alertDialogContext, true),
-                      child: Text('Confirm'),
                     ),
                   ],
                 );
@@ -92,11 +122,12 @@ class _RegisterDeviceState extends State<RegisterDevice> {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Success'),
-                  content: const Text('Device Registered successfully'),
-                  actions: <Widget>[
-                    TextButton(
+                return customAlertDialog(
+                  'S U C C E S S',
+                  'Device Registered successfully',
+                  <Widget>[
+                    actionBtnWidget(
+                      "O K",
                       onPressed: () {
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -132,7 +163,6 @@ class _RegisterDeviceState extends State<RegisterDevice> {
                           );
                         }
                       },
-                      child: const Text('OK'),
                     ),
                   ],
                 );
@@ -164,9 +194,6 @@ class _RegisterDeviceState extends State<RegisterDevice> {
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
       appBar: genAppBar("Register Device"),
-      // appBar: AppBar(
-      //   title: const Text(''),
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -176,22 +203,26 @@ class _RegisterDeviceState extends State<RegisterDevice> {
               child: TextField(
                 controller: devicenameController,
                 autofocus: true,
-                style: TextStyle(color: Colors.white),
-                decoration: entryInputDecoration,
+                style: GF.GoogleFonts.leagueSpartan(
+                  color: Color(0xFFFFFFFF),
+                ),
+                decoration: addDevInpDec("Name"),
               ),
             ),
             Row(
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: addToFirestore,
-                    style: devButtonStyle,
-                    child: Text(
-                      'Register',
-                      style: devTextStyle,
-                    ),
-                  ),
-                ),
+                _isButtonDisabled
+                    ? disabledBtn("Register")
+                    : Expanded(
+                        child: ElevatedButton(
+                          onPressed: addToFirestore,
+                          style: devButtonStyle,
+                          child: Text(
+                            'Register',
+                            style: devTextStyle,
+                          ),
+                        ),
+                      ),
               ],
             ),
           ],
@@ -201,51 +232,126 @@ class _RegisterDeviceState extends State<RegisterDevice> {
   }
 }
 
+Widget disabledBtn(String btnText) {
+  return Expanded(
+    child: ElevatedButton(
+      onPressed: () {},
+      style: disabledButtonStyle,
+      child: Text(
+        btnText,
+        style: devTextStyle,
+      ),
+    ),
+  );
+}
+
+var disabledButtonStyle = ElevatedButton.styleFrom(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(7.0),
+  ),
+  backgroundColor: Colors.grey,
+  padding: const EdgeInsets.fromLTRB(20, 17, 20, 17),
+);
+
 var devButtonStyle = ElevatedButton.styleFrom(
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(7.0),
   ),
   backgroundColor: Colors.white,
-  padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+  padding: const EdgeInsets.fromLTRB(20, 17, 20, 17),
 );
 
-var devTextStyle = const TextStyle(
+var devTextStyle = GF.GoogleFonts.leagueSpartan(
   fontSize: 20,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.w600,
   color: Colors.black,
 );
 
-var entryInputDecoration = InputDecoration(
-  filled: true,
-  fillColor: Color(0xFF0c0c0c),
-  hintText: 'Name',
-  hintStyle: TextStyle(
-    color: Colors.grey,
-    fontSize: 13,
-    fontFamily: 'Spartan',
-  ),
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10),
-    borderSide: BorderSide(
+InputDecoration addDevInpDec(String hintText) {
+  return InputDecoration(
+    filled: true,
+    fillColor: Color(0xFF0c0c0c),
+    hintText: hintText,
+    hintStyle: TextStyle(
+      color: Colors.grey,
+      fontSize: 13,
+      fontFamily: 'Spartan',
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(
+        color: Colors.white,
+        width: 2,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: BorderSide(
+        color: Colors.grey,
+        width: 0.5,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: BorderSide(
+        color: Colors.grey,
+        width: 0.5,
+      ),
+    ),
+    labelStyle: TextStyle(
       color: Colors.white,
-      width: 2,
     ),
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(20),
-    borderSide: BorderSide(
-      color: Colors.grey,
-      width: 0.5,
+  );
+}
+
+Widget actionBtnWidget(String btnText, {void Function()? onPressed}) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color.fromARGB(255, 41, 32, 32),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
     ),
-  ),
-  enabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(20),
-    borderSide: BorderSide(
-      color: Colors.grey,
-      width: 0.5,
+    // onPressed: () => Navigator.pop(alertDialogContext, false),
+    onPressed: onPressed,
+    child: Text(btnText),
+  );
+}
+
+Widget actionBtnWidget2(Text btnText, {void Function()? onPressed}) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color.fromARGB(255, 41, 32, 32),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
     ),
-  ),
-  labelStyle: TextStyle(
-    color: Colors.white,
-  ),
-);
+    // onPressed: () => Navigator.pop(alertDialogContext, false),
+    onPressed: onPressed,
+    child: btnText,
+  );
+}
+
+Widget customAlertDialog(
+    String? titleText, String bodyText, List<Widget> actionTools) {
+  return AlertDialog(
+    title: titleText != null ? Text(titleText) : null,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0), // Add curvature
+    ),
+    content: Text(bodyText),
+    actions: actionTools,
+  );
+}
+
+Widget customBodyAlertDialog(
+    String? titleText, Widget customContent, List<Widget> actionTools) {
+  return AlertDialog(
+    title: titleText != null ? Text(titleText) : null,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20.0), // Add curvature
+    ),
+    content: customContent,
+    actions: actionTools,
+  );
+}

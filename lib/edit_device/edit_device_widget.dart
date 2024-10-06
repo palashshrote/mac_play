@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 
 import '/auth/auth_util.dart';
@@ -236,6 +237,27 @@ class _EditDeviceWidgetState extends State<EditDeviceWidget>
                                                   context: context,
                                                   builder:
                                                       (alertDialogContext) {
+                                                    return customAlertDialog(
+                                                      "D E L E T E",
+                                                      'Are you sure you want to delete this item? The action cannot be undone.',
+                                                      [
+                                                        actionBtnWidget(
+                                                          "Cancel",
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                        ),
+                                                        actionBtnWidget(
+                                                          "Confirm",
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                        ),
+                                                      ],
+                                                    );
+                                                    /*
                                                     return AlertDialog(
                                                       title: Text('Delete'),
                                                       content: Text(
@@ -258,6 +280,7 @@ class _EditDeviceWidgetState extends State<EditDeviceWidget>
                                                         ),
                                                       ],
                                                     );
+                                                  */
                                                   },
                                                 ) ??
                                                 false;
@@ -274,37 +297,61 @@ class _EditDeviceWidgetState extends State<EditDeviceWidget>
                                           await showDialog(
                                             context: context,
                                             builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                title: Text('Success'),
-                                                content: Text(
-                                                    'Device deleted successfully'),
-                                                actions: [
-                                                  TextButton(
+                                              return customAlertDialog(
+                                                'S U C C E S S',
+                                                'Device deleted successfully',
+                                                [
+                                                  actionBtnWidget(
+                                                    'O K',
                                                     onPressed: () =>
                                                         Navigator.pop(
                                                             alertDialogContext),
-                                                    child: Text('Ok'),
                                                   ),
                                                 ],
                                               );
+                                              // return AlertDialog(
+                                              //   title: Text('Success'),
+                                              //   content: Text(
+                                              //       'Device deleted successfully'),
+                                              //   actions: [
+                                              //     TextButton(
+                                              //       onPressed: () =>
+                                              //           Navigator.pop(
+                                              //               alertDialogContext),
+                                              //       child: Text('Ok'),
+                                              //     ),
+                                              //   ],
+                                              // );
                                             },
                                           );
                                         } else {
                                           await showDialog(
                                             context: context,
                                             builder: (alertDialogContext) {
-                                              return AlertDialog(
-                                                content: Text(
-                                                    'The entry was not deleted'),
-                                                actions: [
-                                                  TextButton(
+                                              return customAlertDialog(
+                                                null,
+                                                'The entry was not deleted',
+                                                [
+                                                  actionBtnWidget(
+                                                    'O K',
                                                     onPressed: () =>
                                                         Navigator.pop(
                                                             alertDialogContext),
-                                                    child: Text('Ok'),
                                                   ),
                                                 ],
                                               );
+                                              // return AlertDialog(
+                                              //   content: Text(
+                                              //       'The entry was not deleted'),
+                                              //   actions: [
+                                              //     TextButton(
+                                              //       onPressed: () =>
+                                              //           Navigator.pop(
+                                              //               alertDialogContext),
+                                              //       child: Text('Ok'),
+                                              //     ),
+                                              //   ],
+                                              // );
                                             },
                                           );
                                         }

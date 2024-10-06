@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 
 import '/auth/auth_util.dart';
@@ -418,14 +419,15 @@ class _CuboidalTankEditWidgetState extends State<CuboidalTankEditWidget>
                                     15.0, 15.0, 15.0, 15.0),
                                 child: Text(
                                   'Volume (in L): ' +
-                                      functions
-                                          .calculateVolume(
-                                              widget.tankReference!.isCuboid!,
-                                              _model.textController2.text,
-                                              _model.textController3.text,
-                                              _model.textController4.text,
-                                              _model.textController5.text)
-                                          .toString(),
+                                      functions.shortenNumber(
+                                        functions.calculateVolume(
+                                            widget.tankReference!.isCuboid!,
+                                            _model.textController2.text,
+                                            _model.textController3.text,
+                                            _model.textController4.text,
+                                            _model.textController5.text),
+                                      ) +
+                                      "L",
                                   style: GF.GoogleFonts.leagueSpartan(
                                     color: Color(0xFFFFFFFF),
                                     fontSize: 22, //edited
@@ -487,15 +489,14 @@ class _CuboidalTankEditWidgetState extends State<CuboidalTankEditWidget>
                                 await showDialog(
                                   context: context,
                                   builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Succcess'),
-                                      content:
-                                          Text('Changes saved successfully'),
-                                      actions: [
-                                        TextButton(
+                                    return customAlertDialog(
+                                      'S U C C E S S',
+                                      'Changes saved successfully',
+                                      [
+                                        actionBtnWidget(
+                                          'O K',
                                           onPressed: () =>
                                               Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
                                         ),
                                       ],
                                     );

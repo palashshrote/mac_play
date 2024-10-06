@@ -1,3 +1,5 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
+
 import '/auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
@@ -50,6 +52,19 @@ class _AddDevicePravahWidgetState extends State<AddDevicePravahWidget>
       ],
     ),
   };
+  bool _isButtonDisabled = false;
+
+  void _onButtonTap() {
+    setState(() {
+      _isButtonDisabled = true; // Disable the button when tapped
+    });
+
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _isButtonDisabled = false; // Re-enable the button after 3 seconds
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -118,40 +133,7 @@ class _AddDevicePravahWidgetState extends State<AddDevicePravahWidget>
                             controller: _model.textController1,
                             autofocus: true,
                             obscureText: false,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color(0xFF0c0c0c),
-                              hintText: 'Name',
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 13,
-                                fontFamily: 'Spartan',
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  width: 0.5,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  width: 0.5,
-                                ),
-                              ),
-                              labelStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
+                            decoration: addDevInpDec("Name"),
                             style: GF.GoogleFonts.leagueSpartan(
                               color: Color(0xFFFFFFFF),
                             ),
@@ -162,34 +144,109 @@ class _AddDevicePravahWidgetState extends State<AddDevicePravahWidget>
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 30.0),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (_model.formKey.currentState == null ||
-                                  !_model.formKey.currentState!.validate()) {
-                                return;
-                              }
+                          child: _isButtonDisabled
+                              ? disabledBtn("Save")
+                              : ElevatedButton(
+                                  onPressed: () async {
+                                    _onButtonTap();
 
-                              final meterCreateData = createMeterRecordData(
-                                meterName: _model.textController1.text,
-                                meterKey: widget.meterKey,
-                              );
+                                    var confirmDialogResponse =
+                                        await showDialog<bool>(
+                                              context: context,
+                                              builder: (alertDialogContext) {
+                                                return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0), // Add curvature
+                                                  ),
+                                                  content: Text.rich(
+                                                    TextSpan(
+                                                      text:
+                                                          'Are you sure to name this device as ', // Regular text
+                                                      children: <TextSpan>[
+                                                        TextSpan(
+                                                          text: _model
+                                                              .textController1
+                                                              .text, // Bold text for deviceName
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        const TextSpan(
+                                                          text:
+                                                              ' ?', // Regular text after deviceName
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    actionBtnWidget(
+                                                      'C A N C E L',
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              false),
+                                                    ),
+                                                    actionBtnWidget(
+                                                      'C O N F I R M',
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext,
+                                                              true),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ) ??
+                                            false;
 
-                              await MeterRecord.createDoc(currentUserReference!)
-                                  .set(meterCreateData);
-                              await AddDevicePravahCall.call(
-                                field3: _model.textController1.text,
-                                apiKey:
-                                    functions.generateWrite(widget.meterKey!),
-                              );
-                              final usersUpdateData = {
-                                'meterKeyList':
-                                    FieldValue.arrayUnion([widget.meterKey]),
-                              };
-                              await currentUserReference!
-                                  .update(usersUpdateData);
-                              await showDialog(
-                                context: context,
-                                builder: (alertDialogContext) {
+                                    if (!confirmDialogResponse) {
+                                      return;
+                                    }
+
+                                    if (_model.formKey.currentState == null ||
+                                        !_model.formKey.currentState!
+                                            .validate()) {
+                                      return;
+                                    }
+
+                                    final meterCreateData =
+                                        createMeterRecordData(
+                                      meterName: _model.textController1.text,
+                                      meterKey: widget.meterKey,
+                                    );
+
+                                    await MeterRecord.createDoc(
+                                            currentUserReference!)
+                                        .set(meterCreateData);
+                                    await AddDevicePravahCall.call(
+                                      field3: _model.textController1.text,
+                                      apiKey: functions
+                                          .generateWrite(widget.meterKey!),
+                                    );
+                                    final usersUpdateData = {
+                                      'meterKeyList': FieldValue.arrayUnion(
+                                          [widget.meterKey]),
+                                    };
+                                    await currentUserReference!
+                                        .update(usersUpdateData);
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return customAlertDialog(
+                                          "S U C C E S S",
+                                          'Device added successfully',
+                                          [
+                                            actionBtnWidget2(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              Text('O K'),
+                                            ),
+                                          ],
+                                        );
+                                        /*
                                   return AlertDialog(
                                     title: Text('Succcess'),
                                     content: Text('Device added successfully'),
@@ -201,30 +258,32 @@ class _AddDevicePravahWidgetState extends State<AddDevicePravahWidget>
                                       ),
                                     ],
                                   );
-                                },
-                              );
-                              // context.pushNamed('Dashboard');
-                              //THREE TIMES to reach back to the hompage
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'Save',
-                              style: GF.GoogleFonts.leagueSpartan(
-                                fontSize: 20,
-                                color: Color(0xFF0C0C0C),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.5),
+                                  */
+                                      },
+                                    );
+                                    // context.pushNamed('Dashboard');
+                                    //THREE TIMES to reach back to the hompage
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'Save',
+                                    style: GF.GoogleFonts.leagueSpartan(
+                                      fontSize: 20,
+                                      color: Color(0xFF0C0C0C),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(7.5),
+                                      ),
+                                      backgroundColor: Color(0xFFC6DDDB),
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          20, 17, 20, 17)),
                                 ),
-                                backgroundColor: Color(0xFFC6DDDB),
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 17, 20, 17)),
-                          ),
                         ),
                       ],
                     ),

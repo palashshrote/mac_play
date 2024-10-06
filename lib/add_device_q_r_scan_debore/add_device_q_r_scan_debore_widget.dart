@@ -185,14 +185,19 @@ class _AddDeviceQRScanDeboreWidgetState
                                         context: context,
                                         builder: (alertDialogContext) {
                                           return AlertDialog(
-                                            title: Text('Error'),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      20.0), // Add curvature
+                                            ),
+                                            title: Text('E R R O R'),
                                             content: Text(
                                                 'QR wasn\'t scanned successfully. Try again and please check that you are scanning the right QR.'),
                                             actions: [
-                                              TextButton(
+                                              actionBtnWidget(
+                                                "O K",
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext),
-                                                child: Text("Ok"),
                                               ),
                                             ],
                                           );

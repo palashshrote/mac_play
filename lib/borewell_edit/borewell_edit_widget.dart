@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/constants/k_add_device_widget.dart';
 import 'package:hydrow/constants/k_edit_device.dart';
@@ -75,7 +76,7 @@ class _BorewellEditWidgetState extends State<BorewellEditWidget>
       appBar: AppBar(
         backgroundColor: Color(0xFF112025),
         title: Text(
-          'Edit Debore',
+          'Edit Device',
           style: appBarStyle,
         ),
         centerTitle: true,
@@ -180,15 +181,14 @@ class _BorewellEditWidgetState extends State<BorewellEditWidget>
                                 await showDialog(
                                   context: context,
                                   builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      title: Text('Success'),
-                                      content:
-                                          Text('Changes saved successfully'),
-                                      actions: [
-                                        TextButton(
+                                    return customAlertDialog(
+                                      'S U C C E S S',
+                                      'Changes saved successfully',
+                                      [
+                                        actionBtnWidget(
+                                          'Ok',
                                           onPressed: () =>
                                               Navigator.pop(alertDialogContext),
-                                          child: Text('Ok'),
                                         ),
                                       ],
                                     );

@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 
 import '/auth/auth_util.dart';
@@ -226,6 +227,29 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                                       context: context,
                                                       builder:
                                                           (alertDialogContext) {
+                                                        return customAlertDialog(
+                                                          "D E L E T E",
+                                                          "Are you sure you want to delete this entry? The action cannot be undone.",
+                                                          [
+                                                            actionBtnWidget2(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      false),
+                                                              Text(
+                                                                  'C A N C E L'),
+                                                            ),
+                                                            actionBtnWidget2(
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      alertDialogContext,
+                                                                      true),
+                                                              Text(
+                                                                  'C O N F I R M'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                        /*
                                                         return AlertDialog(
                                                           title: Text('Delete'),
                                                           content: Text(
@@ -249,6 +273,7 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                                             ),
                                                           ],
                                                         );
+                                                      */
                                                       },
                                                     ) ??
                                                     false;
@@ -268,6 +293,20 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                               await showDialog(
                                                 context: context,
                                                 builder: (alertDialogContext) {
+                                                  return customAlertDialog(
+                                                    'S U C C E S S',
+                                                    'Device deleted successfully',
+                                                    [
+                                                      actionBtnWidget2(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext),
+                                                        Text('O K'),
+                                                      ),
+                                                    ],
+                                                  );
+
+                                                  /*
                                                   return AlertDialog(
                                                     title: Text('Success'),
                                                     content: Text(
@@ -281,12 +320,26 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                                       ),
                                                     ],
                                                   );
+                                                  */
                                                 },
                                               );
                                             } else {
                                               await showDialog(
                                                 context: context,
                                                 builder: (alertDialogContext) {
+                                                  return customAlertDialog(
+                                                    null,
+                                                    "The entry was not deleted",
+                                                    [
+                                                      actionBtnWidget2(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext),
+                                                        Text('Ok'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                  /*
                                                   return AlertDialog(
                                                     content: Text(
                                                         'The entry was not deleted'),
@@ -299,6 +352,7 @@ class _EditDevicePravahWidgetState extends State<EditDevicePravahWidget>
                                                       ),
                                                     ],
                                                   );
+                                                */
                                                 },
                                               );
                                             }

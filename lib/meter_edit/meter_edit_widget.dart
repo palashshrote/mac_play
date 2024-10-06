@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 
 import '/auth/auth_util.dart';
@@ -183,6 +184,18 @@ class _MeterEditWidgetState extends State<MeterEditWidget>
                                 await showDialog(
                                   context: context,
                                   builder: (alertDialogContext) {
+                                    return customAlertDialog(
+                                      'S U C C E S S',
+                                      'Changes saved successfully',
+                                      [
+                                        actionBtnWidget2(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          Text('Ok'),
+                                        ),
+                                      ],
+                                    );
+                                    /*
                                     return AlertDialog(
                                       title: Text('Success'),
                                       content:
@@ -195,6 +208,7 @@ class _MeterEditWidgetState extends State<MeterEditWidget>
                                         ),
                                       ],
                                     );
+                                    */
                                   },
                                 );
 

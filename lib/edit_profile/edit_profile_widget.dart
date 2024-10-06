@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/constants/k_edit_profile.dart';
 import 'package:hydrow/constants/k_generalized.dart';
 import 'package:hydrow/constants/k_individual_device_summary.dart';
@@ -53,6 +54,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
   };
   final TextEditingController _deleteAccController = TextEditingController();
   bool correctPassword = false;
+
   @override
   void initState() {
     super.initState();
@@ -327,15 +329,14 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                   await showDialog(
                                     context: context,
                                     builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: Text('Saved'),
-                                        content:
-                                            Text('Changes saved successfully.'),
-                                        actions: [
-                                          TextButton(
+                                      return customAlertDialog(
+                                        'S A V E D',
+                                        'Changes saved successfully.',
+                                        [
+                                          actionBtnWidget(
+                                            'Ok',
                                             onPressed: () => Navigator.pop(
                                                 alertDialogContext),
-                                            child: Text('Ok'),
                                           ),
                                         ],
                                       );
@@ -365,12 +366,12 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                   await showDialog(
                                     context: context,
                                     builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: Text('Alert'),
-                                        content: Text(
-                                            'Are you sure want to delete your account ?'),
-                                        actions: [
-                                          TextButton(
+                                      return customAlertDialog(
+                                        'A L E R T',
+                                        'Are you sure want to delete your account ?',
+                                        [
+                                          actionBtnWidget(
+                                            'Yes',
                                             onPressed: () async {
                                               int curr_seconds = DateTime.now()
                                                       .millisecondsSinceEpoch ~/
@@ -392,29 +393,26 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                               await showDialog(
                                                 context: context,
                                                 builder: (alertDialogContext) {
-                                                  return AlertDialog(
-                                                    title: Text('Warning'),
-                                                    content: Text(
-                                                        'All your saved data will be deleted! Enter the password and tap on the button to continue'),
-                                                    actions: [
-                                                      TextField(
-                                                          controller:
-                                                              _deleteAccController,
-                                                          obscureText: true,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            labelText:
-                                                                'Password',
-                                                            labelStyle:
-                                                                TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                          )),
-                                                      TextButton(
+                                                  return customAlertDialog(
+                                                    'W A R N I N G',
+                                                    'All your saved data will be deleted! Enter the password and tap on the button to continue',
+                                                    [
+                                                      TextFormField(
+                                                        controller:
+                                                            _deleteAccController,
+                                                        obscureText: true,
+                                                        decoration:
+                                                            addDevInpDec(
+                                                                "Password"),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      actionBtnWidget(
+                                                        "Delete profile",
                                                         onPressed: () async {
                                                           await _relogin(
                                                               context);
@@ -447,20 +445,17 @@ class _EditProfileWidgetState extends State<EditProfileWidget>
                                                                 "Cant delete due to incorrect password");
                                                           }
                                                         },
-                                                        child: Text(
-                                                            "Delete account"),
                                                       ),
                                                     ],
                                                   );
                                                 },
                                               );
                                             },
-                                            child: Text('Yes'),
                                           ),
-                                          TextButton(
+                                          actionBtnWidget(
+                                            'No',
                                             onPressed: () => Navigator.pop(
                                                 alertDialogContext),
-                                            child: Text('No'),
                                           ),
                                         ],
                                       );

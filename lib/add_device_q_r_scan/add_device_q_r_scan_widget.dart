@@ -210,15 +210,14 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                       await showDialog(
                                         context: context,
                                         builder: (alertDialogContext) {
-                                          return AlertDialog(
-                                            title: Text('Error'),
-                                            content: Text(
-                                                'QR wasn\'t scanned successfully. Try again and please check that you are scanning the right QR.'),
-                                            actions: [
-                                              TextButton(
+                                          return customAlertDialog(
+                                            'E R R O R',
+                                            'QR wasn\'t scanned successfully. Try again and please check that you are scanning the right QR.',
+                                            [
+                                              actionBtnWidget2(
                                                 onPressed: () => Navigator.pop(
                                                     alertDialogContext),
-                                                child: Text('Ok'),
+                                                Text('O K'),
                                               ),
                                             ],
                                           );

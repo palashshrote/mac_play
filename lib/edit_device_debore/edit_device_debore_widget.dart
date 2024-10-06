@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 
 import '/auth/auth_util.dart';
@@ -230,26 +231,47 @@ class _EditDeviceDeboreWidgetState extends State<EditDeviceDeboreWidget>
                                                     builder:
                                                         (alertDialogContext) {
                                                       return AlertDialog(
-                                                        title: Text('Delete'),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  20.0), // Add curvature
+                                                        ),
+                                                        title:
+                                                            Text('D E L E T E'),
                                                         content: Text(
-                                                            'Are you sure you want to delete this item? The action cannot be undone.'),
+                                                            'Are you sure you want to delete this entry? The action cannot be undone.'),
                                                         actions: [
-                                                          TextButton(
+                                                          actionBtnWidget(
+                                                            "C A N C E L",
                                                             onPressed: () =>
                                                                 Navigator.pop(
                                                                     alertDialogContext,
                                                                     false),
-                                                            child:
-                                                                Text('Cancel'),
                                                           ),
-                                                          TextButton(
+                                                          actionBtnWidget(
+                                                            "C O N F I R M",
                                                             onPressed: () =>
                                                                 Navigator.pop(
                                                                     alertDialogContext,
                                                                     true),
-                                                            child:
-                                                                Text('Confirm'),
                                                           ),
+                                                          // TextButton(
+                                                          //   onPressed: () =>
+                                                          //       Navigator.pop(
+                                                          //           alertDialogContext,
+                                                          //           false),
+                                                          //   child:
+                                                          //       Text('Cancel'),
+                                                          // ),
+                                                          // TextButton(
+                                                          //   onPressed: () =>
+                                                          //       Navigator.pop(
+                                                          //           alertDialogContext,
+                                                          //           true),
+                                                          //   child:
+                                                          //       Text('Confirm'),
+                                                          // ),
                                                         ],
                                                       );
                                                     },
@@ -274,16 +296,27 @@ class _EditDeviceDeboreWidgetState extends State<EditDeviceDeboreWidget>
                                               context: context,
                                               builder: (alertDialogContext) {
                                                 return AlertDialog(
-                                                  title: Text('Success'),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0), // Add curvature
+                                                  ),
+                                                  title: Text('S U C C E S S'),
                                                   content: Text(
-                                                      'Debore deleted successfully'),
+                                                      'Entry deleted successfully'),
                                                   actions: [
-                                                    TextButton(
+                                                    actionBtnWidget(
+                                                      "O K",
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               alertDialogContext),
-                                                      child: Text('Ok'),
                                                     ),
+                                                    // TextButton(
+                                                    //   onPressed: () =>
+                                                    //       Navigator.pop(
+                                                    //           alertDialogContext),
+                                                    //   child: Text('Ok'),
+                                                    // ),
                                                   ],
                                                 );
                                               },
@@ -293,15 +326,26 @@ class _EditDeviceDeboreWidgetState extends State<EditDeviceDeboreWidget>
                                               context: context,
                                               builder: (alertDialogContext) {
                                                 return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0), // Add curvature
+                                                  ),
                                                   content: Text(
-                                                      'The Debore was not deleted'),
+                                                      'The entry was not deleted'),
                                                   actions: [
-                                                    TextButton(
+                                                    actionBtnWidget(
+                                                      "O K",
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               alertDialogContext),
-                                                      child: Text('Ok'),
                                                     ),
+                                                    // TextButton(
+                                                    //   onPressed: () =>
+                                                    //       Navigator.pop(
+                                                    //           alertDialogContext),
+                                                    //   child: Text('Ok'),
+                                                    // ),
                                                   ],
                                                 );
                                               },

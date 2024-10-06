@@ -1,3 +1,4 @@
+import 'package:hydrow/backend/api_requests/register_device.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/constants/k_add_device_widget.dart';
 
@@ -30,6 +31,20 @@ class _AddDeviceDeboreWidgetState extends State<AddDeviceDeboreWidget>
   late AddDeviceDeboreModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
+  bool _isButtonDisabled = false;
+
+  void _onButtonTap() {
+    setState(() {
+      _isButtonDisabled = true; // Disable the button when tapped
+    });
+
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _isButtonDisabled = false; // Re-enable the button after 3 seconds
+      });
+    });
+  }
+
   final animationsMap = {
     'columnOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
@@ -104,40 +119,7 @@ class _AddDeviceDeboreWidgetState extends State<AddDeviceDeboreWidget>
                                 controller: _model.textController1,
                                 autofocus: true,
                                 obscureText: false,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Color(0xFF0c0c0c),
-                                  hintText: 'Name',
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 13,
-                                    fontFamily: 'Spartan',
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: Colors.grey,
-                                      width: 0.5,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: Colors.grey,
-                                      width: 0.5,
-                                    ),
-                                  ),
-                                  labelStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                decoration: addDevInpDec("Name"),
                                 style: GF.GoogleFonts.leagueSpartan(
                                   color: Color(0xFFFFFFFF),
                                 ),
@@ -148,74 +130,149 @@ class _AddDeviceDeboreWidgetState extends State<AddDeviceDeboreWidget>
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 30.0),
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  // print("Onpressed tapped");
+                              child: _isButtonDisabled
+                                  ? disabledBtn("Save")
+                                  : ElevatedButton(
+                                      onPressed: () async {
+                                        // print("Onpressed tapped");
+                                        // toggleBtnState();
+                                        _onButtonTap();
 
-                                  if (_model.formKey.currentState == null ||
-                                      !_model.formKey.currentState!
-                                          .validate()) {
-                                    // print("Form not valid");
-                                    return;
-                                  }
+                                        var confirmDialogResponse =
+                                            await showDialog<bool>(
+                                                  context: context,
+                                                  builder:
+                                                      (alertDialogContext) {
+                                                    return AlertDialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                20.0), // Add curvature
+                                                      ),
+                                                      content: Text.rich(
+                                                        TextSpan(
+                                                          text:
+                                                              'Are you sure to name this device as ', // Regular text
+                                                          children: <TextSpan>[
+                                                            TextSpan(
+                                                              text: _model
+                                                                  .textController1
+                                                                  .text, // Bold text for deviceName
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            const TextSpan(
+                                                              text:
+                                                                  ' ?', // Regular text after deviceName
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      actions: [
+                                                        actionBtnWidget(
+                                                          'C A N C E L',
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  false),
+                                                        ),
+                                                        actionBtnWidget(
+                                                          'C O N F I R M',
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext,
+                                                                  true),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ) ??
+                                                false;
 
-                                  final borewellCreateData =
-                                      createBorewellRecordData(
-                                    borewellName: _model.textController1.text,
-                                    borewellKey: widget.borewellKey,
-                                  );
-                                  // print(borewellCreateData);
-                                  await BorewellRecord.createDoc(
-                                          currentUserReference!)
-                                      .set(borewellCreateData);
-                                  await AddDeviceDeboreCall.call(
-                                    field2: _model.textController1.text,
-                                    apiKey: functions
-                                        .generateWrite(widget.borewellKey!),
-                                  );
-                                  final usersUpdateData = {
-                                    'borewellKeyList': FieldValue.arrayUnion(
-                                        [widget.borewellKey]),
-                                  };
-                                  await currentUserReference!
-                                      .update(usersUpdateData);
-                                  await showDialog(
-                                    context: context,
-                                    builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: Text("Success"),
-                                        content:
-                                            Text("Device added successfully"),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(
-                                                alertDialogContext),
-                                            child: Text('OK'),
+                                        if (!confirmDialogResponse) {
+                                          return;
+                                        }
+
+                                        if (_model.formKey.currentState ==
+                                                null ||
+                                            !_model.formKey.currentState!
+                                                .validate()) {
+                                          // print("Form not valid");
+                                          return;
+                                        }
+                                        // toggleBtnState();
+
+                                        final borewellCreateData =
+                                            createBorewellRecordData(
+                                          borewellName:
+                                              _model.textController1.text,
+                                          borewellKey: widget.borewellKey,
+                                        );
+                                        // print(borewellCreateData);
+                                        await BorewellRecord.createDoc(
+                                                currentUserReference!)
+                                            .set(borewellCreateData);
+                                        await AddDeviceDeboreCall.call(
+                                          field2: _model.textController1.text,
+                                          apiKey: functions.generateWrite(
+                                              widget.borewellKey!),
+                                        );
+                                        final usersUpdateData = {
+                                          'borewellKeyList':
+                                              FieldValue.arrayUnion(
+                                                  [widget.borewellKey]),
+                                        };
+                                        await currentUserReference!
+                                            .update(usersUpdateData);
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        20.0), // Add curvature
+                                              ),
+                                              title: Text("S U C C E S S"),
+                                              content: Text(
+                                                  "Device added successfully"),
+                                              actions: [
+                                                actionBtnWidget(
+                                                  "O K",
+                                                  onPressed: () {
+                                                    Navigator.pop(
+                                                        alertDialogContext);
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'Save',
+                                        style: GF.GoogleFonts.leagueSpartan(
+                                          fontSize: 20,
+                                          color: Color(0xFF0C0C0C),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(7.5),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'Save',
-                                  style: GF.GoogleFonts.leagueSpartan(
-                                    fontSize: 20,
-                                    color: Color(0xFF0C0C0C),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(7.5),
+                                          backgroundColor: Color(0xFFC6DDDB),
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  20, 17, 20, 17)),
                                     ),
-                                    backgroundColor: Color(0xFFC6DDDB),
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        20, 17, 20, 17)),
-                              ),
                             ),
                           ],
                         ),
