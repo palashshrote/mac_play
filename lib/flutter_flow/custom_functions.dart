@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:hydrow/backend/schema/borewell_record.dart';
 // import 'package:google_fonts/google_fonts.dart' as GF;
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -90,6 +91,83 @@ String generateWrite(String key) {
 
 String generateVerifString(String key) {
   return key.split("&").last;
+}
+
+Future<bool> deviceAlreadyPresent2(
+    DocumentReference parent, String scannedKey, String deviceType) async {
+  Query<Map<String, dynamic>> presentDevices;
+  if (deviceType == "borewell") {
+    presentDevices = await BorewellRecord.collection(currentUserReference!);
+  } else if (deviceType == "meter") {
+    presentDevices = await MeterRecord.collection(currentUserReference!);
+  } else {
+    presentDevices = await TankRecord.collection(currentUserReference!);
+  }
+
+  // Fetch the documents from the collection
+  QuerySnapshot<Map<String, dynamic>> snapshot = await presentDevices.get();
+
+  for (var doc in snapshot.docs) {
+    Map<String, dynamic> data = doc.data();
+    String retrivedKey;
+    if (deviceType == "borewell") {
+      retrivedKey = data['BorewellKey'];
+    } else if (deviceType == "meter") {
+      retrivedKey = data['MeterKey'];
+    } else {
+      retrivedKey = data['TankKey'];
+    }
+
+    if (retrivedKey == scannedKey) {
+      print("Device already added");
+      return true;
+    }
+  }
+  return false;
+}
+
+Future<bool> fetchKeys(String cId, String deviceType) async {
+  // Get a reference to the "Meter" collection
+  CollectionReference devices =
+      FirebaseFirestore.instance.collection(deviceType);
+
+  try {
+    // Fetch all documents in the collection
+    QuerySnapshot querySnapshot = await devices.get();
+
+    // Iterate over each document and extract the MeterKey field
+    for (var doc in querySnapshot.docs) {
+      String key;
+
+      // Fetch the key based on deviceType
+      if (deviceType == "Meter") {
+        key = doc['MeterKey'];
+      } else if (deviceType == "Tank") {
+        key = doc['TankKey'];
+      } else if (deviceType == "Borewell") {
+        key = doc['BorewellKey'];
+      } else {
+        // If the deviceType is unknown, return false
+        return false;
+      }
+
+      // Check if the device is present
+      if (checkIfPresent(cId, key)) {
+        return true; // Device found, return true
+      }
+    }
+    return false;
+  } catch (e) {
+    print('Error fetching Keys: $e');
+    return false;
+  }
+}
+
+bool checkIfPresent(String channelId, String key) {
+  List<String>? parts = key.split('&');
+  String cId = parts[0];
+
+  return (channelId == cId);
 }
 
 // String graph(String? channel) {

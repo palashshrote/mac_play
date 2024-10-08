@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hydrow/auth/auth_util.dart';
 import 'package:hydrow/backend/api_requests/checking.dart';
 import 'package:hydrow/backend/api_requests/register_device.dart';
 
@@ -201,6 +202,27 @@ class _AddDeviceQRScanPravahWidgetState
                                                                       .String),
                                                         }.withoutNulls);
                                                   } else {
+                                                    bool devicePresent =
+                                                        await functions
+                                                            .deviceAlreadyPresent2(
+                                                                currentUserReference!,
+                                                                _model.qROutput,
+                                                                "meter");
+
+                                                    if (devicePresent) {
+                                                      print("No need to add");
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                              'Pravah already added.'),
+                                                        ),
+                                                      );
+                                                      return;
+                                                    } else {
+                                                      print("Need to add");
+                                                    }
                                                     context.pushNamed(
                                                       'AddDevicePravah',
                                                       queryParams: {
@@ -229,7 +251,6 @@ class _AddDeviceQRScanPravahWidgetState
                                                           ),
                                                         ],
                                                       );
-                                                      
                                                     },
                                                   );
 

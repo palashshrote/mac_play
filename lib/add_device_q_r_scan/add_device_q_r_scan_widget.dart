@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hydrow/auth/auth_util.dart';
 import 'package:hydrow/backend/api_requests/checking.dart';
 import 'package:hydrow/backend/api_requests/register_device.dart';
 
@@ -196,6 +197,25 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                                   ParamType.String),
                                             }.withoutNulls);
                                       } else {
+                                        bool devicePresent = await functions
+                                            .deviceAlreadyPresent2(
+                                                currentUserReference!,
+                                                _model.qROutput,
+                                                "tank");
+
+                                        if (devicePresent) {
+                                          print("No need to add");
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content:
+                                                  Text('Device already added.'),
+                                            ),
+                                          );
+                                          return;
+                                        } else {
+                                          print("Need to add");
+                                        }
                                         context.pushNamed(
                                           'CubeOrCy',
                                           queryParams: {

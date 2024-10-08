@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hydrow/add_device_q_r_scan_debore/add_device_q_r_scan_debore_model.dart';
+import 'package:hydrow/auth/auth_util.dart';
 import 'package:hydrow/backend/api_requests/checking.dart';
 import 'package:hydrow/backend/api_requests/register_device.dart';
+import 'package:hydrow/backend/backend.dart';
+import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/constants/k_add_device_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -170,6 +173,27 @@ class _AddDeviceQRScanDeboreWidgetState
                                                   ParamType.String),
                                             }.withoutNulls);
                                       } else {
+                                        //check if device already added by user
+                                        bool devicePresent = await functions
+                                            .deviceAlreadyPresent2(
+                                                currentUserReference!,
+                                                _model.qROutput,
+                                                "borewell");
+
+                                        if (devicePresent) {
+                                          print("No need to add");
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content:
+                                                  Text('Dbore already added.'),
+                                            ),
+                                          );
+                                          return;
+                                        } else {
+                                          print("Need to add");
+                                        }
+
                                         context.pushNamed(
                                           'AddDeviceDebore',
                                           queryParams: {
