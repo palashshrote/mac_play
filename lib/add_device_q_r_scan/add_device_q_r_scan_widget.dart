@@ -181,41 +181,63 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                       String cId = parts![0];
                                       String readApi = parts[1];
 
-                                      if (!await deviceAlreadyPresent(
+                                      if (!await deviceAlreadyRegistered(
                                           cId, "Tank")) {
                                         //register code
                                         print(
                                             "Device not registered, navigating to register page");
-                                        context.pushNamed('Register',
-                                            queryParams: {
-                                              'deviceType': serializeParam(
-                                                "Tank",
-                                                ParamType.String,
-                                              ),
-                                              'qrData': serializeParam(
-                                                  _model.qROutput,
-                                                  ParamType.String),
-                                            }.withoutNulls);
-                                      } else {
-                                        bool devicePresent = await functions
-                                            .deviceAlreadyPresent2(
-                                                currentUserReference!,
-                                                _model.qROutput,
-                                                "tank");
-
-                                        if (devicePresent) {
-                                          print("No need to add");
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content:
-                                                  Text('Device already added.'),
+                                        // context.pushNamed('Register',
+                                        //     queryParams: {
+                                        //       'deviceType': serializeParam(
+                                        //         "Tank",
+                                        //         ParamType.String,
+                                        //       ),
+                                        //       'qrData': serializeParam(
+                                        //           _model.qROutput,
+                                        //           ParamType.String),
+                                        //     }.withoutNulls);
+                                        final result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterDevice(
+                                              deviceType: "Tank",
+                                              qrData: _model.qROutput,
                                             ),
-                                          );
-                                          return;
-                                        } else {
-                                          print("Need to add");
+                                          ),
+                                        );
+
+                                        if (result == null ||
+                                            result != 'success') {
+                                          // Handle the case where registration was not successful
+                                          print(
+                                              'Registration was not completed');
+                                          return; // Stop further execution if registration failed
                                         }
+
+                                        // Registration was successful, now proceed with the rest of the logic
+                                        print(
+                                            "Registration successful, resuming to add device");
+                                      }
+                                      // else {
+                                      bool devicePresent =
+                                          await functions.deviceAlreadyPresent2(
+                                              currentUserReference!,
+                                              _model.qROutput,
+                                              "tank");
+
+                                      if (devicePresent) {
+                                        print("No need to add");
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Starr device already added.'),
+                                          ),
+                                        );
+                                        return;
+                                      } else {
+                                        print("Need to add");
                                         context.pushNamed(
                                           'CubeOrCy',
                                           queryParams: {
@@ -226,6 +248,7 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                           }.withoutNulls,
                                         );
                                       }
+                                      // }
                                     } else {
                                       await showDialog(
                                         context: context,

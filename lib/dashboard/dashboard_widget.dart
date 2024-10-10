@@ -299,12 +299,14 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                 ConnectionState.waiting) {
                                               return const CircularProgressIndicator();
                                             } else if (snapshot.hasError) {
-                                              return const Text(
-                                                  'Error fetching data');
+                                              return Text('Error fetching data',
+                                                  style: errorDataStyle);
                                             } else if (!snapshot.hasData ||
                                                 snapshot.data == null) {
-                                              return const Text(
-                                                  'No data available');
+                                              return  Text(
+                                                'No data available',
+                                                style: errorDataStyle,
+                                              );
                                             }
 
                                             var tankData = snapshot.data!;
@@ -1126,14 +1128,19 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                             return const CircularProgressIndicator();
                                                           } else if (snapshot
                                                               .hasError) {
-                                                            return const Text(
-                                                                'Error fetching data');
+                                                            return Text(
+                                                              'Error fetching data',
+                                                              style:
+                                                                  errorDataStyle,
+                                                            );
                                                           } else if (!snapshot
                                                                   .hasData ||
                                                               snapshot.data ==
                                                                   null) {
-                                                            return const Text(
-                                                                'No data available');
+                                                            return Text(
+                                                                'No data available',
+                                                                style:
+                                                                    errorDataStyle);
                                                           }
 
                                                           var meterData =

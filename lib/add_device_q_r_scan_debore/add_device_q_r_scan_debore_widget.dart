@@ -157,43 +157,56 @@ class _AddDeviceQRScanDeboreWidgetState
                                       String cId = parts![0];
                                       String readApi = parts[1];
 
-                                      if (!await deviceAlreadyPresent(
+                                      if (!await deviceAlreadyRegistered(
                                           cId, "Borewell")) {
                                         //register code
                                         print(
                                             "Device not registered, navigating to register page");
-                                        context.pushNamed('Register',
-                                            queryParams: {
-                                              'deviceType': serializeParam(
-                                                "Borewell",
-                                                ParamType.String,
-                                              ),
-                                              'qrData': serializeParam(
-                                                  _model.qROutput,
-                                                  ParamType.String),
-                                            }.withoutNulls);
-                                      } else {
-                                        //check if device already added by user
-                                        bool devicePresent = await functions
-                                            .deviceAlreadyPresent2(
-                                                currentUserReference!,
-                                                _model.qROutput,
-                                                "borewell");
 
-                                        if (devicePresent) {
-                                          print("No need to add");
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content:
-                                                  Text('Dbore already added.'),
+                                     
+                                        final result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterDevice(
+                                              deviceType: "Borewell",
+                                              qrData: _model.qROutput,
                                             ),
-                                          );
-                                          return;
-                                        } else {
-                                          print("Need to add");
+                                          ),
+                                        );
+
+                                        if (result == null ||
+                                            result != 'success') {
+                                          // Handle the case where registration was not successful
+                                          print(
+                                              'Registration was not completed');
+                                          return; // Stop further execution if registration failed
                                         }
 
+                                        // Registration was successful, now proceed with the rest of the logic
+                                        print(
+                                            "Registration successful, resuming to add device");
+                                      }
+                                      //  else {
+                                      //check if device already added by user
+                                      bool devicePresent =
+                                          await functions.deviceAlreadyPresent2(
+                                              currentUserReference!,
+                                              _model.qROutput,
+                                              "borewell");
+
+                                      if (devicePresent) {
+                                        print("No need to add");
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Dbore device already added.'),
+                                          ),
+                                        );
+                                        return;
+                                      } else {
+                                        print("Need to add");
                                         context.pushNamed(
                                           'AddDeviceDebore',
                                           queryParams: {
@@ -204,6 +217,8 @@ class _AddDeviceQRScanDeboreWidgetState
                                           }.withoutNulls,
                                         );
                                       }
+
+                                      // }
                                     } else {
                                       await showDialog(
                                         context: context,
@@ -275,4 +290,8 @@ class _AddDeviceQRScanDeboreWidgetState
       ),
     );
   }
+}
+
+extension on Map<String, Object?> {
+  get withoutNulls => null;
 }

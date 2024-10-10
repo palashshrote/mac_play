@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<bool> deviceAlreadyPresent(String cId, String deviceType) {
+Future<bool> deviceAlreadyRegistered(String cId, String deviceType) {
   return fetchMeterKeys(cId, deviceType);
 }
 

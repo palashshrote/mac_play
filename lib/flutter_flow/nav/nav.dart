@@ -13,6 +13,7 @@ import 'package:hydrow/borewell_edit/borewell_edit_widget.dart';
 import 'package:hydrow/borewell_summary/borewell_summary_t2_widget.dart';
 import 'package:hydrow/borewell_summary/borewell_summary_testing_widget.dart';
 import 'package:hydrow/borewell_summary/borewell_summary_widget.dart';
+import 'package:hydrow/error_screen.dart';
 import 'package:hydrow/individual_borewell_summary/individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_borewell_summary/t2_individual_borewell_summary_widget.dart';
 import 'package:hydrow/individual_borewell_summary/two_individual_borewell_summary_widget.dart';
@@ -166,14 +167,59 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 tankKey: params.getParam('tankKey', ParamType.String),
               ),
             ),
+            // FFRoute(
+            //   name: 'Register',
+            //   path: 'register',
+            //   builder: (context, params) => RegisterDevice(
+            //     deviceType: params.getParam('deviceType', ParamType.String),
+            //     parent: params.getParam('parent', ParamType.DocumentReference),
+            //     qrData: params.getParam('qrData', ParamType.String),
+            //   ),
+            // ),
             FFRoute(
               name: 'Register',
               path: 'register',
-              builder: (context, params) => RegisterDevice(
-                deviceType: params.getParam('deviceType', ParamType.String),
-                qrData: params.getParam('qrData', ParamType.String),
+              // asyncParams: {
+              //   'parent': getDoc(['users'], UsersRecord.serializer),
+              // },
+              builder: (context, params) {
+                final deviceType =
+                    params.getParam('deviceType', ParamType.String);
+                // final parentParam =
+                //     params.getParam('parent', ParamType.DocumentReference);
+                final qrData = params.getParam('qrData', ParamType.String);
+
+                // if (parentParam == null) {
+                //   print('Parent DocumentReference is null');
+                //   return ErrorScreen(msg: "Error"); // or handle the error
+                // }
+                // else {
+                //   print('Parent DocumentReference is not null');
+                //   return ErrorScreen(
+                //     msg: 'NN',
+                //   );
+                // }
+
+                return RegisterDevice(
+                  deviceType: deviceType,
+                  // parent: parentParam,
+                  qrData: qrData,
+                );
+              },
+            ),
+            FFRoute(
+              name: 'BorewellEdit',
+              path: 'borewellEdit',
+              asyncParams: {
+                'borewellReference':
+                    getDoc(['users', 'borewell'], BorewellRecord.serializer),
+              },
+              builder: (context, params) => BorewellEditWidget(
+                borewellReference:
+                    params.getParam('borewellReference', ParamType.Document),
               ),
             ),
+
             FFRoute(
               name: 'AddDevice',
               path: 'addDevice',
@@ -218,18 +264,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     params.getParam('tankReference', ParamType.Document),
               ),
             ),
-            FFRoute(
-              name: 'BorewellEdit',
-              path: 'borewellEdit',
-              asyncParams: {
-                'borewellReference':
-                    getDoc(['users', 'borewell'], BorewellRecord.serializer),
-              },
-              builder: (context, params) => BorewellEditWidget(
-                borewellReference:
-                    params.getParam('borewellReference', ParamType.Document),
-              ),
-            ),
+
             FFRoute(
               name: 'MeterEdit',
               path: 'meterEdit',

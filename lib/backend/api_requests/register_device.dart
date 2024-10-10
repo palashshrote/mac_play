@@ -12,9 +12,13 @@ import 'package:hydrow/flutter_flow/nav/nav.dart';
 
 class RegisterDevice extends StatefulWidget {
   final String deviceType;
+  // final DocumentReference parent;
   final String qrData;
   const RegisterDevice(
-      {super.key, required this.deviceType, required this.qrData});
+      {super.key,
+      required this.deviceType,
+      // required this.parent,
+      required this.qrData});
 
   @override
   State<RegisterDevice> createState() => _RegisterDeviceState();
@@ -23,7 +27,8 @@ class RegisterDevice extends StatefulWidget {
 class _RegisterDeviceState extends State<RegisterDevice> {
   late String _deviceType;
   late String _qrData;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  // late DocumentReference _parent;
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController devicenameController = TextEditingController();
   bool _isButtonDisabled = false;
 
@@ -43,6 +48,7 @@ class _RegisterDeviceState extends State<RegisterDevice> {
   void initState() {
     super.initState();
     _deviceType = widget.deviceType;
+    // _parent = widget.parent;
     _qrData = widget.qrData;
   }
 
@@ -106,7 +112,12 @@ class _RegisterDeviceState extends State<RegisterDevice> {
                     ),
                     actionBtnWidget(
                       'C O N F I R M',
-                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                      onPressed: () => Future.delayed(
+                        Duration(seconds: 2),
+                        () {
+                          Navigator.pop(alertDialogContext, true);
+                        },
+                      ),
                     ),
                   ],
                 );
@@ -128,40 +139,9 @@ class _RegisterDeviceState extends State<RegisterDevice> {
                   <Widget>[
                     actionBtnWidget(
                       "O K",
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.pop(context);
-                        Navigator.pop(context);
-                        if (_deviceType == "Tank") {
-                          context.pushNamed(
-                            'CubeOrCy',
-                            queryParams: {
-                              'tankKey': serializeParam(
-                                _qrData,
-                                ParamType.String,
-                              ),
-                            }.withoutNulls,
-                          );
-                        } else if (_deviceType == "Meter") {
-                          context.pushNamed(
-                            'AddDevicePravah',
-                            queryParams: {
-                              'meterKey': serializeParam(
-                                _qrData,
-                                ParamType.String,
-                              ),
-                            }.withoutNulls,
-                          );
-                        } else {
-                          context.pushNamed(
-                            'AddDeviceDebore',
-                            queryParams: {
-                              'borewellKey': serializeParam(
-                                _qrData,
-                                ParamType.String,
-                              ),
-                            }.withoutNulls,
-                          );
-                        }
+                        Navigator.pop(context, 'success');
                       },
                     ),
                   ],
@@ -189,9 +169,9 @@ class _RegisterDeviceState extends State<RegisterDevice> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
+    // context.watch<FFAppState>();
     return Scaffold(
-      key: scaffoldKey,
+      // key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
       appBar: genAppBar("Register Device"),
       body: Padding(
@@ -215,6 +195,7 @@ class _RegisterDeviceState extends State<RegisterDevice> {
                     ? disabledBtn("Register")
                     : Expanded(
                         child: ElevatedButton(
+                          // onPressed: () {},
                           onPressed: addToFirestore,
                           style: devButtonStyle,
                           child: Text(
