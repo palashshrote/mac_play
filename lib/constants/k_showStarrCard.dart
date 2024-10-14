@@ -317,7 +317,8 @@ Widget showStarrCardOptimised(List<TankRecord> listViewTankRecordList,
           } else if (snapshot.hasError) {
             return const Text('Error fetching data');
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return const Text('No data available');
+            // return const Text('No data available');
+            return NADeviceCardWidget(listViewTankRecord.tankName!);
           }
 
           var tankData = snapshot.data!;

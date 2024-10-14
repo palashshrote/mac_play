@@ -211,7 +211,8 @@ Widget showDeboreCardOptimised(List<BorewellRecord> listViewBorewellRecordList,
           } else if (snapshot.hasError) {
             return const Text('Error fetching data');
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return const Text('No data available');
+            // return const Text('No data available');
+            return NADeviceCardWidget(listViewBorewellRecord.borewellName!);
           }
 
           var borewellData = snapshot.data!;
@@ -320,6 +321,41 @@ Widget showDeboreCardOptimised(List<BorewellRecord> listViewBorewellRecordList,
         },
       );
     },
+  );
+}
+
+Widget NADeviceCardWidget(String deviceName) {
+  return Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(15.0, 20.0, 15.0, 0.0),
+    child: Container(
+      height: 100,
+      decoration: inactiveDeviceDecorationStyle,
+      child: Padding(
+        padding: const EdgeInsets.all(22.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "N/A",
+              style: GF.GoogleFonts.leagueSpartan(
+                color: Color(0xFFFFFFFF),
+                // color: Color(0xFF91D9E9),
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              deviceName,
+              style: GF.GoogleFonts.leagueSpartan(
+                color: Color(0xFFFFFFFF),
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }
 

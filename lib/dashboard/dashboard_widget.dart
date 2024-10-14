@@ -303,10 +303,14 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                   style: errorDataStyle);
                                             } else if (!snapshot.hasData ||
                                                 snapshot.data == null) {
-                                              return  Text(
-                                                'No data available',
-                                                style: errorDataStyle,
-                                              );
+                                              print("No wave available");
+                                              return Container();
+                                              // return Center(
+                                              //   child: Text(
+                                              //     'No wave available',
+                                              //     style: errorDataStyle,
+                                              //   ),
+                                              // );
                                             }
 
                                             var tankData = snapshot.data!;
@@ -345,52 +349,52 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                         capacityC!)
                                                     : 0.0;
 
-                                            var tankFilled = waterLevel == "N/A"
-                                                ? "N/A"
-                                                : functions
-                                                        .convertToInt(
-                                                          functions.tankAPI(
-                                                              functions
-                                                                  .calculateWaterAvailable(
-                                                                containerTankRecord
-                                                                    .length!,
-                                                                containerTankRecord
-                                                                    .breadth!,
-                                                                containerTankRecord
-                                                                    .height!,
-                                                                containerTankRecord
-                                                                    .radius!,
-                                                                waterLevel,
-                                                                containerTankRecord
-                                                                    .isCuboid!,
-                                                              ),
-                                                              capacityC),
-                                                        )
-                                                        .toString() +
-                                                    "%";
-                                            var availForUse =
-                                                waterLevel == "N/A"
-                                                    ? "N/A"
-                                                    : functions.shortenNumber(
-                                                          functions
-                                                              .calculateWaterAvailable(
-                                                            containerTankRecord
-                                                                .length!,
-                                                            containerTankRecord
-                                                                .breadth!,
-                                                            containerTankRecord
-                                                                .height!,
-                                                            containerTankRecord
-                                                                .radius!,
-                                                            waterLevel,
-                                                            containerTankRecord
-                                                                .isCuboid!,
-                                                          ),
-                                                        ) +
-                                                        "L";
-                                            var totalVol = functions
-                                                    .shortenNumber(capacityC) +
-                                                "L";
+                                            // var tankFilled = waterLevel == "N/A"
+                                            //     ? "N/A"
+                                            //     : functions
+                                            //             .convertToInt(
+                                            //               functions.tankAPI(
+                                            //                   functions
+                                            //                       .calculateWaterAvailable(
+                                            //                     containerTankRecord
+                                            //                         .length!,
+                                            //                     containerTankRecord
+                                            //                         .breadth!,
+                                            //                     containerTankRecord
+                                            //                         .height!,
+                                            //                     containerTankRecord
+                                            //                         .radius!,
+                                            //                     waterLevel,
+                                            //                     containerTankRecord
+                                            //                         .isCuboid!,
+                                            //                   ),
+                                            //                   capacityC),
+                                            //             )
+                                            //             .toString() +
+                                            //         "%";
+                                            // var availForUse =
+                                            //     waterLevel == "N/A"
+                                            //         ? "N/A"
+                                            //         : functions.shortenNumber(
+                                            //               functions
+                                            //                   .calculateWaterAvailable(
+                                            //                 containerTankRecord
+                                            //                     .length!,
+                                            //                 containerTankRecord
+                                            //                     .breadth!,
+                                            //                 containerTankRecord
+                                            //                     .height!,
+                                            //                 containerTankRecord
+                                            //                     .radius!,
+                                            //                 waterLevel,
+                                            //                 containerTankRecord
+                                            //                     .isCuboid!,
+                                            //               ),
+                                            //             ) +
+                                            //             "L";
+                                            // var totalVol = functions
+                                            //         .shortenNumber(capacityC) +
+                                            //     "L";
 
                                             return Positioned(
                                               child: WaveWidget(
@@ -469,14 +473,69 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                         return const CircularProgressIndicator();
                                                       } else if (snapshot
                                                           .hasError) {
-                                                        return const Text(
-                                                            'Error fetching data');
+                                                        return Text(
+                                                          'Error fetching data',
+                                                          style: errorDataStyle,
+                                                        );
                                                       } else if (!snapshot
                                                               .hasData ||
                                                           snapshot.data ==
                                                               null) {
-                                                        return const Text(
-                                                            'No data available');
+                                                        return Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Row(
+                                                              //Row 1
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Container(
+                                                                  child: Text(
+                                                                    containerTankRecord
+                                                                        .tankName!, //replace with $tankname variable
+                                                                    // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
+                                                                    style: GF
+                                                                            .GoogleFonts
+                                                                        .leagueSpartan(
+                                                                      fontSize:
+                                                                          30,
+                                                                      color: Color(
+                                                                          0xFFFFFFFF),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis, // new
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Text(
+                                                              'No data available',
+                                                              style:
+                                                                  errorDataStyle,
+                                                            ),
+                                                            Row(
+                                                              //Row4
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                refreshButton2(
+                                                                    () async {
+                                                                  setState(
+                                                                    () {},
+                                                                  );
+                                                                }),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        );
                                                       }
 
                                                       var tankData =
@@ -561,7 +620,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                             children: [
                                                               Container(
                                                                 child: Text(
-                                                                  containerTankRecord!
+                                                                  containerTankRecord
                                                                       .tankName!, //replace with $tankname variable
                                                                   // Text(text.length > 8 ? '${text.substring(0, 8)}...' : text); for input variable $text
                                                                   style: GF
@@ -747,51 +806,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                                   () {},
                                                                 );
                                                               }),
-                                                              /*ElevatedButton
-                                                                  .icon(
-                                                                // <-- ElevatedButton
-                                                                onPressed:
-                                                                    () async {
-                                                                  //  isActive =
-                                                                  //     true;
-                                                                  setState(
-                                                                      () {});
-                                                                },
-                                                                icon: Icon(
-                                                                  CupertinoIcons
-                                                                      .arrow_2_squarepath,
-                                                                  size: 16.0,
-                                                                  color: Color(
-                                                                      0xFF0C0C0C),
-                                                                ),
-                                                                label: Text(
-                                                                  'Refresh',
-                                                                  style: GF
-                                                                          .GoogleFonts
-                                                                      .leagueSpartan(
-                                                                    fontSize:
-                                                                        16,
-                                                                    color: Color(
-                                                                        0xFF0C0C0C),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                ),
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            7.5),
-                                                                  ),
-                                                                  backgroundColor:
-                                                                      Color(
-                                                                          0xFFC6DDDB),
-                                                                ),
-                                                              )
-                                                            */
                                                             ],
                                                           ),
                                                         ],

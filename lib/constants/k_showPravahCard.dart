@@ -446,7 +446,8 @@ Widget showPravahCardOptimised(List<MeterRecord> listViewMeterRecordList,
           } else if (snapshot.hasError) {
             return const Text('Error fetching data');
           } else if (!snapshot.hasData || snapshot.data == null) {
-            return const Text('No data available');
+            // return const Text('No data available');
+            return NADeviceCardWidget(listViewMeterRecord.meterName!);
           }
 
           var meterData = snapshot.data!;

@@ -74,7 +74,7 @@ class _BorewellSummaryT2WidgetState extends State<BorewellSummaryT2Widget>
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF0C0C0C),
-      appBar: genAppBar("All Dbore devices", centerTitle: true),
+      appBar: genAppBar("All Dbore Devices", centerTitle: true),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
