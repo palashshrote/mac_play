@@ -91,7 +91,40 @@ String? extractDocidFromDocref(DocumentReference? docRef) {
   }
   return null;
 }
+Future<Map<String, dynamic>> findTimeWiseErrorCode2(
+    String collectionName, Map<String, String> keysNameMap) async {
+  CollectionReference errorCodes =
+      FirebaseFirestore.instance.collection(collectionName);
 
+  try {
+    QuerySnapshot snapshot = await errorCodes.get();
+    List<QueryDocumentSnapshot> documents = snapshot.docs;
+    // documents.data()
+
+    for (var doc in documents) {
+      print(doc.id); // Document ID
+      print(doc.data()); // Document data as a Map<String, dynamic>
+    }
+    Map<String, dynamic> data = documents.first.data() as Map<String, dynamic>;
+    // Map<String, dynamic> sortedData = {
+    //   for (var key in keyList)
+    //     if (data.containsKey(key)) key: data[key]
+    // };
+    Map<String, dynamic> sortedData = {};
+    for (var key in keysNameMap.keys) {
+      if (data.containsKey(key)) {
+        sortedData[key] = data[key];
+      }
+    }
+    
+    sortedData['date'] = data['date'];
+    // print(sortedData);
+    return sortedData;
+  } catch (e) {
+    print("Error fetching data: $e");
+    return {};
+  }
+}
 Future<Map<String, dynamic>> findTimeWiseErrorCode(
     String collectionName, List<String> keyList) async {
   CollectionReference errorCodes =

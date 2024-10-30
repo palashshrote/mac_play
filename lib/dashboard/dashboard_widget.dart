@@ -9,6 +9,7 @@ import 'package:hydrow/edit_device_debore/edit_device_debore_widget.dart';
 import 'package:hydrow/edit_device_pravah/edit_device_pravah_widget.dart';
 import 'package:hydrow/primary_borewell/primary_borewell_widget.dart';
 import 'package:hydrow/primary_meter/primary_meter_widget.dart';
+import 'package:hydrow/services/repos/chat_repo.dart';
 import 'package:hydrow/utils/network_connectivity_widget.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../components/TermsandCondition_widget.dart';
@@ -85,6 +86,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
   bool isActive = true;
   bool isActivePravah = true;
   bool isActiveDebore = true;
+  bool deboreGeminiResult = false;
+
+  String geminiSummary = "";
   // double _waterlevel = 0.5;
 
   @override
@@ -1711,29 +1715,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       20, 30, 20, 30),
                                   child: Column(
                                     children: [
-                                      /*
-                                      showAllDevicesButton("Show All Devices old",
-                                          () async {
-                                        if (!await InternetConnectionCheckerPlus()
-                                            .hasConnection) {
-                                          ScaffoldMessenger.of(context)
-                                              .hideCurrentSnackBar();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Please connect to the internet'),
-                                            ),
-                                          );
-                                        } else {
-                                          context.pushNamed(
-                                              'BorewellSummaryTesting');
-                                        }
-                                      }),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      */
                                       showAllDevicesButton("Show All Devices",
                                           () async {
                                         if (!await InternetConnectionCheckerPlus()
@@ -1752,59 +1733,85 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                               .pushNamed('BorewellSummaryT2');
                                         }
                                       }, null),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
                                       showAllDevicesButton(
-                                        "fetch Dbore KeyList",
+                                        deboreGeminiResult == false
+                                            ? "Get Summary with Gemini"
+                                            : "Close ",
                                         null,
                                         () async {
-                                          // List<String> deboreKeyList =
-                                          //     await fetchKeyList(
-                                          //         extractDocidFromDocref(
-                                          //             currentUserReference)!,
-                                          //         "borewell");
-                                          List<String> deboreKeyList = [];
-                                          List<String> deboreNameList = [];
-                                          Stream<List<BorewellRecord>>
-                                              fetchedKeys = queryBorewellRecord(
-                                            parent: currentUserReference,
-                                          );
-                                          // print(deboreKeyList);
-                                          fetchedKeys.listen((data) {
-                                            // Clear lists if you want only the latest data each time
-                                            deboreKeyList.clear();
-                                            deboreNameList.clear();
-
-                                            // Populate the lists
-                                            for (var record in data) {
-                                              deboreKeyList
-                                                  .add(record.borewellKey!);
-                                              deboreNameList
-                                                  .add(record.borewellName!);
-                                            }
-
-                                            // Printing to verify the updated lists
-                                            print(
-                                                "Updated Length of keys : ${deboreKeyList.length}");
-                                            print("Keys: $deboreKeyList");
-                                            print("Names: $deboreNameList");
-
-                                            // If this needs to trigger some other method
-                                            // after lists are updated, you can call it here
+                                          setState(() {
+                                            deboreGeminiResult =
+                                                !deboreGeminiResult;
                                           });
-                                          await Future.delayed(
-                                              Duration(seconds: 1));
+                                          if (deboreGeminiResult == true) {
+                                            Map<String, String> keysNameMap =
+                                                {};
+                                            Stream<List<BorewellRecord>>
+                                                fetchedKeys =
+                                                queryBorewellRecord(
+                                              parent: currentUserReference,
+                                            );
+                                            fetchedKeys.listen((data) {
+                                              for (var record in data) {
+                                                keysNameMap[
+                                                        record.borewellKey!] =
+                                                    record.borewellName!;
+                                              }
+                                            });
+                                            await Future.delayed(
+                                                Duration(seconds: 1));
 
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DeboreResponseWidget(
-                                                deboreKeyList: deboreKeyList,
-                                                deboreNameList: deboreNameList,
-                                              ),
-                                            ),
-                                          );
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         DeboreResponseWidget(
+                                            //       keysNameMap: keysNameMap,
+                                            //     ),
+                                            //   ),
+                                            // );
+
+                                            Map<String, dynamic> errorCodes =
+                                                await findTimeWiseErrorCode2(
+                                                    'errorCodeDboreTesting',
+                                                    keysNameMap);
+                                            print(errorCodes);
+                                            print(keysNameMap);
+                                            String deboresummary =
+                                                await ChatRepo
+                                                    .chatTextGenerationRepo(
+                                                        errorCodes.toString(),
+                                                        keysNameMap.toString());
+                                            setState(() {
+                                              geminiSummary = deboresummary;
+                                            });
+                                          }
+                                          // generateChatResponse(
+                                          //     input: errorCodes.toString(), keysName: keysNameMap.toString());
                                         },
                                       ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      deboreGeminiResult == true
+                                          ? Container(
+                                              // height: 250,
+                                              padding: EdgeInsets.all(8.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              ),
+                                              width: double.infinity,
+                                              // color: Colors.grey,
+                                              child: Flexible(
+                                                child: Text(geminiSummary),
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ),
