@@ -1395,9 +1395,24 @@ Widget defaultDeviceSpecsHeading(String str) {
   );
 }
 
-Widget showAllDevicesButton(String str, void Function()? onPressFunction) {
+Widget showAllDevicesButton(String str, void Function()? onPressFunction,
+    Future<void> Function()? demo) {
   return ElevatedButton(
-    onPressed: onPressFunction,
+    onPressed: onPressFunction ?? demo,
+    child: Text(str,
+        style: GF.GoogleFonts.leagueSpartan(
+          fontSize: 18,
+          color: Color(0xFF0C0C0C),
+          fontWeight: FontWeight.w600,
+        )),
+    style: showAllDeviceButtonStyle,
+  );
+}
+
+Widget fetchKeysfromUser(
+    String str, void Function()? onPressFunction, void Function()? demo) {
+  return ElevatedButton(
+    onPressed: onPressFunction ?? demo,
     child: Text(str,
         style: GF.GoogleFonts.leagueSpartan(
           fontSize: 18,

@@ -85,6 +85,41 @@ Future<int> queryTankRecordCount({
       limit: limit,
     );
 
+String? extractDocidFromDocref(DocumentReference? docRef) {
+  if (docRef != null) {
+    return docRef.id;
+  }
+  return null;
+}
+
+Future<Map<String, dynamic>> findTimeWiseErrorCode(
+    String collectionName, List<String> keyList) async {
+  CollectionReference errorCodes =
+      FirebaseFirestore.instance.collection(collectionName);
+
+  try {
+    QuerySnapshot snapshot = await errorCodes.get();
+    List<QueryDocumentSnapshot> documents = snapshot.docs;
+    // documents.data()
+
+    for (var doc in documents) {
+      print(doc.id); // Document ID
+      print(doc.data()); // Document data as a Map<String, dynamic>
+    }
+    Map<String, dynamic> data = documents.first.data() as Map<String, dynamic>;
+    Map<String, dynamic> sortedData = {
+      for (var key in keyList)
+        if (data.containsKey(key)) key: data[key]
+    };
+    sortedData['date'] = data['date'];
+    // print(sortedData);
+    return sortedData;
+  } catch (e) {
+    print("Error fetching data: $e");
+    return {};
+  }
+}
+
 Stream<List<TankRecord>> queryTankRecord({
   DocumentReference? parent,
   Query Function(Query)? queryBuilder,
@@ -98,6 +133,73 @@ Stream<List<TankRecord>> queryTankRecord({
       limit: limit,
       singleRecord: singleRecord,
     );
+
+Future<List<String>> fetchKeyList(String userId, String deviceType) async {
+  print("User ID: ${userId}");
+  try {
+    // Get reference to the specific user document
+    DocumentReference userDocRef =
+        FirebaseFirestore.instance.collection('users').doc(userId);
+
+    // Fetch the document
+    DocumentSnapshot userSnapshot = await userDocRef.get();
+
+    // DocumentReference borewellDocRef = FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(userId)
+    //     .collection('borewell');
+
+    if (userSnapshot.exists) {
+      // Extract the 'KeyList' field from the document
+      List<dynamic> keyList = [];
+      if (deviceType == "tank") {
+        keyList = userSnapshot['keyList'] ?? [];
+        fetchTankDetails(keyList);
+      } else if (deviceType == "meter") {
+        keyList = userSnapshot['meterKeyList'] ?? [];
+      } else if (deviceType == "borewell") {
+        keyList = userSnapshot['borewellKeyList'] ?? [];
+      }
+
+      // If the list is non-empty, return the casted List<String>
+      // print(keyList);
+
+      return keyList.cast<String>();
+    } else {
+      print("User document does not exist");
+      return [];
+    }
+  } catch (e) {
+    print("Error fetching KeyList: $e");
+    return [];
+  }
+}
+
+Future<void> fetchTankDetails(List<dynamic> keyListD) async {
+  List<String> keyList = keyListD.map((key) => key.toString()).toList();
+  CollectionReference tankCollection =
+      FirebaseFirestore.instance.collection("Tank");
+  for (String key in keyList) {
+    try {
+      QuerySnapshot querySnapshot =
+          await tankCollection.where('TankKey', isEqualTo: key).get();
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var doc in querySnapshot.docs) {
+          var data = doc.data() as Map<String, dynamic>;
+          dynamic temperature = data['Temperature'];
+          dynamic waterLevel = data['WaterLevel'];
+          print("TankKey: $key");
+          print("Temperature: $temperature");
+          print("WaterLevel: $waterLevel");
+        }
+      } else {
+        print("No doc found for keyList: $key");
+      }
+    } catch (e) {
+      print("Error fetching tank details for key $key = $e.toString()");
+    }
+  }
+}
 
 Future<List<TankRecord>> queryTankRecordOnce({
   DocumentReference? parent,

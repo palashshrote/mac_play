@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:hydrow/ai_response/debore_response_widget.dart';
 import 'package:hydrow/backend/schema/borewell_record.dart';
 import 'package:hydrow/constants/k_dashboard_container.dart';
 import 'package:hydrow/constants/k_generalized.dart';
@@ -879,7 +880,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       20, 30, 20, 30),
-                                  child: Row(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       /*
@@ -922,7 +923,15 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             context.pushNamed('TankSummaryT2');
                                           }
                                         },
+                                        null,
                                       ),
+                                      showAllDevicesButton(
+                                          "fetch KeyList", null, () async {
+                                        fetchKeyList(
+                                            extractDocidFromDocref(
+                                                currentUserReference)!,
+                                            "tank");
+                                      }),
                                     ],
                                   ),
                                 ),
@@ -1482,6 +1491,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           context.pushNamed('MeterSummaryT2');
                                         }
                                       },
+                                      null,
                                     ),
                                   ],
                                 ),
@@ -1741,7 +1751,60 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           context
                                               .pushNamed('BorewellSummaryT2');
                                         }
-                                      }),
+                                      }, null),
+                                      showAllDevicesButton(
+                                        "fetch Dbore KeyList",
+                                        null,
+                                        () async {
+                                          // List<String> deboreKeyList =
+                                          //     await fetchKeyList(
+                                          //         extractDocidFromDocref(
+                                          //             currentUserReference)!,
+                                          //         "borewell");
+                                          List<String> deboreKeyList = [];
+                                          List<String> deboreNameList = [];
+                                          Stream<List<BorewellRecord>>
+                                              fetchedKeys = queryBorewellRecord(
+                                            parent: currentUserReference,
+                                          );
+                                          // print(deboreKeyList);
+                                          fetchedKeys.listen((data) {
+                                            // Clear lists if you want only the latest data each time
+                                            deboreKeyList.clear();
+                                            deboreNameList.clear();
+
+                                            // Populate the lists
+                                            for (var record in data) {
+                                              deboreKeyList
+                                                  .add(record.borewellKey!);
+                                              deboreNameList
+                                                  .add(record.borewellName!);
+                                            }
+
+                                            // Printing to verify the updated lists
+                                            print(
+                                                "Updated Length of keys : ${deboreKeyList.length}");
+                                            print("Keys: $deboreKeyList");
+                                            print("Names: $deboreNameList");
+
+                                            // If this needs to trigger some other method
+                                            // after lists are updated, you can call it here
+                                          });
+                                          await Future.delayed(
+                                              Duration(seconds: 1));
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DeboreResponseWidget(
+                                                deboreKeyList: deboreKeyList,
+                                                deboreNameList: deboreNameList,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
