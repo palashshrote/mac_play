@@ -87,6 +87,8 @@ class _DashboardWidgetState extends State<DashboardWidget>
   bool isActivePravah = true;
   bool isActiveDebore = true;
   bool deboreGeminiResult = false;
+  bool starrGeminiResult = false;
+  bool pravahGeminiResult = false;
 
   String geminiSummary = "";
   // double _waterlevel = 0.5;
@@ -887,28 +889,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      /*
-                                      showAllDevicesButton(
-                                        "Show All Devices old",
-                                        () async {
-                                          if (!await InternetConnectionCheckerPlus()
-                                              .hasConnection) {
-                                            ScaffoldMessenger.of(context)
-                                                .hideCurrentSnackBar();
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                    'Please connect to the internet'),
-                                              ),
-                                            );
-                                          } else {
-                                            context.pushNamed(
-                                                'TankSummaryTesting');
-                                          }
-                                        },
-                                      ),
-                                      */
                                       showAllDevicesButton(
                                         "Show All Devices",
                                         () async {
@@ -929,13 +909,72 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                         },
                                         null,
                                       ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
                                       showAllDevicesButton(
-                                          "fetch KeyList", null, () async {
-                                        fetchKeyList(
-                                            extractDocidFromDocref(
-                                                currentUserReference)!,
-                                            "tank");
-                                      }),
+                                        starrGeminiResult == false
+                                            ? "Get Summary with Gemini St"
+                                            : "Close st",
+                                        null,
+                                        () async {
+                                          setState(() {
+                                            starrGeminiResult =
+                                                !starrGeminiResult;
+                                          });
+                                          if (starrGeminiResult == true) {
+                                            Map<String, String> keysNameMap =
+                                                {};
+                                            Stream<List<TankRecord>>
+                                                fetchedKeys = queryTankRecord(
+                                              parent: currentUserReference,
+                                            );
+                                            fetchedKeys.listen((data) {
+                                              for (var record in data) {
+                                                keysNameMap[record.tankKey!] =
+                                                    record.tankName!;
+                                              }
+                                            });
+                                            await Future.delayed(
+                                                Duration(seconds: 1));
+
+                                            Map<String, dynamic> errorCodes =
+                                                await findTimeWiseErrorCode2(
+                                                    'errorCodeDboreTesting', //errorCodeStarrTesting
+                                                    keysNameMap);
+                                            print(errorCodes);
+                                            print(keysNameMap);
+                                            String starrsummary = await ChatRepo
+                                                .chatTextGenerationRepo(
+                                                    errorCodes.toString(),
+                                                    keysNameMap.toString());
+                                            setState(() {
+                                              geminiSummary = starrsummary;
+                                            });
+                                          }
+                                          // generateChatResponse(
+                                          //     input: errorCodes.toString(), keysName: keysNameMap.toString());
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      starrGeminiResult == true
+                                          ? Container(
+                                              // height: 250,
+                                              padding: EdgeInsets.all(8.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                              ),
+                                              width: double.infinity,
+                                              // color: Colors.grey,
+                                              child: Flexible(
+                                                child: Text(geminiSummary),
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ),
@@ -1455,28 +1494,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                     20, 30, 20, 30),
                                 child: Column(
                                   children: [
-                                    /*
-                                    showAllDevicesButton(
-                                      "Show All Devices old",
-                                      () async {
-                                        if (!await InternetConnectionCheckerPlus()
-                                            .hasConnection) {
-                                          ScaffoldMessenger.of(context)
-                                              .hideCurrentSnackBar();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Please connect to the internet'),
-                                            ),
-                                          );
-                                        } else {
-                                          context
-                                              .pushNamed('MeterSummaryTesting');
-                                        }
-                                      },
-                                    ),
-                                    */
                                     showAllDevicesButton(
                                       "Show All Devices",
                                       () async {
@@ -1497,6 +1514,71 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       },
                                       null,
                                     ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    showAllDevicesButton(
+                                      pravahGeminiResult == false
+                                          ? "Get Summary with Gemini Pr"
+                                          : "Close pr",
+                                      null,
+                                      () async {
+                                        setState(() {
+                                          pravahGeminiResult =
+                                              !pravahGeminiResult;
+                                        });
+                                        if (pravahGeminiResult == true) {
+                                          Map<String, String> keysNameMap = {};
+                                          Stream<List<MeterRecord>>
+                                              fetchedKeys = queryMeterRecord(
+                                            parent: currentUserReference,
+                                          );
+                                          fetchedKeys.listen((data) {
+                                            for (var record in data) {
+                                              keysNameMap[record.meterKey!] =
+                                                  record.meterName!;
+                                            }
+                                          });
+                                          await Future.delayed(
+                                              Duration(seconds: 1));
+
+                                          Map<String, dynamic> errorCodes =
+                                              await findTimeWiseErrorCode2(
+                                                  'errorCodeDboreTesting', //errorCodePravahTesting
+                                                  keysNameMap);
+                                          print(errorCodes);
+                                          print(keysNameMap);
+                                          String pravahsummary = await ChatRepo
+                                              .chatTextGenerationRepo(
+                                                  errorCodes.toString(),
+                                                  keysNameMap.toString());
+                                          setState(() {
+                                            geminiSummary = pravahsummary;
+                                          });
+                                        }
+                                        // generateChatResponse(
+                                        //     input: errorCodes.toString(), keysName: keysNameMap.toString());
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    pravahGeminiResult == true
+                                        ? Container(
+                                            // height: 250,
+                                            padding: EdgeInsets.all(8.0),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                            ),
+                                            width: double.infinity,
+                                            // color: Colors.grey,
+                                            child: Flexible(
+                                              child: Text(geminiSummary),
+                                            ),
+                                          )
+                                        : Container(),
                                   ],
                                 ),
                               ),
