@@ -3,12 +3,13 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:hydrow/services/constants.dart';
-import 'package:hydrow/services/models/chat_message_model.dart';
+// import 'package:hydrow/services/models/chat_message_model.dart';
 
 class ChatRepo {
   // static chatTextGenerationRepo(List<ChatMessageModel> previousMessages) async {
 
-  static Future<String> chatTextGenerationRepo(String input, String keysName) async {
+  static Future<String> chatTextGenerationRepo(
+      String input, String keysName) async {
     try {
       Dio dio = Dio();
 

@@ -940,7 +940,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
 
                                             Map<String, dynamic> errorCodes =
                                                 await findTimeWiseErrorCode2(
-                                                    'errorCodeDboreTesting', //errorCodeStarrTesting
+                                                    'errorCodeStarrTesting', //errorCodeStarrTesting
                                                     keysNameMap);
                                             print(errorCodes);
                                             print(keysNameMap);
@@ -1175,9 +1175,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                       SizedBox(
                                                         height: 20,
                                                       ),
-                                                      // isActivePravah
-                                                      //     ?
-                                                      // : Text("N/A"),
                                                       FutureBuilder<
                                                           Map<String,
                                                               dynamic>?>(
@@ -1359,7 +1356,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                           );
                                                         },
                                                       ),
-
                                                       SizedBox(
                                                         height: 20,
                                                       ),
@@ -1373,49 +1369,6 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                                               () async {
                                                             setState(() {});
                                                           }),
-                                                          /*
-                                                          ElevatedButton.icon(
-                                                            // <-- ElevatedButton
-                                                            onPressed:
-                                                                () async {
-                                                              setState(() {});
-                                                            },
-                                                            icon: Icon(
-                                                              CupertinoIcons
-                                                                  .arrow_2_squarepath,
-                                                              size: 16.0,
-                                                              color: Color(
-                                                                  0xFF0C0C0C),
-                                                            ),
-                                                            label: Text(
-                                                              'Refresh',
-                                                              style: GF
-                                                                      .GoogleFonts
-                                                                  .leagueSpartan(
-                                                                fontSize: 16,
-                                                                color: Color(
-                                                                    0xFF0C0C0C),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            7.5),
-                                                              ),
-                                                              backgroundColor:
-                                                                  Color(
-                                                                      0xFFC6DDDB),
-                                                            ),
-                                                          )
-                                                        */
                                                         ],
                                                       ),
                                                     ],
@@ -1544,7 +1497,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
 
                                           Map<String, dynamic> errorCodes =
                                               await findTimeWiseErrorCode2(
-                                                  'errorCodeDboreTesting', //errorCodePravahTesting
+                                                  'errorCodePravahTesting', //errorCodePravahTesting
                                                   keysNameMap);
                                           print(errorCodes);
                                           print(keysNameMap);

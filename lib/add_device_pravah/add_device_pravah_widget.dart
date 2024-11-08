@@ -245,20 +245,7 @@ class _AddDevicePravahWidgetState extends State<AddDevicePravahWidget>
                                               Text('O K'),
                                             ),
                                           ],
-                                        );
-                                        /*
-                                  return AlertDialog(
-                                    title: Text('Succcess'),
-                                    content: Text('Device added successfully'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        child: Text('Ok'),
-                                      ),
-                                    ],
-                                  );
-                                  */
+                                        ); 
                                       },
                                     );
                                     // context.pushNamed('Dashboard');

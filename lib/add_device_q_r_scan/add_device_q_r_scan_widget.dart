@@ -151,24 +151,9 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                         true, // whether to show the flash icon
                                         ScanMode.QR,
                                       );
-                                      // print("No ErRorRR till now");
-                                      // print("Model output: ${_model.qROutput}");
-                                      // print("Answer is ${functions.qrStarr(_model.qROutput)}");
                                     } catch (e) {
                                       // print("Error: $e");
-                                    }
-                                    // _model.qROutput =
-                                    //     await FlutterBarcodeScanner.scanBarcode(
-                                    //   '#C62828', // scanning line color
-                                    //   'Cancel', // cancel button text
-                                    //   true, // whether to show the flash icon
-                                    //   ScanMode.QR,
-                                    // );
-
-                                    // if(_model.qROutput=="-1"){
-                                    //   print("Cancel Button Pressed");
-                                    //   context.pushNamed('AddDeviceQRScan');
-                                    // }
+                                    } 
 
                                     if (functions.qrStarr(_model.qROutput)) {
                                       // String? tr1 = serializeParam(
@@ -186,16 +171,7 @@ class _AddDeviceQRScanWidgetState extends State<AddDeviceQRScanWidget>
                                         //register code
                                         print(
                                             "Device not registered, navigating to register page");
-                                        // context.pushNamed('Register',
-                                        //     queryParams: {
-                                        //       'deviceType': serializeParam(
-                                        //         "Tank",
-                                        //         ParamType.String,
-                                        //       ),
-                                        //       'qrData': serializeParam(
-                                        //           _model.qROutput,
-                                        //           ParamType.String),
-                                        //     }.withoutNulls);
+                                       
                                         final result = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
