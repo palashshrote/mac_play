@@ -91,6 +91,9 @@ class _DashboardWidgetState extends State<DashboardWidget>
   bool pravahGeminiResult = false;
 
   String geminiSummary = "";
+  String geminiSummaryStarr = "";
+  String geminiSummaryPravah = "";
+  String geminiSummaryDebore = "";
   // double _waterlevel = 0.5;
 
   @override
@@ -123,6 +126,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
     super.dispose();
   }
 
+  ChatRepo chr = ChatRepo();
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
@@ -914,7 +918,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       ),
                                       showAllDevicesButton(
                                         starrGeminiResult == false
-                                            ? "Get Summary with Gemini St"
+                                            ? "Summarize with Gemini"
                                             : "Close st",
                                         null,
                                         () async {
@@ -940,16 +944,16 @@ class _DashboardWidgetState extends State<DashboardWidget>
 
                                             Map<String, dynamic> errorCodes =
                                                 await findTimeWiseErrorCode2(
-                                                    'errorCodeStarrTesting', //errorCodeStarrTesting
+                                                    'errorCodeStarr', //errorCodeStarrTesting
                                                     keysNameMap);
                                             print(errorCodes);
                                             print(keysNameMap);
-                                            String starrsummary = await ChatRepo
+                                            String starrsummary = await chr
                                                 .chatTextGenerationRepo(
                                                     errorCodes.toString(),
                                                     keysNameMap.toString());
                                             setState(() {
-                                              geminiSummary = starrsummary;
+                                              geminiSummaryStarr = starrsummary;
                                             });
                                           }
                                           // generateChatResponse(
@@ -971,7 +975,13 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                               width: double.infinity,
                                               // color: Colors.grey,
                                               child: Flexible(
-                                                child: Text(geminiSummary),
+                                                child: Text(
+                                                  geminiSummaryStarr,
+                                                  style: GF.GoogleFonts
+                                                      .leagueSpartan(
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
                                               ),
                                             )
                                           : Container(),
@@ -1472,7 +1482,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                     ),
                                     showAllDevicesButton(
                                       pravahGeminiResult == false
-                                          ? "Get Summary with Gemini Pr"
+                                          ? "Summarize with Gemini"
                                           : "Close pr",
                                       null,
                                       () async {
@@ -1497,16 +1507,16 @@ class _DashboardWidgetState extends State<DashboardWidget>
 
                                           Map<String, dynamic> errorCodes =
                                               await findTimeWiseErrorCode2(
-                                                  'errorCodePravahTesting', //errorCodePravahTesting
+                                                  'errorCodePravah', //errorCodePravahTesting
                                                   keysNameMap);
                                           print(errorCodes);
                                           print(keysNameMap);
-                                          String pravahsummary = await ChatRepo
-                                              .chatTextGenerationRepo(
+                                          String pravahsummary =
+                                              await chr.chatTextGenerationRepo(
                                                   errorCodes.toString(),
                                                   keysNameMap.toString());
                                           setState(() {
-                                            geminiSummary = pravahsummary;
+                                            geminiSummaryPravah = pravahsummary;
                                           });
                                         }
                                         // generateChatResponse(
@@ -1528,7 +1538,13 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             width: double.infinity,
                                             // color: Colors.grey,
                                             child: Flexible(
-                                              child: Text(geminiSummary),
+                                              child: Text(
+                                                geminiSummaryPravah,
+                                                style: GF.GoogleFonts
+                                                    .leagueSpartan(
+                                                  fontSize: 20,
+                                                ),
+                                              ),
                                             ),
                                           )
                                         : Container(),
@@ -1773,7 +1789,7 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                       ),
                                       showAllDevicesButton(
                                         deboreGeminiResult == false
-                                            ? "Get Summary with Gemini"
+                                            ? "Summarize with Gemini"
                                             : "Close ",
                                         null,
                                         () async {
@@ -1811,15 +1827,14 @@ class _DashboardWidgetState extends State<DashboardWidget>
 
                                             Map<String, dynamic> errorCodes =
                                                 await findTimeWiseErrorCode2(
-                                                    'errorCodeDboreTesting',
+                                                    'errorCodeDbore',
                                                     keysNameMap);
                                             print(errorCodes);
                                             print(keysNameMap);
-                                            String deboresummary =
-                                                await ChatRepo
-                                                    .chatTextGenerationRepo(
-                                                        errorCodes.toString(),
-                                                        keysNameMap.toString());
+                                            String deboresummary = await chr
+                                                .chatTextGenerationRepo(
+                                                    errorCodes.toString(),
+                                                    keysNameMap.toString());
                                             setState(() {
                                               geminiSummary = deboresummary;
                                             });
@@ -1843,7 +1858,13 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                               width: double.infinity,
                                               // color: Colors.grey,
                                               child: Flexible(
-                                                child: Text(geminiSummary),
+                                                child: Text(
+                                                  geminiSummary,
+                                                  style: GF.GoogleFonts
+                                                      .leagueSpartan(
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
                                               ),
                                             )
                                           : Container(),

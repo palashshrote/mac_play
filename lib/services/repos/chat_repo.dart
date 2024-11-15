@@ -8,8 +8,7 @@ import 'package:hydrow/services/constants.dart';
 class ChatRepo {
   // static chatTextGenerationRepo(List<ChatMessageModel> previousMessages) async {
 
-  static Future<String> chatTextGenerationRepo(
-      String input, String keysName) async {
+  Future<String> chatTextGenerationRepo(String input, String keysName) async {
     try {
       Dio dio = Dio();
 
@@ -27,10 +26,10 @@ class ChatRepo {
                   //     "Interprete the data below which contains the date and device keys which contains the date and error code -1 means error and 0 means inconsistent data ${input}
                   //     below you can find the name of device which is in a map ${keysName} Can you summarised and use the device name instead of key"
                   "text":
-                      '''Interpret the data below till this time, which contains the date and device keys. Error code -1 means error, and 0 means 
-                      inconsistent data, and device key with empty data then it means that device is working perfectly fine 
-                      till now: $input. Below, you can find the name of the device in a map: $keysName. Can you summarize and 
-                      use the device name instead of the key?'''
+                      '''The data contains error codes,interpret the error codes below till this time, which contains the date and device keys. Error code -1 means error, and 0 means 
+                      inconsistent data, and device key with empty error codes then it means that device is working perfectly fine 
+                      till now: $input. Below, you can find the name of the device in a map: $keysName.Give me a readability enhanced summary and 
+                      use the device name instead of the key? Don't mention the assumptions which I told above'''
                 }
               ]
             },
