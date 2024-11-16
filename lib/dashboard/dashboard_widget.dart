@@ -922,42 +922,56 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             : "Close st",
                                         null,
                                         () async {
-                                          setState(() {
-                                            starrGeminiResult =
-                                                !starrGeminiResult;
-                                          });
-                                          if (starrGeminiResult == true) {
-                                            Map<String, String> keysNameMap =
-                                                {};
-                                            Stream<List<TankRecord>>
-                                                fetchedKeys = queryTankRecord(
-                                              parent: currentUserReference,
+                                          if (!await InternetConnectionCheckerPlus()
+                                              .hasConnection) {
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Please connect to the internet'),
+                                              ),
                                             );
-                                            fetchedKeys.listen((data) {
-                                              for (var record in data) {
-                                                keysNameMap[record.tankKey!] =
-                                                    record.tankName!;
-                                              }
-                                            });
-                                            await Future.delayed(
-                                                Duration(seconds: 1));
-
-                                            Map<String, dynamic> errorCodes =
-                                                await findTimeWiseErrorCode2(
-                                                    'errorCodeStarr', //errorCodeStarrTesting
-                                                    keysNameMap);
-                                            print(errorCodes);
-                                            print(keysNameMap);
-                                            String starrsummary = await chr
-                                                .chatTextGenerationRepo(
-                                                    errorCodes.toString(),
-                                                    keysNameMap.toString());
+                                          } else {
                                             setState(() {
-                                              geminiSummaryStarr = starrsummary;
+                                              starrGeminiResult =
+                                                  !starrGeminiResult;
                                             });
+                                            if (starrGeminiResult == true) {
+                                              Map<String, String> keysNameMap =
+                                                  {};
+                                              Stream<List<TankRecord>>
+                                                  fetchedKeys = queryTankRecord(
+                                                parent: currentUserReference,
+                                              );
+                                              fetchedKeys.listen((data) {
+                                                for (var record in data) {
+                                                  keysNameMap[record.tankKey!] =
+                                                      record.tankName!;
+                                                }
+                                              });
+                                              await Future.delayed(
+                                                  Duration(seconds: 1));
+
+                                              Map<String, dynamic> errorCodes =
+                                                  await findTimeWiseErrorCode2(
+                                                      'errorCodeStarr', //errorCodeStarrTesting
+                                                      keysNameMap);
+                                              print(errorCodes);
+                                              print(keysNameMap);
+                                              String starrsummary = await chr
+                                                  .chatTextGenerationRepo(
+                                                      errorCodes.toString(),
+                                                      keysNameMap.toString());
+                                              setState(() {
+                                                geminiSummaryStarr =
+                                                    starrsummary;
+                                              });
+                                            }
+                                            // generateChatResponse(
+                                            //     input: errorCodes.toString(), keysName: keysNameMap.toString());
                                           }
-                                          // generateChatResponse(
-                                          //     input: errorCodes.toString(), keysName: keysNameMap.toString());
                                         },
                                       ),
                                       SizedBox(
@@ -1486,41 +1500,56 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                           : "Close pr",
                                       null,
                                       () async {
-                                        setState(() {
-                                          pravahGeminiResult =
-                                              !pravahGeminiResult;
-                                        });
-                                        if (pravahGeminiResult == true) {
-                                          Map<String, String> keysNameMap = {};
-                                          Stream<List<MeterRecord>>
-                                              fetchedKeys = queryMeterRecord(
-                                            parent: currentUserReference,
+                                        if (!await InternetConnectionCheckerPlus()
+                                            .hasConnection) {
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Please connect to the internet'),
+                                            ),
                                           );
-                                          fetchedKeys.listen((data) {
-                                            for (var record in data) {
-                                              keysNameMap[record.meterKey!] =
-                                                  record.meterName!;
-                                            }
-                                          });
-                                          await Future.delayed(
-                                              Duration(seconds: 1));
-
-                                          Map<String, dynamic> errorCodes =
-                                              await findTimeWiseErrorCode2(
-                                                  'errorCodePravah', //errorCodePravahTesting
-                                                  keysNameMap);
-                                          print(errorCodes);
-                                          print(keysNameMap);
-                                          String pravahsummary =
-                                              await chr.chatTextGenerationRepo(
-                                                  errorCodes.toString(),
-                                                  keysNameMap.toString());
+                                        } else {
                                           setState(() {
-                                            geminiSummaryPravah = pravahsummary;
+                                            pravahGeminiResult =
+                                                !pravahGeminiResult;
                                           });
+                                          if (pravahGeminiResult == true) {
+                                            Map<String, String> keysNameMap =
+                                                {};
+                                            Stream<List<MeterRecord>>
+                                                fetchedKeys = queryMeterRecord(
+                                              parent: currentUserReference,
+                                            );
+                                            fetchedKeys.listen((data) {
+                                              for (var record in data) {
+                                                keysNameMap[record.meterKey!] =
+                                                    record.meterName!;
+                                              }
+                                            });
+                                            await Future.delayed(
+                                                Duration(seconds: 1));
+
+                                            Map<String, dynamic> errorCodes =
+                                                await findTimeWiseErrorCode2(
+                                                    'errorCodePravah', //errorCodePravahTesting
+                                                    keysNameMap);
+                                            print(errorCodes);
+                                            print(keysNameMap);
+                                            String pravahsummary = await chr
+                                                .chatTextGenerationRepo(
+                                                    errorCodes.toString(),
+                                                    keysNameMap.toString());
+                                            setState(() {
+                                              geminiSummaryPravah =
+                                                  pravahsummary;
+                                            });
+                                          }
+                                          // generateChatResponse(
+                                          //     input: errorCodes.toString(), keysName: keysNameMap.toString());
                                         }
-                                        // generateChatResponse(
-                                        //     input: errorCodes.toString(), keysName: keysNameMap.toString());
                                       },
                                     ),
                                     SizedBox(
@@ -1793,54 +1822,67 @@ class _DashboardWidgetState extends State<DashboardWidget>
                                             : "Close ",
                                         null,
                                         () async {
-                                          setState(() {
-                                            deboreGeminiResult =
-                                                !deboreGeminiResult;
-                                          });
-                                          if (deboreGeminiResult == true) {
-                                            Map<String, String> keysNameMap =
-                                                {};
-                                            Stream<List<BorewellRecord>>
-                                                fetchedKeys =
-                                                queryBorewellRecord(
-                                              parent: currentUserReference,
+                                          if (!await InternetConnectionCheckerPlus()
+                                              .hasConnection) {
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Please connect to the internet'),
+                                              ),
                                             );
-                                            fetchedKeys.listen((data) {
-                                              for (var record in data) {
-                                                keysNameMap[
-                                                        record.borewellKey!] =
-                                                    record.borewellName!;
-                                              }
-                                            });
-                                            await Future.delayed(
-                                                Duration(seconds: 1));
-
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         DeboreResponseWidget(
-                                            //       keysNameMap: keysNameMap,
-                                            //     ),
-                                            //   ),
-                                            // );
-
-                                            Map<String, dynamic> errorCodes =
-                                                await findTimeWiseErrorCode2(
-                                                    'errorCodeDbore',
-                                                    keysNameMap);
-                                            print(errorCodes);
-                                            print(keysNameMap);
-                                            String deboresummary = await chr
-                                                .chatTextGenerationRepo(
-                                                    errorCodes.toString(),
-                                                    keysNameMap.toString());
+                                          } else {
                                             setState(() {
-                                              geminiSummary = deboresummary;
+                                              deboreGeminiResult =
+                                                  !deboreGeminiResult;
                                             });
+                                            if (deboreGeminiResult == true) {
+                                              Map<String, String> keysNameMap =
+                                                  {};
+                                              Stream<List<BorewellRecord>>
+                                                  fetchedKeys =
+                                                  queryBorewellRecord(
+                                                parent: currentUserReference,
+                                              );
+                                              fetchedKeys.listen((data) {
+                                                for (var record in data) {
+                                                  keysNameMap[
+                                                          record.borewellKey!] =
+                                                      record.borewellName!;
+                                                }
+                                              });
+                                              await Future.delayed(
+                                                  Duration(seconds: 1));
+
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         DeboreResponseWidget(
+                                              //       keysNameMap: keysNameMap,
+                                              //     ),
+                                              //   ),
+                                              // );
+
+                                              Map<String, dynamic> errorCodes =
+                                                  await findTimeWiseErrorCode2(
+                                                      'errorCodeDbore',
+                                                      keysNameMap);
+                                              print(errorCodes);
+                                              print(keysNameMap);
+                                              String deboresummary = await chr
+                                                  .chatTextGenerationRepo(
+                                                      errorCodes.toString(),
+                                                      keysNameMap.toString());
+                                              setState(() {
+                                                geminiSummary = deboresummary;
+                                              });
+                                            }
+                                            // generateChatResponse(
+                                            //     input: errorCodes.toString(), keysName: keysNameMap.toString());
                                           }
-                                          // generateChatResponse(
-                                          //     input: errorCodes.toString(), keysName: keysNameMap.toString());
                                         },
                                       ),
                                       SizedBox(

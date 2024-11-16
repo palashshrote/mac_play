@@ -50,7 +50,7 @@ class _TermsandConditionState extends State<TermsandCondition> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Please read these Terms and Conditions of Use ("Terms") carefully before downloading, installing, or using the water tank monitoring mobile application (the "App") on your Android device. By downloading, installing, or using the App, you agree to be bound by these Terms and all associated services offered by Hydrow',
+              'Please read these Terms and Conditions of Use ("Terms") carefully before downloading, installing, or using the water tank monitoring mobile application (the "App") on your device. By downloading, installing, or using the App, you agree to be bound by these Terms and all associated services offered by HydrowVerse.',
               style: GF.GoogleFonts.leagueSpartan(
                 textStyle: TextStyle(
                   fontSize: 20.0,
@@ -71,9 +71,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'The owner grants you a non-exclusive and revocable license to use the App on your Android device in accordance with these Terms and the applicable usage rules set forth in the Google Play Store Terms of Service.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -97,9 +97,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'You are not allowed to copy, modify, distribute, sell, or transfer the App or any portion thereof; attempting to reverse engineer or extract source code from the App is strictly prohibited unless such activity is expressly permitted by law. You are not permitted to use the App for any illegal or unauthorized purpose.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -123,9 +123,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'The App, along with all intellectual property rights therein, is owned exclusively by Owner and its licensors; no rights or licenses are granted to you by implication or otherwise besides the limited license granted to you within these Terms.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -149,9 +149,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'The owner values your privacy and is committed to protecting your personal information for details about how we collect and use your data.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -175,9 +175,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'The App is provided without warranty of any kind; the Owner disclaims all express and implied warranties including merchantability, fitness for a specific purpose, and non-infringement. There is no guarantee that this application will meet all your requirements nor that its operation will be error-free and uninterrupted at all times.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -201,9 +201,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'In no event shall the Owner be liable for any direct or indirect damages arising out of or in connection with the use or inability to use this application even if a warning has been given regarding such damages; some jurisdictions do not allow exclusion/limitation of liability for consequential/incidental damages so this limitation may not apply to you.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -227,9 +227,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'You agree to defend, and hold harmless the Owner as well as its affiliates, officers, directors, employees, agents, and licensors from any claims resulting from your use of the App.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -253,9 +253,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'The owner reserves the right to modify these Terms at any time without notice and without liability towards you; continued usage signifies agreement with revised terms.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -279,9 +279,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'The owner may terminate these Terms as well as access to this application at any time without prior warning.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -305,9 +305,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'These Terms shall be governed by their courts; any legal actions resulting from these terms should be brought there too.',
               style: GF.GoogleFonts.leagueSpartan(
@@ -331,9 +331,9 @@ class _TermsandConditionState extends State<TermsandCondition> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             Text(
               'These terms constitute the complete agreement between both parties concerning the usage of this app, superseding all prior communications between both parties regarding it.',
               style: GF.GoogleFonts.leagueSpartan(

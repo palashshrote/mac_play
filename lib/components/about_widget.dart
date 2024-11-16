@@ -61,7 +61,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                 // ),
                 SizedBox(height: 16.0),
                 Text(
-                  'Hydrow Technologies is a water intelligence platform providing solutions for monitoring water in tanks and pipes. Realtime updates of the water levels and flow can be viewed and alerts of possible leakages are given. Water wastage and losses in the form of NRW (Non Revenue Water) can be mitigated.\n\nHydrow Technologies is a start-up founded in SPCRC Labs, IIIT Hyderabad, under Dr. Sachin Chaudhari (Associate Professor) and Thomas David Tency.',
+                  'HydrowVerse is a water intelligence platform providing solutions for monitoring water in tanks and pipes. Realtime updates of the water levels and flow can be viewed and alerts of possible leakages are given. Water wastage and losses in the form of NRW (Non Revenue Water) can be mitigated.\n\nHydrowVerse is a start-up founded in SPCRC Labs, IIIT Hyderabad, under Dr. Sachin Chaudhari (Associate Professor) and Thomas David Tency.',
                   style: GF.GoogleFonts.leagueSpartan(
                     textStyle: TextStyle(
                       fontSize: 20.0,
@@ -76,7 +76,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                   style: GF.GoogleFonts.leagueSpartan(
                     textStyle: TextStyle(
                       fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                       color: Colors.white, // Set text color to white
                     ),
                   ),
@@ -106,6 +106,7 @@ class _AboutWidgetState extends State<AboutWidget> {
                   name: 'Vishna Panyala',
                   role: 'vishnapanyala@gmail.com.',
                 ),
+                SizedBox(height: 8.0),
                 DeveloperCard(
                   name: 'Priyanka Joshi',
                   role: 'priyankajoshi.pj31@gmail.com',
@@ -114,6 +115,16 @@ class _AboutWidgetState extends State<AboutWidget> {
                 DeveloperCard(
                   name: 'Urmil Lokhande',
                   role: 'urmillokhande@gmail.com',
+                ),
+                SizedBox(height: 8.0),
+                DeveloperCard(
+                  name: 'Akhil Thomas',
+                  role: 'akhilbt51@gmail.com',
+                ),
+                SizedBox(height: 8.0),
+                DeveloperCard(
+                  name: 'Palash Shrote',
+                  role: 'palash.shrote.58@gmail.com',
                 ),
               ],
             ),

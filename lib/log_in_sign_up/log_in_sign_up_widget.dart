@@ -1,3 +1,4 @@
+import 'package:hydrow/pages/forgot_password.dart';
 import 'package:hydrow/services/auth_service.dart';
 import '/auth/auth_util.dart';
 import '/backend/backend.dart';
@@ -135,7 +136,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
             ),
             SizedBox(height: 40.0),
             Text(
-              "Login",
+              "Log In",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w500,
@@ -148,15 +149,17 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
+                  /*
                   TextFormField(
                     controller: _model.logInEmailController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.black,
+                      fillColor: const Color.fromARGB(255, 31, 16, 16),
                       hintText: 'Email',
                       hintStyle: TextStyle(
                         color: Colors.grey,
-                        fontSize: 13,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                         fontFamily: 'Spartan',
                       ),
                       border: OutlineInputBorder(
@@ -169,7 +172,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(
-                          color: Colors.grey,
+                          color: Colors.white,
                           width: 0.5,
                         ),
                       ),
@@ -190,6 +193,12 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                       color: Colors.white,
                     ),
                   ),
+                  */
+                  customTextField(
+                    _model.logInEmailController,
+                    'Email',
+                    _model.logInEmailControllerValidator.asValidator(context),
+                  ),
                 ],
               ),
             ),
@@ -198,6 +207,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
+                  /*
                   TextFormField(
                     controller: _model.logInPasswordController,
                     obscureText: !_isPasswordVisible,
@@ -212,11 +222,12 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                         onPressed: _tooglePassowrdVisibility,
                       ),
                       filled: true,
-                      fillColor: Colors.black,
+                      fillColor: const Color.fromARGB(255, 31, 16, 16),
                       hintText: 'Password',
                       hintStyle: TextStyle(
                         color: Colors.grey,
-                        fontSize: 13,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                         fontFamily: 'Spartan',
                       ),
                       border: OutlineInputBorder(
@@ -229,7 +240,7 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide: BorderSide(
-                          color: Colors.grey,
+                          color: Colors.white,
                           width: 0.5,
                         ),
                       ),
@@ -250,26 +261,41 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
                       color: Colors.white,
                     ),
                   ),
+                */
+                  customPasswordTextField(
+                    _model.logInPasswordController,
+                    'Password',
+                    _model.logInPasswordControllerValidator
+                        .asValidator(context),
+                  ),
                 ],
               ),
             ),
             SizedBox(
               height: 25,
             ),
-            Container(
-              width: 200,
-              child: ElevatedButton(
-                onPressed: () => _login(context),
-                child: Text(
-                  'Log In',
-                  style: TextStyle(fontFamily: 'Spartan'),
-                ),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                // width: 200,
+                width: double.infinity,
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: () => _login(context),
+                  child: Text(
+                    'Log In',
+                    style: TextStyle(
+                        fontFamily: 'Spartan',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
                   ),
-                  backgroundColor: Color(0xFFC6DDDB),
-                  foregroundColor: Colors.black,
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    backgroundColor: Color(0xFFC6DDDB),
+                    foregroundColor: Colors.black,
+                  ),
                 ),
               ),
             ),
@@ -346,28 +372,150 @@ class _LogInSignUpWidgetState extends State<LogInSignUpWidget>
             ),
             
             */
-            SizedBox(height: 35),
-            GestureDetector(
-              onTap: () {
+            TextButton(
+              onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SignUp()),
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ForgotPassword();
+                    },
+                  ),
                 );
-                // Navigator.pushNamed(context, MyRoutes.SignupRoute);
               },
-              child: Text(
-                'New to Hydrow? Sign up here!',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.white,
-                  fontFamily: 'Spartan',
-                  fontWeight: FontWeight.bold,
-                  // decoration: TextDecoration.underline,
+              child: const Text(
+                "Forgotten Password?",
+                style: TextStyle(fontFamily: 'Spartan', color: Colors.white),
+              ),
+            ),
+            SizedBox(height: 100),
+            Container(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignUp()),
+                  );
+                  // Navigator.pushNamed(context, MyRoutes.SignupRoute);
+                },
+                child: Text(
+                  'New to Hydrow? Sign up here!',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white,
+                    fontFamily: 'Spartan',
+                    fontWeight: FontWeight.bold,
+                    // decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // customTextField(_model.logInEmailController, 'Email', _model.logInEmailControllerValidator.asValidator(context)),
+
+  // customPasswordTextField(_model.logInPasswordController, 'Password', _model.logInPasswordControllerValidator.asValidator(context),),
+
+  Widget customTextField(TextEditingController? controller, String hintText,
+      String? Function(String?)? validator) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color.fromARGB(255, 31, 16, 16),
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'Spartan',
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 2,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 0.5,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+        labelStyle: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      validator: validator,
+      style: TextStyle(
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget customPasswordTextField(TextEditingController? controller,
+      String hintText, String? Function(String?)? validator) {
+    return TextFormField(
+      controller: _model.logInPasswordController,
+      obscureText: !_isPasswordVisible,
+      decoration: InputDecoration(
+        suffixIcon: IconButton(
+          icon: Icon(
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+            color: Colors.white,
+          ),
+          onPressed: _tooglePassowrdVisibility,
+        ),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 31, 16, 16),
+        hintText: 'Password',
+        hintStyle: TextStyle(
+          color: Colors.grey,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          fontFamily: 'Spartan',
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 2,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 0.5,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: Colors.grey,
+            width: 0.5,
+          ),
+        ),
+        labelStyle: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      validator: _model.logInPasswordControllerValidator.asValidator(context),
+      style: TextStyle(
+        color: Colors.white,
       ),
     );
   }
